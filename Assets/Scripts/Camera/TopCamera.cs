@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Newtonsoft.Json.Linq;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TopCamera : MonoBehaviour
 {
@@ -47,25 +49,17 @@ public class TopCamera : MonoBehaviour
         if (Mathf.Approximately(move.sqrMagnitude, 0f))
             return;
 
-        MoveHorizontal(move.x);
-        MoveVertical(move.y);
+       // MoveFunc(move);
     }
-    public void KeyboardMoveHorizontal(float value)
+
+    public void MoveFunc(Vector2 dir)
     {
-        MoveHorizontal(value * KeyboardSpeedModifier);
+        float speedMultiplicator = MoveSpeed * ComputeZoomSpeedModifier() * Time.deltaTime;
+        dir *= speedMultiplicator;
+        Move.x = dir.x;
+        Move.z = dir.y;
     }
-    public void KeyboardMoveVertical(float value)
-    {
-        MoveVertical(value * KeyboardSpeedModifier);
-    }
-    public void MoveHorizontal(float value)
-    {
-        Move.x += value * MoveSpeed * ComputeZoomSpeedModifier() * Time.deltaTime;
-    }
-    public void MoveVertical(float value)
-    {
-        Move.z += value * MoveSpeed * ComputeZoomSpeedModifier() * Time.deltaTime;
-    }
+
 
     // Direct focus on one entity (no smooth)
     public void FocusEntity(BaseEntity entity)
@@ -102,7 +96,7 @@ public class TopCamera : MonoBehaviour
             }
         }
 
-        Move = Vector3.zero;
+        Move.y = 0f;
     }
     #endregion
 }

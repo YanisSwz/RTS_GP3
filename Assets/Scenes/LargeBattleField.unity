@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -42,8 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -66,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -551,12 +548,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d9616ec63050ca4fa2fc0cc793599d0, type: 3}
---- !u!1 &509548323 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8220275900254332727, guid: 6274f44d969a12f4f9c683eb6eef2d05,
-    type: 3}
-  m_PrefabInstance: {fileID: 1946474214}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &510342451 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4162452776302188, guid: 0d9616ec63050ca4fa2fc0cc793599d0,
@@ -614,17 +605,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1698350594}
     m_Modifications:
-    - target: {fileID: 1083475433, guid: dc4ee6691f59b07458286e0cfb38d82d, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1083475433, guid: dc4ee6691f59b07458286e0cfb38d82d, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: a784680a31d1bbb429b32a0b842b14de, type: 2}
-    - target: {fileID: 4514436329004458, guid: dc4ee6691f59b07458286e0cfb38d82d, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
+    - target: {fileID: 1942633320057194, guid: dc4ee6691f59b07458286e0cfb38d82d, type: 3}
+      propertyPath: m_Name
+      value: PlayerController
       objectReference: {fileID: 0}
     - target: {fileID: 4514436329004458, guid: dc4ee6691f59b07458286e0cfb38d82d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -654,71 +637,23 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: Team
+    - target: {fileID: 4514436329004458, guid: dc4ee6691f59b07458286e0cfb38d82d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: Raycaster
-      value: 
-      objectReference: {fileID: 776645196}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: PreviewShader
-      value: 
-      objectReference: {fileID: 30, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: BuildMenuPanel
-      value: 
-      objectReference: {fileID: 913947470}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: BuildPointsText
-      value: 
-      objectReference: {fileID: 2121834877}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: FactoryMenuPanel
-      value: 
-      objectReference: {fileID: 509548323}
+    - target: {fileID: 4514436329004458, guid: dc4ee6691f59b07458286e0cfb38d82d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4514436329004458, guid: dc4ee6691f59b07458286e0cfb38d82d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
         type: 3}
       propertyPath: SceneEventSystem
       value: 
       objectReference: {fileID: 1101717270}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: CanvasEventSystem
-      value: 
-      objectReference: {fileID: 1101717270}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: FactoryMenuCanvas
-      value: 
-      objectReference: {fileID: 1857385670}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: BuildMenuRaycaster
-      value: 
-      objectReference: {fileID: 776645196}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: CapturedTargetsText
-      value: 
-      objectReference: {fileID: 1508647155}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: FactoryPreviewTransparency
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8446335230809480305, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: PlayerController
-      value: 
-      objectReference: {fileID: 589627996}
     - target: {fileID: 8446335230809480305, guid: dc4ee6691f59b07458286e0cfb38d82d,
         type: 3}
       propertyPath: FactoryMenuCanvas
@@ -870,29 +805,11 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 312249861}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &776645196 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3297987965787243822, guid: 6274f44d969a12f4f9c683eb6eef2d05,
-    type: 3}
-  m_PrefabInstance: {fileID: 1946474214}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &848957127 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4162452776302188, guid: 0d9616ec63050ca4fa2fc0cc793599d0,
     type: 3}
   m_PrefabInstance: {fileID: 1870270662}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &913947470 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3297987966072363252, guid: 6274f44d969a12f4f9c683eb6eef2d05,
-    type: 3}
-  m_PrefabInstance: {fileID: 1946474214}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &925575461
 PrefabInstance:
@@ -1001,15 +918,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 970432209}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 12
   m_Type: 1
-  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
@@ -1053,8 +969,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!4 &970432211
 Transform:
   m_ObjectHideFlags: 0
@@ -1469,18 +1389,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &1508647155 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3297987964377513171, guid: 6274f44d969a12f4f9c683eb6eef2d05,
-    type: 3}
-  m_PrefabInstance: {fileID: 1946474214}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1513487563 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4162452776302188, guid: 0d9616ec63050ca4fa2fc0cc793599d0,
@@ -1649,8 +1557,7 @@ LightingSettings:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Settings.lighting
-  serializedVersion: 6
-  m_GIWorkflowMode: 1
+  serializedVersion: 10
   m_EnableBakedLightmaps: 1
   m_EnableRealtimeLightmaps: 1
   m_RealtimeEnvironmentLighting: 1
@@ -1660,9 +1567,17 @@ LightingSettings:
   m_UsingShadowmask: 1
   m_BakeBackend: 1
   m_LightmapMaxSize: 1024
+  m_LightmapSizeFixed: 0
+  m_UseMipmapLimits: 1
   m_BakeResolution: 40
   m_Padding: 2
   m_LightmapCompression: 2
+  m_LightmapPackingMode: 1
+  m_LightmapPackingMethod: 0
+  m_XAtlasPackingAttempts: 16384
+  m_XAtlasBruteForce: 0
+  m_XAtlasBlockAlign: 0
+  m_XAtlasRepackUnderutilizedLightmaps: 1
   m_AO: 0
   m_AOMaxDistance: 1
   m_CompAOExponent: 1
@@ -1673,13 +1588,11 @@ LightingSettings:
   m_FilterMode: 1
   m_LightmapParameters: {fileID: 15204, guid: 0000000000000000f000000000000000, type: 0}
   m_ExportTrainingData: 0
+  m_EnableWorkerProcessBaking: 1
   m_TrainingDataDestination: TrainingData
   m_RealtimeResolution: 2
   m_ForceWhiteAlbedo: 0
   m_ForceUpdates: 0
-  m_FinalGather: 0
-  m_FinalGatherRayCount: 256
-  m_FinalGatherFiltering: 1
   m_PVRCulling: 1
   m_PVRSampling: 1
   m_PVRDirectSampleCount: 32
@@ -1703,8 +1616,6 @@ LightingSettings:
   m_PVRFilteringAtrousPositionSigmaDirect: 0.5
   m_PVRFilteringAtrousPositionSigmaIndirect: 2
   m_PVRFilteringAtrousPositionSigmaAO: 1
-  m_PVRTiledBaking: 0
-  m_NumRaysToShootPerTexel: -1
   m_RespectSceneVisibilityWhenBakingGI: 0
 --- !u!1 &1698350593
 GameObject:
@@ -1769,6 +1680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
   m_AgentTypeID: -1372625422
   m_CollectObjects: 0
   m_Size: {x: 10, y: 10, z: 10}
@@ -1800,6 +1712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
   m_AgentTypeID: 0
   m_CollectObjects: 0
   m_Size: {x: 10, y: 10, z: 10}
@@ -1930,6 +1843,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3124353299293301185, guid: 32676265f95fdeb40833df7b0b170998,
+        type: 3}
+      propertyPath: MoveSpeed
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 3124353299293301188, guid: 32676265f95fdeb40833df7b0b170998,
         type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -2629,18 +2547,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d9616ec63050ca4fa2fc0cc793599d0, type: 3}
---- !u!114 &2121834877 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3297987965066762369, guid: 6274f44d969a12f4f9c683eb6eef2d05,
-    type: 3}
-  m_PrefabInstance: {fileID: 1946474214}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2146023536
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2868,6 +2774,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FogOfWar
+      objectReference: {fileID: 0}
+    - target: {fileID: 7323399335524938807, guid: 2ab01d8ebdd0d0048a9d597426a3a800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

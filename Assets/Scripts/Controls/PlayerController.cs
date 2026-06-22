@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -147,8 +149,8 @@ public sealed class PlayerController : UnitController
         OnCameraDragMoveEnd += StopMoveCamera;
 
         OnCameraZoom += TopCameraRef.Zoom;
-        OnCameraMoveHorizontal += TopCameraRef.KeyboardMoveHorizontal;
-        OnCameraMoveVertical += TopCameraRef.KeyboardMoveVertical;
+        //OnCameraMoveHorizontal += TopCameraRef.KeyboardMoveHorizontal;
+        //OnCameraMoveVertical += TopCameraRef.KeyboardMoveVertical;
 
         // Gameplay shortcuts
         OnFocusBasePressed += SetCameraFocusOnMainFactory;
@@ -299,6 +301,13 @@ public sealed class PlayerController : UnitController
             OnCameraDragMoveStart?.Invoke();
         if (Input.GetMouseButtonUp(2))
             OnCameraDragMoveEnd?.Invoke();
+    }
+
+    public void MoveCallback(InputAction.CallbackContext context)
+    {
+        Vector2 moveDir = context.ReadValue<Vector2>();
+        moveDir = moveDir.normalized;
+        TopCameraRef.MoveFunc(moveDir);
     }
     #endregion
 
