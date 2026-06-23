@@ -21,6 +21,7 @@ public class TopCamera : MonoBehaviour
     [SerializeField, Tooltip("Set to false for debug camera movement")]
     bool EnableMoveLimits = true;
 
+    private float ZoomSpeedModificator = 1f;
     Vector3 Move = Vector3.zero;
     Vector3 TerrainSize = Vector3.zero;
 
@@ -42,6 +43,7 @@ public class TopCamera : MonoBehaviour
         float zoomSpeedModifier = MoveSpeedFromZoomCurve.Evaluate(zoomRatio);
         //Debug.Log("zoomSpeedModifier " + zoomSpeedModifier);
 
+        ZoomSpeedModificator = zoomSpeedModifier * Time.deltaTime;
         return zoomSpeedModifier;
     }
     public void MouseMove(Vector2 move)
@@ -54,8 +56,7 @@ public class TopCamera : MonoBehaviour
 
     public void MoveFunc(Vector2 dir)
     {
-        float speedMultiplicator = MoveSpeed * ComputeZoomSpeedModifier() * Time.deltaTime;
-        dir *= speedMultiplicator;
+        dir *= MoveSpeed;
         Move.x = dir.x;
         Move.z = dir.y;
     }
@@ -79,12 +80,14 @@ public class TopCamera : MonoBehaviour
     void Start()
     {
         TerrainSize = GameServices.GetTerrainSize();
+        ComputeZoomSpeedModifier();
     }
+
     void Update()
     {
         if (Move != Vector3.zero)
         {
-            transform.position += Move;
+            transform.position += new Vector3(Move.x * ZoomSpeedModificator, Move.y, Move.z * ZoomSpeedModificator);
             if (EnableMoveLimits)
             {
                 // Clamp camera position (max height, terrain bounds)
