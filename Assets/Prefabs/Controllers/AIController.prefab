@@ -24,12 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6399179960504004712}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7859672622032877473
 MonoBehaviour:
@@ -43,5 +44,251 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f361e24ae60f5c8438582fd63c5eaeb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _TotalBuildPoints: 0
   Team: 1
   StartingBuildPoints: 15
+  goals:
+  - name: Build
+    utility: 0
+    activationThreshold: 0
+    minUtility: 0
+    maxUtility: 1
+    utilityEvaluators:
+    - weight: 1
+      inputValue: 1
+      utilityCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 9.9
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 10.024874
+          value: 0.75
+          inSlope: 0.015149133
+          outSlope: 0.015149133
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.06281669
+        - serializedVersion: 3
+          time: 30
+          value: 1
+          inSlope: 0.012515565
+          outSlope: 0.012515565
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+    - weight: 0.5
+      inputValue: 2
+      utilityCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0.07481391
+          outSlope: 0.07481391
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 10.024874
+          value: 0.75
+          inSlope: 0.015149133
+          outSlope: 0.015149133
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.06281669
+        - serializedVersion: 3
+          time: 30
+          value: 1
+          inSlope: 0.012515565
+          outSlope: 0.012515565
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  - name: Recruit
+    utility: 0
+    activationThreshold: 0
+    minUtility: 0
+    maxUtility: 1
+    utilityEvaluators:
+    - weight: 1
+      inputValue: 1
+      utilityCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0.2
+          outSlope: 0.2
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 5
+          value: 1
+          inSlope: 0.2
+          outSlope: 0.2
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+    - weight: 0.75
+      inputValue: 2
+      utilityCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -0.04109301
+          outSlope: -0.04109301
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.13692312
+        - serializedVersion: 3
+          time: 5
+          value: 0
+          inSlope: -0.51683575
+          outSlope: -0.51683575
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.05689478
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  - name: Attack
+    utility: 0
+    activationThreshold: 0
+    minUtility: 0
+    maxUtility: 1
+    utilityEvaluators:
+    - weight: 1
+      inputValue: 2
+      utilityCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0.109281406
+          outSlope: 0.109281406
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.041501977
+        - serializedVersion: 3
+          time: 5
+          value: 0.75
+          inSlope: 0.15889274
+          outSlope: 0.15889274
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.061264895
+        - serializedVersion: 3
+          time: 10
+          value: 1
+          inSlope: -0.0014063012
+          outSlope: -0.0014063012
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.0786562
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  - name: Capture
+    utility: 0
+    activationThreshold: 0
+    minUtility: 0
+    maxUtility: 1
+    utilityEvaluators:
+    - weight: 1
+      inputValue: 3
+      utilityCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -0.083333336
+          outSlope: -0.083333336
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 12
+          value: 0
+          inSlope: -0.083333336
+          outSlope: -0.083333336
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+    - weight: 1
+      inputValue: 1
+      utilityCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -0.0065344446
+          outSlope: -0.0065344446
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.056793414
+        - serializedVersion: 3
+          time: 20
+          value: 0
+          inSlope: -0.05
+          outSlope: -0.05
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  currentGoalName: none
+  currentGoalUtility: -1

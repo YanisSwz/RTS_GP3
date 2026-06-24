@@ -6,14 +6,10 @@ using UnityEngine;
 // max points can be increased by capturing TargetBuilding entities
 public class UnitController : MonoBehaviour
 {
+    [Header("--- DEBUG ---")]
     [SerializeField]
-    protected ETeam Team;
-    public ETeam GetTeam() { return Team; }
-
-    [SerializeField]
-    protected int StartingBuildPoints = 15;
-
     protected int _TotalBuildPoints = 0;
+
     public int TotalBuildPoints
     {
         get { return _TotalBuildPoints; }
@@ -24,6 +20,16 @@ public class UnitController : MonoBehaviour
             OnBuildPointsUpdated?.Invoke();
         }
     }
+
+    [Header("------------------------")]
+    [SerializeField]
+    protected ETeam Team;
+    public ETeam GetTeam() { return Team; }
+
+    [SerializeField]
+    protected int StartingBuildPoints = 15;
+
+    
 
     protected int _CapturedTargets = 0;
     public int CapturedTargets
