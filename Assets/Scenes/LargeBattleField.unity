@@ -2801,11 +2801,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[0].utilityEvaluators.Array.data[0].name
-      value: buildingPoints
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
       propertyPath: recruitGoal.armyPowerUtility.m_Curve.Array.data[0].value
       value: 1
       objectReference: {fileID: 0}
@@ -2846,12 +2841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[0].utilityEvaluators.Array.data[1].weight
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].weight
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].weight
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
@@ -3061,12 +3051,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[0].utilityEvaluators.Array.data[1].inputValue
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].inputValue
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].inputValue
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
@@ -3221,7 +3206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_PreInfinity
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_PreInfinity
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
@@ -3241,7 +3226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_PostInfinity
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_PostInfinity
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
@@ -3261,7 +3246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_RotationOrder
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_RotationOrder
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
@@ -3281,7 +3266,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.size
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
@@ -3301,7 +3286,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[1].time
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[1].time
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
@@ -3351,12 +3336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[0].utilityEvaluators.Array.data[0].utilityCurve.m_Curve.Array.data[2].value
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[0].value
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[0].value
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
@@ -3406,22 +3386,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[0].utilityEvaluators.Array.data[0].utilityCurve.m_Curve.Array.data[2].inSlope
-      value: 0.015149133
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: goals.Array.data[0].utilityEvaluators.Array.data[0].utilityCurve.m_Curve.Array.data[3].inSlope
-      value: 0.012515565
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[0].inSlope
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[0].inSlope
       value: -0.0065344446
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[1].inSlope
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[1].inSlope
       value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
@@ -3476,27 +3446,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[0].utilityEvaluators.Array.data[0].utilityCurve.m_Curve.Array.data[2].outSlope
-      value: 0.015149133
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: goals.Array.data[0].utilityEvaluators.Array.data[0].utilityCurve.m_Curve.Array.data[3].outSlope
-      value: 0.012515565
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[0].outSlope
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[0].outSlope
       value: -0.0065344446
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[1].inWeight
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[1].inWeight
       value: 0.33333334
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[1].outSlope
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[1].outSlope
       value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
@@ -3586,12 +3546,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[0].utilityEvaluators.Array.data[0].utilityCurve.m_Curve.Array.data[2].outWeight
-      value: 0.06281669
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[0].outWeight
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[0].outWeight
       value: 0.056793414
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
@@ -3631,7 +3586,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.data[3].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[1].tangentMode
+      propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[1].tangentMode
       value: 34
       objectReference: {fileID: 0}
     m_RemovedComponents: []
