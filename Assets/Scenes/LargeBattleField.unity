@@ -654,6 +654,11 @@ PrefabInstance:
       propertyPath: SceneEventSystem
       value: 
       objectReference: {fileID: 1101717270}
+    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
+        type: 3}
+      propertyPath: squads.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8446335230809480305, guid: dc4ee6691f59b07458286e0cfb38d82d,
         type: 3}
       propertyPath: FactoryMenuCanvas

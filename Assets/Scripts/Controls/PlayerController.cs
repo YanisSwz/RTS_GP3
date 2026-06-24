@@ -450,6 +450,36 @@ public sealed class PlayerController : UnitController
         SelectionStart = Vector3.zero;
         SelectionEnd = Vector3.zero;
     }
+
+    private void FormSquadWithSelectedUnits()
+    {
+        if (SelectedUnitList.Count == 0)
+            return;
+
+        Squad squadToCheck = SelectedUnitList[0].squadRef;
+        if (squadToCheck != null && SelectedUnitList.Count > 1)
+        {
+            //check if all in the same squad
+            bool broke = false;
+            foreach (Unit unit in SelectedUnitList)
+            {
+                if (unit.squadRef != squadToCheck)
+                {
+                    broke = true;
+                    break;
+                }
+            }
+
+            if (broke == false)
+            {
+                //all in same squad
+                return;
+            }
+        }
+
+        Squad newSquad = new Squad();
+        newSquad.FormSquad(this, Squad.FormationStyle.None, SelectedUnitList);
+    }
     #endregion
 
     #region Factory / build methods
@@ -544,6 +574,10 @@ public sealed class PlayerController : UnitController
     {
         if (SelectedUnitList.Count == 0)
             return;
+
+
+        FormSquadWithSelectedUnits();
+
 
         int damageableMask = (1 << LayerMask.NameToLayer("Unit")) | (1 << LayerMask.NameToLayer("Factory"));
         int targetMask = 1 << LayerMask.NameToLayer("Target");

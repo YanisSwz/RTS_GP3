@@ -13,6 +13,9 @@ public class Unit : BaseEntity
     TargetBuilding CaptureTarget = null;
     NavMeshAgent NavMeshAgent;
 
+    [HideInInspector]
+    public Squad squadRef = null;
+
     public UnitDataScriptable GetUnitData { get { return UnitData; } }
     public int Cost { get { return UnitData.Cost; } }
     public int GetTypeId { get { return UnitData.TypeId; } }

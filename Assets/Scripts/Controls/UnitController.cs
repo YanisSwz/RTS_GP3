@@ -45,6 +45,9 @@ public class UnitController : MonoBehaviour
     protected Transform TeamRoot = null;
     public Transform GetTeamRoot() { return TeamRoot; }
 
+    //[HideInInspector]
+    public List<Squad> squads = new List<Squad>();
+
     public List<Unit> UnitList
     {
         get;
