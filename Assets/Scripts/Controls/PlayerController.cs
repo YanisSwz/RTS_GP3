@@ -599,9 +599,40 @@ public sealed class PlayerController : UnitController
             {
                 if (other.GetTeam() != GetTeam())
                 {
-                    // Direct call to attacking task $$$ to be improved by AI behaviour
-                    foreach (Unit unit in SelectedUnitList)
-                        unit.SetAttackTarget(other);
+                    //create action sequence
+                    List<SquadAction> actions = new List<SquadAction>();
+
+                    //compute move to stopping distance
+                    float maxAttackRadius = 0f;
+                    foreach (Unit unit in currentSquad.GetControlledUnits)
+                    {
+                        float atkDist = unit.GetUnitData.AttackDistanceMax;
+                        if (atkDist > maxAttackRadius)
+                            maxAttackRadius = atkDist;
+                    }
+
+                    //add move to action
+                    SquadMoveTo moveToAction = new SquadMoveTo();
+                    if (other as Unit)
+                        moveToAction.Init(currentSquad, other.gameObject, 5f);
+                    //if factory => static target
+                    else
+                        moveToAction.Init(currentSquad, other.transform.position, 5f);
+
+                    moveToAction.distanceToFinalTarget = maxAttackRadius;
+
+                    actions.Add(moveToAction);
+
+                    //add attk action
+                    //Todo
+
+                    //send action
+                    currentSquad.GiveActions(actions);
+
+
+                    //// Direct call to attacking task $$$ to be improved by AI behaviour
+                    //foreach (Unit unit in SelectedUnitList)
+                    //    unit.SetAttackTarget(other);
                 }
                 else if (other.NeedsRepairing())
                 {
@@ -615,11 +646,39 @@ public sealed class PlayerController : UnitController
         else if (Physics.Raycast(ray, out raycastInfo, Mathf.Infinity, targetMask))
         {
             TargetBuilding target = raycastInfo.transform.GetComponent<TargetBuilding>();
-            if (target != null && target.GetTeam() != GetTeam())
+
+            if (target != null)
             {
-                // Direct call to capturing task $$$ to be improved by AI behaviour
-                foreach (Unit unit in SelectedUnitList)
-                    unit.SetCaptureTarget(target);
+                //create action sequence
+                List<SquadAction> actions = new List<SquadAction>();
+
+                //compute move to stopping distance
+                float maxCaptureRadius = 0f;
+                foreach (Unit unit in currentSquad.GetControlledUnits)
+                {
+                    float capDist = unit.GetUnitData.CaptureDistanceMax;
+                    if (capDist > maxCaptureRadius)
+                        maxCaptureRadius = capDist;
+                }
+
+                //add move to action
+                SquadMoveTo moveToAction = new SquadMoveTo();
+                moveToAction.Init(currentSquad, target.transform.position, 1f);
+                moveToAction.distanceToFinalTarget = maxCaptureRadius;
+                actions.Add(moveToAction);
+
+                if (target.GetTeam() != GetTeam())
+                {
+                    //add capture action
+                    //Todo
+
+                    //// Direct call to capturing task $$$ to be improved by AI behaviour
+                    //foreach (Unit unit in SelectedUnitList)
+                    //    unit.SetCaptureTarget(target);
+                }
+
+                //send action
+                currentSquad.GiveActions(actions);
             }
         }
         // Set unit move target

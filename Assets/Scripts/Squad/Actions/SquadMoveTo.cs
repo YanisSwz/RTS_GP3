@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Events;
 
 public class SquadMoveTo : SquadAction
 {
@@ -11,6 +9,9 @@ public class SquadMoveTo : SquadAction
     NavMeshPath staticPath = new NavMeshPath();
 
     bool IsStaticPath = false;
+
+    [HideInInspector]
+    public float distanceToFinalTarget = 0f;
 
     public override void Init(Squad _squad, Vector3 _staticTarget, float _distanceToTarget)
     {
@@ -46,6 +47,8 @@ public class SquadMoveTo : SquadAction
 
             GivePoses(poses);
         }
+        else
+            Debug.Log("path failed to compute");
     }
 
 
@@ -84,18 +87,41 @@ public class SquadMoveTo : SquadAction
 
     private bool ComputeStaticPathPos(Vector3 squadPos, out Vector3 targetPos)
     {
-        bool squadArrived = (squadPos - staticPath.corners[currentIndex]).magnitude < distanceToTarget;
 
-        //check if all units arrived at last path point
+        //get nearest unit pos to target --> if minDistToTarget <= distanceToFinalTarget = arrived stop moving
+        bool considerFinalDist = distanceToFinalTarget > distanceToTarget;
+        //float minDistToTarget = float.MaxValue;
+        int indexUnitChecked = 0;
+
+        //check if squad average pos is arrived to the waypoint
+        bool squadArrived = (squadPos - staticPath.corners[currentIndex]).magnitude <= distanceToTarget;
+        
+        List<Unit> units = squad.GetControlledUnits;
+        //check if all units arrived; this check because the terrain can affect the formation and shift the average squad pos
         if (squadArrived == false)
         {
-            List<Unit> units = squad.GetControlledUnits;
-
             bool broke = false;
             foreach (Unit unit in units)
             {
+                if (considerFinalDist)
+                {
+                    //get the nearest unit to the target
+                    ++indexUnitChecked;
+                    float distToTarget = (unit.transform.position - staticTarget).magnitude;
+
+                    //this unit is close enough to the final target 
+                    if (distToTarget <= distanceToFinalTarget)
+                    {
+                        StopAllUnit();
+
+                        targetPos = squadPos;
+                        return false;
+                    }
+                }
+
                 if (unit.HasReachDest(distanceToTarget) == false)
                 {
+                    //a unit is still moving => not arrived
                     broke = true;
                     break;
                 }
@@ -103,6 +129,23 @@ public class SquadMoveTo : SquadAction
 
             if (broke == false)
                 squadArrived = true;
+        }
+
+        //continue to check the rest of the team if the prev foreach loop broke
+        if (considerFinalDist && indexUnitChecked < units.Count)
+        {
+            for (; indexUnitChecked < units.Count; ++indexUnitChecked)
+            {
+                float distToTarget = (units[indexUnitChecked].transform.position - staticTarget).magnitude;
+                //this unit is close enough to the final target 
+                if (distToTarget <= distanceToFinalTarget)
+                {
+                    StopAllUnit();
+
+                    targetPos = squadPos;
+                    return false;
+                }
+            }
         }
 
         //next path point
@@ -133,5 +176,13 @@ public class SquadMoveTo : SquadAction
         {
             squadUnits[i].SetTargetPos(poses[i]);
         }
+    }
+
+    private void StopAllUnit()
+    {
+        foreach (Unit unit in squad.GetControlledUnits)
+            unit.StopMoving();
+
+        OnComplete.Invoke();
     }
 }
