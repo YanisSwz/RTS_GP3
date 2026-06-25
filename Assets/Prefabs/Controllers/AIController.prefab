@@ -48,247 +48,34 @@ MonoBehaviour:
   Team: 1
   StartingBuildPoints: 15
   goals:
-  - name: Build
+  - goalData: {fileID: 11400000, guid: c62bb4ca2ff2ada49bc1fa807e4e062f, type: 2}
     utility: 0
-    activationThreshold: 0
-    minUtility: 0
-    maxUtility: 1
-    utilityEvaluators:
-    - weight: 1
-      inputValue: 1
-      utilityCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 9.9
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 10.024874
-          value: 0.75
-          inSlope: 0.015149133
-          outSlope: 0.015149133
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.06281669
-        - serializedVersion: 3
-          time: 30
-          value: 1
-          inSlope: 0.012515565
-          outSlope: 0.012515565
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-    - weight: 0.5
-      inputValue: 2
-      utilityCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0.07481391
-          outSlope: 0.07481391
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 10.024874
-          value: 0.75
-          inSlope: 0.015149133
-          outSlope: 0.015149133
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.06281669
-        - serializedVersion: 3
-          time: 30
-          value: 1
-          inSlope: 0.012515565
-          outSlope: 0.012515565
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-  - name: Recruit
+  - goalData: {fileID: 11400000, guid: 39f695dfba8e838499113fa2d3cd434d, type: 2}
     utility: 0
-    activationThreshold: 0
-    minUtility: 0
-    maxUtility: 1
-    utilityEvaluators:
-    - weight: 1
-      inputValue: 1
-      utilityCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0.2
-          outSlope: 0.2
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 5
-          value: 1
-          inSlope: 0.2
-          outSlope: 0.2
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-    - weight: 0.75
-      inputValue: 2
-      utilityCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -0.04109301
-          outSlope: -0.04109301
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.13692312
-        - serializedVersion: 3
-          time: 5
-          value: 0
-          inSlope: -0.51683575
-          outSlope: -0.51683575
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.05689478
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-  - name: Attack
+  - goalData: {fileID: 11400000, guid: 1b5eee88f277c0b42b741efe219fe574, type: 2}
     utility: 0
-    activationThreshold: 0
-    minUtility: 0
-    maxUtility: 1
-    utilityEvaluators:
-    - weight: 1
-      inputValue: 2
-      utilityCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0.109281406
-          outSlope: 0.109281406
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.041501977
-        - serializedVersion: 3
-          time: 5
-          value: 0.75
-          inSlope: 0.15889274
-          outSlope: 0.15889274
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.061264895
-        - serializedVersion: 3
-          time: 10
-          value: 1
-          inSlope: -0.0014063012
-          outSlope: -0.0014063012
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.0786562
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-  - name: Capture
+  - goalData: {fileID: 11400000, guid: 188b7afe7a300d347a5e1be969d72a4a, type: 2}
     utility: 0
-    activationThreshold: 0
-    minUtility: 0
-    maxUtility: 1
-    utilityEvaluators:
-    - weight: 1
-      inputValue: 3
-      utilityCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -0.083333336
-          outSlope: -0.083333336
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 12
-          value: 0
-          inSlope: -0.083333336
-          outSlope: -0.083333336
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-    - weight: 1
-      inputValue: 1
-      utilityCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -0.0065344446
-          outSlope: -0.0065344446
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.056793414
-        - serializedVersion: 3
-          time: 20
-          value: 0
-          inSlope: -0.05
-          outSlope: -0.05
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
+  general:
+    sequences:
+    - goalType: 1
+      actions:
+      - B1
+      - B2
+    - goalType: 2
+      actions:
+      - R1
+      - R2
+    - goalType: 3
+      actions:
+      - A1
+      - A2
+      - A3
+    - goalType: 4
+      actions:
+      - C1
+      - C2
+      - C3
+    actions: []
   currentGoalName: none
   currentGoalUtility: -1

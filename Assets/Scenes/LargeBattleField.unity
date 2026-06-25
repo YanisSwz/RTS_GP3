@@ -2721,6 +2721,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
+      propertyPath: goals.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
       propertyPath: buildGoal.maxUtility
       value: 1
       objectReference: {fileID: 0}
@@ -2739,6 +2744,30 @@ PrefabInstance:
       propertyPath: goals.Array.data[4].name
       value: TestGoal
       objectReference: {fileID: 0}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: goals.Array.data[0].goalData
+      value: 
+      objectReference: {fileID: 11400000, guid: c62bb4ca2ff2ada49bc1fa807e4e062f,
+        type: 2}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: goals.Array.data[1].goalData
+      value: 
+      objectReference: {fileID: 11400000, guid: 39f695dfba8e838499113fa2d3cd434d,
+        type: 2}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: goals.Array.data[2].goalData
+      value: 
+      objectReference: {fileID: 11400000, guid: 39f695dfba8e838499113fa2d3cd434d,
+        type: 2}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: goals.Array.data[3].goalData
+      value: 
+      objectReference: {fileID: 11400000, guid: 39f695dfba8e838499113fa2d3cd434d,
+        type: 2}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
       propertyPath: goals.Array.data[4].maxUtility
@@ -2783,6 +2812,11 @@ PrefabInstance:
         type: 3}
       propertyPath: recruitGoal.buildingPointsUtility.m_Curve.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: 'general.sequences.Array.data[1].actions.Array.data[2]'
+      value: R3
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}

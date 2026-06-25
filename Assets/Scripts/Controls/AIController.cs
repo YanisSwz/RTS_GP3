@@ -8,6 +8,8 @@ public sealed class AIController : UnitController
     [SerializeField]
     private List<Goal> goals = new List<Goal>();
     private Goal currentGoal = null;
+    [SerializeField]
+    private General general = null;
     [Header("--- DEBUG ---")]
     public string currentGoalName = "none";
     public float currentGoalUtility = -1f;
@@ -17,6 +19,8 @@ public sealed class AIController : UnitController
     protected override void Awake()
     {
         base.Awake();
+        foreach (Goal goal in goals) 
+            goal.LoadData();
     }
 
     protected override void Start()
@@ -45,10 +49,13 @@ public sealed class AIController : UnitController
             {
                 bestUtility = goal.Utility;
                 currentGoal = goal;
+                //Debug
                 currentGoalName = goal.Name;
                 currentGoalUtility = goal.Utility;
             }
         }
+
+        general.SetGoal(currentGoal);
     }
 
     #endregion
