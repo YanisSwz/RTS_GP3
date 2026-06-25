@@ -5,6 +5,7 @@ using UnityEngine;
 [Serializable]
 public class Squad
 {
+    public int GetNbUnit { get { return controlledUnits.Count; } }
     List<Unit> controlledUnits = new List<Unit>();
 
     List<Vector3> freestyleFormationPos = new List<Vector3>();
@@ -35,20 +36,21 @@ public class Squad
         currentStyle = formationStyle;
         freestyleFormationPos.Clear();
 
-        controlledUnits = unitsRecruited;
+        controlledUnits = new List<Unit> (unitsRecruited);
 
         AIController aiController = controller as AIController;
 
         foreach (Unit unit in controlledUnits)
         {
+            //check if unit already in a squad
             if (unit.squadRef != null)
-                unit.squadRef.RemoveUnit(unit, controller);
-
-            unit.squadRef = this;
+                unit.squadRef.RemoveUnit(unit, controller, true);
 
             //unit is in a squad => not available
-            if (aiController != null)
+            else if (aiController != null)
                 aiController.availableUnits.Remove(unit);
+
+            unit.squadRef = this;
 
             //remove unit of squad on its death 
             unit.OnDeadEvent += () =>
@@ -66,7 +68,7 @@ public class Squad
         }
     }
 
-    public void RemoveUnit(Unit unitToRemove, UnitController controller)
+    public void RemoveUnit(Unit unitToRemove, UnitController controller, bool isSwapSquad = false)
     {
         int index = controlledUnits.IndexOf(unitToRemove);
 
@@ -76,10 +78,14 @@ public class Squad
 
             unitToRemove.squadRef = null;
 
-            //unit no more in a squad => available
-            AIController aiController = controller as AIController;
-            if (aiController != null)
-                aiController.availableUnits.Add(unitToRemove);
+            //only release unit if squad destroy
+            if (isSwapSquad == false)
+            {
+                //unit no more in a squad => available
+                AIController aiController = controller as AIController;
+                if (aiController != null)
+                    aiController.availableUnits.Add(unitToRemove);
+            }
 
 
             //if no more unit => destrroy squad
