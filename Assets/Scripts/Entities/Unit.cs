@@ -13,6 +13,9 @@ public class Unit : BaseEntity
     TargetBuilding CaptureTarget = null;
     NavMeshAgent NavMeshAgent;
 
+    [HideInInspector]
+    public Squad squadRef = null;
+
     public UnitDataScriptable GetUnitData { get { return UnitData; } }
     public int Cost { get { return UnitData.Cost; } }
     public int GetTypeId { get { return UnitData.TypeId; } }
@@ -93,14 +96,26 @@ public class Unit : BaseEntity
 
     // $$$ To be updated for AI implementation $$$
 
+    public bool HasReachDest(float radius = -1f, bool realDest = false)
+    {
+        return ((realDest ? GetRealDestination() : GetDestination()) - NavMeshAgent.transform.position).magnitude < ((radius < 0) ? NavMeshAgent.stoppingDistance : radius);
+    }
+
+    public Vector3 GetDestination()
+    { return NavMeshAgent.pathEndPosition; }
+
+    public Vector3 GetRealDestination()
+    { return NavMeshAgent.destination; }
+
+
     // Moving Task
     public void SetTargetPos(Vector3 pos)
     {
-        if (EntityTarget != null)
-            EntityTarget = null;
+        //if (EntityTarget != null)
+        //    EntityTarget = null;
 
-        if (CaptureTarget != null)
-            StopCapture();
+        //if (CaptureTarget != null)
+        //    StopCapture();
 
         if (NavMeshAgent)
         {

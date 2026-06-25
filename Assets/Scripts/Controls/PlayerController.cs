@@ -198,6 +198,8 @@ public sealed class PlayerController : UnitController
     }
     override protected void Update()
     {
+        base.Update();
+
         switch (CurrentInputMode)
         {
             case InputMode.FactoryPositioning:
@@ -233,9 +235,6 @@ public sealed class PlayerController : UnitController
     void UpdateSelectionInput()
     {
         // Update keyboard inputs
-
-        if (Input.GetKeyDown(KeyCode.A))
-            OnSelectAllPressed?.Invoke();
 
         for (int i = 0; i < OnCategoryPressed.Length; i++)
         {
@@ -308,6 +307,12 @@ public sealed class PlayerController : UnitController
         Vector2 moveDir = context.ReadValue<Vector2>();
         moveDir = moveDir.normalized;
         TopCameraRef.MoveFunc(moveDir);
+    }
+
+    public void SelectAllCallback(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            OnSelectAllPressed?.Invoke();
     }
     #endregion
 
@@ -450,6 +455,37 @@ public sealed class PlayerController : UnitController
         SelectionStart = Vector3.zero;
         SelectionEnd = Vector3.zero;
     }
+
+    private Squad FormSquadWithSelectedUnits()
+    {
+        if (SelectedUnitList.Count == 0)
+            return null;
+
+        Squad squadToCheck = SelectedUnitList[0].squadRef;
+        if (squadToCheck != null && SelectedUnitList.Count > 1)
+        {
+            //check if all in the same squad
+            bool broke = false;
+            foreach (Unit unit in SelectedUnitList)
+            {
+                if (unit.squadRef != squadToCheck)
+                {
+                    broke = true;
+                    break;
+                }
+            }
+
+            if (broke == false && squadToCheck.GetNbUnit == SelectedUnitList.Count)
+            {
+                //all in same squad
+                return squadToCheck;
+            }
+        }
+
+        Squad newSquad = new Squad();
+        newSquad.FormSquad(this, Squad.FormationStyle.None, SelectedUnitList);
+        return newSquad;
+    }
     #endregion
 
     #region Factory / build methods
@@ -545,6 +581,10 @@ public sealed class PlayerController : UnitController
         if (SelectedUnitList.Count == 0)
             return;
 
+
+        Squad currentSquad = FormSquadWithSelectedUnits();
+
+
         int damageableMask = (1 << LayerMask.NameToLayer("Unit")) | (1 << LayerMask.NameToLayer("Factory"));
         int targetMask = 1 << LayerMask.NameToLayer("Target");
         int floorMask = 1 << LayerMask.NameToLayer("Floor");
@@ -585,13 +625,19 @@ public sealed class PlayerController : UnitController
         // Set unit move target
         else if (Physics.Raycast(ray, out raycastInfo, Mathf.Infinity, floorMask))
         {
-
             Vector3 newPos = raycastInfo.point;
             SetTargetCursorPosition(newPos);
 
-            // Direct call to moving task $$$ to be improved by AI behaviour
-            foreach (Unit unit in SelectedUnitList)
-                unit.SetTargetPos(newPos);
+            //create action sequence
+            List<SquadAction> actions = new List<SquadAction>();
+
+            //add move to action
+            SquadMoveTo moveToAction = new SquadMoveTo();
+            moveToAction.Init(currentSquad, newPos, 1f);
+            actions.Add(moveToAction);
+
+            //send action
+            currentSquad.GiveActions(actions);
         }
     }
     #endregion

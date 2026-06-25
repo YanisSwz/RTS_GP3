@@ -45,6 +45,9 @@ public class UnitController : MonoBehaviour
     protected Transform TeamRoot = null;
     public Transform GetTeamRoot() { return TeamRoot; }
 
+    //[HideInInspector]
+    public List<Squad> squads = new List<Squad>();
+
     public List<Unit> UnitList
     {
         get;
@@ -227,7 +230,8 @@ public class UnitController : MonoBehaviour
     }
     virtual protected void Update ()
     {
-		
+        foreach (Squad squad in squads)
+            squad.Update();
 	}
     #endregion
 }

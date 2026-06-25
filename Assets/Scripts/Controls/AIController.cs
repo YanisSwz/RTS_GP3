@@ -14,6 +14,10 @@ public sealed class AIController : UnitController
     public string currentGoalName = "none";
     public float currentGoalUtility = -1f;
 
+    //unit not recruited by a squad
+    [HideInInspector]
+    public List<Unit> availableUnits = new List<Unit>();
+
     #region MonoBehaviour methods
 
     protected override void Awake()
@@ -26,6 +30,13 @@ public sealed class AIController : UnitController
     protected override void Start()
     {
         base.Start();
+    }
+
+    public override void AddUnit(Unit unit)
+    {
+        base.AddUnit(unit);
+
+        availableUnits.Add(unit);
     }
 
     protected override void Update()
