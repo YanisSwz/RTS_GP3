@@ -163,9 +163,20 @@ public class Squad
         currentAction = 0;
 
         foreach (SquadAction action in actions)
+        {
             action.OnComplete.AddListener(NextAction);
+            action.OnAbort.AddListener(AbortAction);
+        }
 
         actions[currentAction].StartAction();
+    }
+
+    private void AbortAction()
+    {
+        Debug.Log("Abort sequence");
+        //currentAction = -1;
+        OnAllActionsCompleted.Invoke(this);
+        //actions.Clear();
     }
 
     private void NextAction()
@@ -186,6 +197,12 @@ public class Squad
     {
         if (currentAction >= 0)
             actions[currentAction].UpdateAction();
+    }
+
+    public void DrawGizmo()
+    {
+        if (currentAction >= 0)
+            actions[currentAction].DrawGizmo();
     }
     #endregion
 }

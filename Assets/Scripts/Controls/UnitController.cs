@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 // points system for units creation (Ex : light units = 1 pt, medium = 2pts, heavy = 3 pts)
@@ -15,7 +16,6 @@ public class UnitController : MonoBehaviour
         get { return _TotalBuildPoints; }
         set
         {
-            Debug.Log("TotalBuildPoints updated");
             _TotalBuildPoints = value;
             OnBuildPointsUpdated?.Invoke();
         }
@@ -234,4 +234,10 @@ public class UnitController : MonoBehaviour
             squad.Update();
 	}
     #endregion
+
+    private void OnDrawGizmos()
+    {
+        foreach (Squad squad in squads)
+            squad.DrawGizmo();
+    }
 }

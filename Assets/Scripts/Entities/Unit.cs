@@ -120,11 +120,11 @@ public class Unit : BaseEntity
     // Moving Task
     public void SetTargetPos(Vector3 pos)
     {
-        //if (EntityTarget != null)
-        //    EntityTarget = null;
+        if (EntityTarget != null)
+            EntityTarget = null;
 
-        //if (CaptureTarget != null)
-        //    StopCapture();
+        if (CaptureTarget != null)
+            StopCapture();
 
         if (NavMeshAgent)
         {
@@ -149,6 +149,7 @@ public class Unit : BaseEntity
     // Targetting Task - capture
     public void SetCaptureTarget(TargetBuilding target)
     {
+        //check distance
         if (CanCapture(target) == false)
             return;
 

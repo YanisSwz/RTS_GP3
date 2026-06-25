@@ -663,18 +663,17 @@ public sealed class PlayerController : UnitController
 
                 //add move to action
                 SquadMoveTo moveToAction = new SquadMoveTo();
-                moveToAction.Init(currentSquad, target.transform.position, 1f);
+                moveToAction.Init(currentSquad, target.transform.position + ((currentSquad.GetSquadAveragePos() - target.transform.position).normalized * 5f), 1f);
                 moveToAction.distanceToFinalTarget = maxCaptureRadius;
                 actions.Add(moveToAction);
 
                 if (target.GetTeam() != GetTeam())
                 {
-                    //add capture action
-                    //Todo
-
-                    //// Direct call to capturing task $$$ to be improved by AI behaviour
-                    //foreach (Unit unit in SelectedUnitList)
-                    //    unit.SetCaptureTarget(target);
+                    SquadCapture captureAction = new SquadCapture();
+                    //todo place ai by their own capture radius
+                    captureAction.Init(currentSquad, target.gameObject, maxCaptureRadius * 0.7f);
+                    captureAction.minAngleBetweenUnitToCreateNewLine = 30f;
+                    actions.Add(captureAction);
                 }
 
                 //send action

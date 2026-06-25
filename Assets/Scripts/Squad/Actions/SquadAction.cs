@@ -9,6 +9,8 @@ public abstract class SquadAction
 
     [HideInInspector]
     public UnityEvent OnComplete = new UnityEvent();
+    [HideInInspector]
+    public UnityEvent OnAbort = new UnityEvent();
 
     protected Vector3 staticTarget;
     protected GameObject movingTarget = null;
@@ -32,6 +34,11 @@ public abstract class SquadAction
     }
 
     virtual public void UpdateAction()
+    {
+
+    }
+
+    virtual public void DrawGizmo()
     {
 
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,6 +13,11 @@ public class SquadMoveTo : SquadAction
 
     [HideInInspector]
     public float distanceToFinalTarget = 0f;
+
+
+    Vector3 debugSquadPos;
+    Vector3 debugTarget;
+    Vector3 debugFirstUnit;
 
     public override void Init(Squad _squad, Vector3 _staticTarget, float _distanceToTarget)
     {
@@ -30,6 +36,10 @@ public class SquadMoveTo : SquadAction
         base.StartAction();
 
         Vector3 squadPos = squad.GetSquadAveragePos();
+
+        debugSquadPos = squadPos;
+        debugTarget = staticTarget;
+
         //compute static path for virtual leader
         if (NavMesh.CalculatePath(squadPos, staticTarget, NavMesh.AllAreas, staticPath))
         {
@@ -48,12 +58,45 @@ public class SquadMoveTo : SquadAction
             GivePoses(poses);
         }
         else
-            Debug.Log("path failed to compute");
+        {
+            // Debug.Log("path failed to compute");
+            //// OnComplete.Invoke();
+
+            //fail because average pos is not on the navmesh (like in a factory)
+            //recompute a path by th first unit in the squad
+
+            debugFirstUnit = squad.GetControlledUnits[0].transform.position;
+            if (NavMesh.CalculatePath(squad.GetControlledUnits[0].transform.position, staticTarget, NavMesh.AllAreas, staticPath))
+            {
+                List<Vector3> poses = new List<Vector3>();
+                switch (squad.GetFormationStyle)
+                {
+                    case Squad.FormationStyle.None:
+                        {
+                            Vector3 target;
+                            ComputeStaticPathPos(squadPos, out target);
+                            poses = ComputeSquadFormation.FreestyleFormation(target, squad.GetFreestyleFormationPoses);
+                            break;
+                        }
+                }
+
+                GivePoses(poses);
+            }
+            else
+            {
+                Debug.Log("path failed to compute");
+                OnAbort.Invoke();
+            }
+        }
     }
 
 
     public override void UpdateAction()
     {
+        if(staticPath.corners.Length == 0)
+            return;
+
+
         base.UpdateAction();
         if(IsStaticPath == false)
             staticTarget = movingTarget.transform.position;
@@ -184,5 +227,23 @@ public class SquadMoveTo : SquadAction
             unit.StopMoving();
 
         OnComplete.Invoke();
+    }
+
+    public override void DrawGizmo()
+    {
+        Gizmos.color = Color.green;
+        for (int i = 0; i < staticPath.corners.Count(); ++i)
+        {
+            if(i >= currentIndex)
+                Gizmos.color = Color.red;
+
+            Gizmos.DrawWireSphere(staticPath.corners[i], 2f);
+        }
+
+        Gizmos.DrawCube(debugSquadPos, Vector3.one + Vector3.up * 3f);
+
+        Gizmos.DrawCube(debugTarget, Vector3.one + Vector3.up * 3f);
+
+        Gizmos.DrawCube(debugFirstUnit, Vector3.one + Vector3.up * 3f);
     }
 }
