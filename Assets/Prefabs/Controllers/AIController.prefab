@@ -47,35 +47,36 @@ MonoBehaviour:
   _TotalBuildPoints: 0
   Team: 1
   StartingBuildPoints: 15
+  squads: []
   goals:
   - goalData: {fileID: 11400000, guid: c62bb4ca2ff2ada49bc1fa807e4e062f, type: 2}
     utility: 0
-  - goalData: {fileID: 11400000, guid: 39f695dfba8e838499113fa2d3cd434d, type: 2}
+  - goalData: {fileID: 11400000, guid: 188b7afe7a300d347a5e1be969d72a4a, type: 2}
     utility: 0
   - goalData: {fileID: 11400000, guid: 1b5eee88f277c0b42b741efe219fe574, type: 2}
-    utility: 0
-  - goalData: {fileID: 11400000, guid: 188b7afe7a300d347a5e1be969d72a4a, type: 2}
     utility: 0
   general:
     sequences:
     - goalType: 1
       actions:
-      - B1
-      - B2
+      - rid: -2
+      - rid: -2
     - goalType: 2
       actions:
-      - R1
-      - R2
+      - rid: -2
+      - rid: -2
+      - rid: -2
     - goalType: 3
       actions:
-      - A1
-      - A2
-      - A3
-    - goalType: 4
-      actions:
-      - C1
-      - C2
-      - C3
+      - rid: -2
+      - rid: -2
+      - rid: -2
     actions: []
   currentGoalName: none
   currentGoalUtility: -1
+  availableUnits: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

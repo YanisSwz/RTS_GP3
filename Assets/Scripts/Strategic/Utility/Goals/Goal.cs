@@ -8,7 +8,9 @@ public enum InputValue
     BuildPoints = 1,
     ArmyPower = 2,
     CapturedLabs = 3,
-    BuiltFactories = 4
+    BuiltFactories = 4,
+    AvailableUnits = 5,
+    AvailableBuildPos = 6
 }
 
 [System.Serializable]
@@ -74,6 +76,12 @@ public class Goal
                     break;
                 case InputValue.BuiltFactories:
                     value = controller.GetFactoryList.Count;
+                    break;
+                case InputValue.AvailableUnits:
+                    value = controller.availableUnits.Count;
+                    break;
+                case InputValue.AvailableBuildPos:
+                    value = controller.AvailableBuildPositions.Count;
                     break;
             }
 

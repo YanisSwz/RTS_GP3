@@ -5,29 +5,37 @@ public enum GoalType
 {
     None = 0,
     Build = 1,
-    Recruit = 2,
-    Attack = 3,
-    Capture = 4
+    Attack = 2,
+    Capture = 3
 }
 
 [System.Serializable]
 public struct GoalSequence 
 {
-    public GoalSequence(GoalType _goalType, List<string> _actions) 
+    public GoalSequence(GoalType _goalType, List<GeneralAction> _actions) 
     {
         goalType = _goalType;
         actions = _actions;
     }
 
     public GoalType goalType;
-    public List<string> actions;
+    [SerializeReference, SubclassSelector]
+    public List<GeneralAction> actions;
 }
 
 [System.Serializable]
 public class General
 {
+    private AIController owner = null;
+    private int currentActionIndex = -1;
+
     public List<GoalSequence> sequences = new List<GoalSequence>();
-    public List<string> actions = new List<string>();
+    public List<GeneralAction> actions = new List<GeneralAction>();
+
+    public void SetOwner(AIController controller) 
+    {
+        owner = controller;
+    }
 
     public void SetGoal(Goal goal) 
     {
@@ -35,6 +43,28 @@ public class General
         if(sequenceToExecute != null) 
         {
             actions = sequenceToExecute.Value.actions;
+            if (actions.Count > 0)
+            {
+                currentActionIndex = 0;
+                actions[currentActionIndex].Enter();
+            }
         }
+    }
+
+    public void UpdateSequence()
+    {
+        if (currentActionIndex >= actions.Count)
+            return;
+
+        if (actions[currentActionIndex].IsComplete)
+        {
+            currentActionIndex++;
+            if (currentActionIndex >= actions.Count)
+                return;
+
+            actions[currentActionIndex].Enter();
+        }
+
+        actions[currentActionIndex].Execute(owner);
     }
 }

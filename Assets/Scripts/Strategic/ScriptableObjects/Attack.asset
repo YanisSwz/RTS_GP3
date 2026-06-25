@@ -12,11 +12,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65199008297b5e34aba08243e08dbecb, type: 3}
   m_Name: Attack
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableGoal
-  type: 3
+  type: 2
   activationThreshold: 0
   minUtility: 0
   maxUtility: 1
   utilityEvaluators:
+  - weight: 1
+    inputValue: 5
+    utilityCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: -0.0009765625
+        inSlope: 0.20265183
+        outSlope: 0.20265183
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.024703562
+      - serializedVersion: 3
+        time: 10
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - weight: 1
+    inputValue: 1
+    utilityCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0.68893
+        outSlope: 0.68893
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.034584988
+      - serializedVersion: 3
+        time: 5
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   - weight: 1
     inputValue: 2
     utilityCurve:
@@ -24,21 +76,21 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
-        inSlope: 0.06666667
-        outSlope: 0.06666667
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 15
         value: 1
-        inSlope: 0.008776664
-        outSlope: 0.008776664
+        inSlope: -0.006355391
+        outSlope: -0.006355391
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.08487994
+        inWeight: 0
+        outWeight: 0.12803097
+      - serializedVersion: 3
+        time: 20
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2

@@ -17,7 +17,7 @@ MonoBehaviour:
   minUtility: 0
   maxUtility: 1
   utilityEvaluators:
-  - weight: 2
+  - weight: 1
     inputValue: 1
     utilityCurve:
       serializedVersion: 2
@@ -61,20 +61,29 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  - weight: 0.5
+  - weight: 1
     inputValue: 2
     utilityCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
-        inSlope: 0.08709043
-        outSlope: 0.08709043
+        value: 0.0009765625
+        inSlope: 0.01582278
+        outSlope: 0.01582278
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.046684787
+        outWeight: 0.08498025
+      - serializedVersion: 3
+        time: 5
+        value: 0.5
+        inSlope: 0.28548765
+        outSlope: 0.2820478
+        tangentMode: 1
+        weightedMode: 0
+        inWeight: 0.040544514
+        outWeight: 0.03949711
       - serializedVersion: 3
         time: 10
         value: 1
@@ -84,6 +93,32 @@ MonoBehaviour:
         weightedMode: 0
         inWeight: 0.13648033
         outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - weight: 0.5
+    inputValue: 4
+    utilityCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0.0055917213
+        outSlope: 0.0055917213
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.13648033
+        outWeight: 0
+      - serializedVersion: 3
+        time: 6
+        value: 0
+        inSlope: -0.006610964
+        outSlope: -0.006610964
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.07279301
+        outWeight: 0.046684787
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
