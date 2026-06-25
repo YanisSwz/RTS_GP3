@@ -230,7 +230,8 @@ public class UnitController : MonoBehaviour
     }
     virtual protected void Update ()
     {
-		
+        foreach (Squad squad in squads)
+            squad.Update();
 	}
     #endregion
 }

@@ -1,21 +1,37 @@
+using NUnit.Framework.Interfaces;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [Serializable]
 public class Squad
 {
     public int GetNbUnit { get { return controlledUnits.Count; } }
+
+    //return a copy
+    public List<Unit> GetControlledUnits { get { return new List<Unit>(controlledUnits); } }
     List<Unit> controlledUnits = new List<Unit>();
 
-    List<Vector3> freestyleFormationPos = new List<Vector3>();
-    FormationStyle currentStyle = FormationStyle.None;
     public enum FormationStyle
     {
         None,
         Line,
         Circle
     }
+    public FormationStyle GetFormationStyle { get { return currentStyle; } }
+    FormationStyle currentStyle = FormationStyle.None;
+    
+    //copy of this list
+    public List<Vector3> GetFreestyleFormationPoses { get { return new List<Vector3>(freestyleFormationPos); } }
+    List<Vector3> freestyleFormationPos = new List<Vector3>();
+
+    [HideInInspector]
+    public UnityEvent<Squad> OnAllActionsCompleted = new UnityEvent<Squad>();
+    List<SquadAction> actions = new List<SquadAction>();
+    int currentAction = -1;
+
+    #region Squad Management
     public Vector3 GetSquadAveragePos()
     {
         Vector3 result = Vector3.zero;
@@ -131,4 +147,45 @@ public class Squad
 
         controller.squads.Remove(this);
     }
+    #endregion
+
+    #region Squad Action
+    public void GiveActions(List<SquadAction> _actions)
+    {
+        actions.Clear();
+        if(_actions.Count == 0)
+        {
+            currentAction = -1;
+            return;
+        }
+
+        actions = _actions;
+        currentAction = 0;
+
+        foreach (SquadAction action in actions)
+            action.OnComplete.AddListener(NextAction);
+
+        actions[currentAction].StartAction();
+    }
+
+    private void NextAction()
+    {
+        ++currentAction;
+        if (actions.Count == currentAction)
+        {
+            currentAction = -1;
+            OnAllActionsCompleted.Invoke(this);
+            actions.Clear();
+            return;
+        }
+
+        actions[currentAction].StartAction();
+    }
+
+    public void Update()
+    {
+        if (currentAction >= 0)
+            actions[currentAction].UpdateAction();
+    }
+    #endregion
 }

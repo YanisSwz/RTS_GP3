@@ -198,6 +198,8 @@ public sealed class PlayerController : UnitController
     }
     override protected void Update()
     {
+        base.Update();
+
         switch (CurrentInputMode)
         {
             case InputMode.FactoryPositioning:
@@ -457,7 +459,7 @@ public sealed class PlayerController : UnitController
     private Squad FormSquadWithSelectedUnits()
     {
         if (SelectedUnitList.Count == 0)
-            return;
+            return null;
 
         Squad squadToCheck = SelectedUnitList[0].squadRef;
         if (squadToCheck != null && SelectedUnitList.Count > 1)
@@ -580,7 +582,7 @@ public sealed class PlayerController : UnitController
             return;
 
 
-        FormSquadWithSelectedUnits();
+        Squad currentSquad = FormSquadWithSelectedUnits();
 
 
         int damageableMask = (1 << LayerMask.NameToLayer("Unit")) | (1 << LayerMask.NameToLayer("Factory"));
@@ -623,13 +625,19 @@ public sealed class PlayerController : UnitController
         // Set unit move target
         else if (Physics.Raycast(ray, out raycastInfo, Mathf.Infinity, floorMask))
         {
-
             Vector3 newPos = raycastInfo.point;
             SetTargetCursorPosition(newPos);
 
-            // Direct call to moving task $$$ to be improved by AI behaviour
-            foreach (Unit unit in SelectedUnitList)
-                unit.SetTargetPos(newPos);
+            //create action sequence
+            List<SquadAction> actions = new List<SquadAction>();
+
+            //add move to action
+            SquadMoveTo moveToAction = new SquadMoveTo();
+            moveToAction.Init(currentSquad, newPos, 1f);
+            actions.Add(moveToAction);
+
+            //send action
+            currentSquad.GiveActions(actions);
         }
     }
     #endregion
