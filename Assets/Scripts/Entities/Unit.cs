@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
+using static UnityEditor.PlayerSettings;
 
 public class Unit : BaseEntity
 {
@@ -107,6 +108,14 @@ public class Unit : BaseEntity
     public Vector3 GetRealDestination()
     { return NavMeshAgent.destination; }
 
+    public void StopMoving()
+    {
+        if (NavMeshAgent)
+        {
+            NavMeshAgent.SetDestination(transform.position);
+            NavMeshAgent.isStopped = true;
+        }
+    }
 
     // Moving Task
     public void SetTargetPos(Vector3 pos)
