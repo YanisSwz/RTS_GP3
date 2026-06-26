@@ -6,7 +6,8 @@ public enum GoalType
     None = 0,
     Build = 1,
     Attack = 2,
-    Capture = 3
+    Capture = 3,
+    Explore = 4
 }
 
 [System.Serializable]
@@ -28,6 +29,8 @@ public class General
 {
     private AIController owner = null;
     private int currentActionIndex = -1;
+    private Goal currentGoal = null;
+    public Goal CurrentGoal { get { return currentGoal; } }
 
     public List<GoalSequence> sequences = new List<GoalSequence>();
     public List<GeneralAction> actions = new List<GeneralAction>();
@@ -39,30 +42,37 @@ public class General
 
     public void SetGoal(Goal goal) 
     {
-        GoalSequence? sequenceToExecute = sequences.Find(x => x.goalType == goal.Type);
-        if(sequenceToExecute != null) 
+        int index = sequences.FindIndex(x => x.goalType == goal.Type);
+        if(index != -1) 
         {
-            actions = sequenceToExecute.Value.actions;
+            actions = sequences[index].actions;
             if (actions.Count > 0)
             {
                 currentActionIndex = 0;
-                actions[currentActionIndex].Enter();
+                currentGoal = goal;
+                actions[currentActionIndex].Enter(owner);
             }
         }
     }
 
     public void UpdateSequence()
     {
-        if (currentActionIndex >= actions.Count)
+        if (currentActionIndex == -1 || currentActionIndex >= actions.Count)
+        {
+            currentGoal = null;
             return;
+        }
 
         if (actions[currentActionIndex].IsComplete)
         {
-            currentActionIndex++;
+            ++currentActionIndex;
             if (currentActionIndex >= actions.Count)
+            {
+                currentGoal = null;
                 return;
+            }
 
-            actions[currentActionIndex].Enter();
+            actions[currentActionIndex].Enter(owner);
         }
 
         actions[currentActionIndex].Execute(owner);

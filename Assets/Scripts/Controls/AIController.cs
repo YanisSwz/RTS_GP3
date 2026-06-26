@@ -1,23 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 // $$$ TO DO :)
 
 public sealed class AIController : UnitController
 {
     [SerializeField]
+    private List<Transform> buildPositions = null;
+    private List<Transform> availableBuildPositions = new List<Transform>();
+    public List<Transform> AvailableBuildPositions { get { return availableBuildPositions; } }
+    
+    [SerializeField]
     private List<Goal> goals = new List<Goal>();
     private Goal currentGoal = null;
     [SerializeField]
     private General general = null;
-    [SerializeField]
-    private List<Transform> buildPositions = null;
-    private List<Transform> availableBuildPositions = new List<Transform>();
-    public List<Transform> AvailableBuildPositions { get { return availableBuildPositions; } }
 
     [Header("--- DEBUG ---")]
     public string currentGoalName = "none";
     public float currentGoalUtility = -1f;
+    public List<TargetBuilding> discoveredLabs = new List<TargetBuilding>();
 
     //unit not recruited by a squad
     [HideInInspector]
@@ -40,6 +43,8 @@ public sealed class AIController : UnitController
     protected override void Start()
     {
         base.Start();
+
+        SelectedFactory = FactoryList[0];
     }
 
     public override void AddUnit(Unit unit)
@@ -76,12 +81,14 @@ public sealed class AIController : UnitController
             }
         }
 
-        general.SetGoal(currentGoal);
-        general.UpdateSequence();
+        if(general.CurrentGoal != currentGoal)
+            general.SetGoal(currentGoal);
+
+        if(general.CurrentGoal != null)
+            general.UpdateSequence();
     }
 
     #endregion
-
 
     public bool TryBuildingFactory(int index) 
     {
@@ -99,12 +106,24 @@ public sealed class AIController : UnitController
         {
             return false;
         }
-
     }
 
     private bool BuildFactory(int index, Vector3 position) 
     {
         SelectedFactory = FactoryList[0];
         return RequestFactoryBuild(index, position);
+    }
+
+    public UnityEvent<Unit> RecruitUnit(int unitType) 
+    {
+        for(int i = 0; i < SelectedFactory.AvailableUnitsCount; ++i) 
+        {
+            if(SelectedFactory.GetBuildableUnitData(i).TypeId == unitType)
+            {
+                return RequestUnitBuild(i);
+            }
+        }
+
+        return null;
     }
 }

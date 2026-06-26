@@ -10,13 +10,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65199008297b5e34aba08243e08dbecb, type: 3}
-  m_Name: Capture
+  m_Name: Explore
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableGoal
-  type: 3
+  type: 4
   activationThreshold: 0
   minUtility: 0
   maxUtility: 1
   utilityEvaluators:
+  - weight: 1
+    inputValue: 7
+    utilityCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.0059280396
+        value: 1
+        inSlope: -0.18620776
+        outSlope: -0.18620776
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.033613507
+      - serializedVersion: 3
+        time: 12
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.048781812
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   - weight: 1
     inputValue: 1
     utilityCurve:
@@ -25,67 +51,15 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 1
-        inSlope: -0.1
-        outSlope: -0.1
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 10
-        value: 0
-        inSlope: -0.1
-        outSlope: -0.1
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  - weight: 1
-    inputValue: 3
-    utilityCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: -0.083333336
-        outSlope: -0.083333336
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 12
-        value: 0
-        inSlope: -0.083333336
-        outSlope: -0.083333336
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  - weight: 1
-    inputValue: 7
-    utilityCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0.09662826
-        outSlope: 0.09662826
+        inSlope: -0.18620776
+        outSlope: -0.18620776
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.041501973
+        outWeight: 0.033613507
       - serializedVersion: 3
-        time: 1.0425509
-        value: 1
+        time: 12
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0

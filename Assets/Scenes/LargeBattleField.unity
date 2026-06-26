@@ -466,6 +466,99 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 237494719}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &292344204
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1072350726}
+    m_Modifications:
+    - target: {fileID: 3393487227576296503, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3526853911429260895, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 3526853911429260895, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450140206141463021, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_Name
+      value: UnitFactory_Red (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450140206141617783, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450140206141617783, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 116.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450140206141617783, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450140206141617783, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 378.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450140206141617783, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450140206141617783, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450140206141617783, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450140206141617783, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450140206141617783, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450140206141617783, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450140206141617783, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402078597460416229, guid: 2f79c333a7fc014468deedd4aa8b568e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2f79c333a7fc014468deedd4aa8b568e, type: 3}
 --- !u!1001 &312249861
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -748,6 +841,11 @@ PrefabInstance:
         type: 3}
       propertyPath: squads.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
+        type: 3}
+      propertyPath: StartingBuildPoints
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3897248047189261373, guid: dc4ee6691f59b07458286e0cfb38d82d,
         type: 3}
@@ -1255,6 +1353,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1910652033}
+  - {fileID: 1433369714}
   - {fileID: 753140699}
   - {fileID: 466802823}
   - {fileID: 1380018923}
@@ -1656,6 +1755,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1380018922}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1433369714 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7450140206141617783, guid: 2f79c333a7fc014468deedd4aa8b568e,
+    type: 3}
+  m_PrefabInstance: {fileID: 292344204}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1451793183
 GameObject:
   m_ObjectHideFlags: 0
@@ -3047,15 +3152,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: AIController
       objectReference: {fileID: 0}
+    - target: {fileID: 6399179960504004712, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.size
-      value: 1
+      propertyPath: StartingBuildPoints
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
       propertyPath: buildGoal.maxUtility
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: 'managedReferences[-2]'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
@@ -3074,11 +3189,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: buildPositions.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
       propertyPath: 'buildPositions.Array.data[0]'
       value: 
       objectReference: {fileID: 753140699}
@@ -3094,11 +3204,6 @@ PrefabInstance:
       objectReference: {fileID: 1380018923}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: general.sequences.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
       propertyPath: goals.Array.data[4].maxUtility
       value: 1
       objectReference: {fileID: 0}
@@ -3109,8 +3214,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: 'managedReferences[6691051098265878586]'
-      value: Assembly-CSharp Build
+      propertyPath: 'managedReferences[6691051119383674938]'
+      value: Assembly-CSharp FormSquad
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
@@ -3119,9 +3224,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: managedReferences[6691051098265878586].test
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: managedReferences[6691051119383674938].squad
+      value: 
+      objectReference: {fileID: 11400000, guid: 0fd68c5b8533c7c49a1eba317ae947ca,
+        type: 2}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
       propertyPath: captureGoal.armyPowerUtility.m_Curve.Array.size
@@ -3139,6 +3245,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
+      propertyPath: managedReferences[6691051119383674938].squadData
+      value: 
+      objectReference: {fileID: 11400000, guid: 0fd68c5b8533c7c49a1eba317ae947ca,
+        type: 2}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
       propertyPath: buildGoal.buildingPointsUtility.m_Curve.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -3149,7 +3261,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: general.sequences.Array.data[0].actions.Array.size
+      propertyPath: general.sequences.Array.data[1].actions.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
@@ -3169,13 +3281,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: 'general.sequences.Array.data[0].actions.Array.data[0]'
-      value: 6691051098265878586
+      propertyPath: 'general.sequences.Array.data[1].actions.Array.data[0]'
+      value: 6691051119383674938
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: 'general.sequences.Array.data[1].actions.Array.data[1]'
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
       propertyPath: captureGoal.armyPowerUtility.m_Curve.Array.data[1].time
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: managedReferences[6691051119383674938].units.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
@@ -3321,6 +3443,11 @@ PrefabInstance:
         type: 3}
       propertyPath: captureGoal.buildingPointsUtility.m_Curve.Array.data[1].time
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: managedReferences[6691051119383674938].squadUnits.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
@@ -3529,11 +3656,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: managedReferences[6691051098265878586].buildPositions.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
       propertyPath: recruitGoal.buildingPointsUtility.m_Curve.Array.data[0].outSlope
       value: 0.015561725
       objectReference: {fileID: 0}
@@ -3587,21 +3709,6 @@ PrefabInstance:
       propertyPath: captureGoal.buildingPointsUtility.m_Curve.Array.data[1].tangentMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: 'managedReferences[6691051098265878586].buildPositions.Array.data[0]'
-      value: 
-      objectReference: {fileID: 753140699}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: 'managedReferences[6691051098265878586].buildPositions.Array.data[1]'
-      value: 
-      objectReference: {fileID: 466802823}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: 'managedReferences[6691051098265878586].buildPositions.Array.data[2]'
-      value: 
-      objectReference: {fileID: 1380018923}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
       propertyPath: recruitGoal.buildingPointsUtility.m_Curve.Array.data[0].tangentMode
@@ -3996,6 +4103,11 @@ PrefabInstance:
         type: 3}
       propertyPath: goals.Array.data[2].utilityEvaluators.Array.data[1].utilityCurve.m_Curve.Array.data[1].tangentMode
       value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: managedReferences[6691051119383674938].squad.OnAllActionsCompleted.m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

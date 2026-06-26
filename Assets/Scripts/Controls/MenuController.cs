@@ -4,6 +4,7 @@ using System;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MenuController : MonoBehaviour
 {
@@ -76,7 +77,7 @@ public class MenuController : MonoBehaviour
         }
     }
 
-    public void UpdateFactoryMenu(Factory selectedFactory, Func<int, bool> requestUnitBuildMethod, Action<int> enterFactoryBuildModeMethod)
+    public void UpdateFactoryMenu(Factory selectedFactory, Func<int, UnityEvent<Unit>> requestUnitBuildMethod, Action<int> enterFactoryBuildModeMethod)
     {
         ShowFactoryMenu();
 
@@ -90,7 +91,7 @@ public class MenuController : MonoBehaviour
             int index = i; // capture index value for event closure
             BuildUnitButtons[i].onClick.AddListener(() =>
             {
-                if (requestUnitBuildMethod(index))
+                if (requestUnitBuildMethod(index) != null)
                     UpdateFactoryBuildQueueUI(index, selectedFactory);
             });
 
