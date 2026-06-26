@@ -14,8 +14,9 @@ public class SquadMoveTo : SquadAction
     [HideInInspector]
     public float distanceToFinalTarget = 0f;
 
+    List<Vector3> arrivedPos = new List<Vector3>();
 
-    Vector3 debugSquadPos;
+
     Vector3 debugTarget;
     Vector3 debugFirstUnit;
 
@@ -33,13 +34,35 @@ public class SquadMoveTo : SquadAction
 
     public override void StartAction()
     {
+        Debug.Log("Squad Start Moving to target");
         base.StartAction();
 
         Vector3 squadPos = squad.GetSquadAveragePos();
 
-        debugSquadPos = squadPos;
         debugTarget = staticTarget;
+        debugFirstUnit = squad.GetControlledUnits[0].transform.position;
 
+        if (CalculatePath(squad.GetControlledUnits[0].transform.position, debugTarget) == false)
+        {
+            Debug.Log("path failed to compute");
+            OnAbort.Invoke();
+        }
+
+        ////compute static path for virtual leader
+        //if (CalculatePath(squadPos, debugTarget) == false)
+        //{
+
+        //    //fail because average pos is not on the navmesh (like in a factory)
+        //    //recompute a path with the first unit in the squad as the anchor
+        //    if (CalculatePath(squad.GetControlledUnits[0].transform.position, debugTarget) == false)
+        //    {
+        //        Debug.Log("path failed to compute");
+        //        OnAbort.Invoke();
+        //    }
+        //}
+
+
+        /*
         //compute static path for virtual leader
         if (NavMesh.CalculatePath(squadPos, staticTarget, NavMesh.AllAreas, staticPath))
         {
@@ -59,9 +82,6 @@ public class SquadMoveTo : SquadAction
         }
         else
         {
-            // Debug.Log("path failed to compute");
-            //// OnComplete.Invoke();
-
             //fail because average pos is not on the navmesh (like in a factory)
             //recompute a path by th first unit in the squad
 
@@ -87,57 +107,132 @@ public class SquadMoveTo : SquadAction
                 Debug.Log("path failed to compute");
                 OnAbort.Invoke();
             }
-        }
+        }*/
     }
 
+    private bool CalculatePath(Vector3 anchor, Vector3 target)
+    {
+        if (NavMesh.CalculatePath(anchor, target, NavMesh.AllAreas, staticPath))
+        {
+            switch (squad.GetFormationStyle)
+            {
+                case Squad.FormationStyle.None:
+                    {
+                        //Vector3 target;
+                        //ComputeStaticPathPos(squadPos, out target);
+                        arrivedPos = ComputeSquadFormation.FreestyleFormation(staticPath.corners[staticPath.corners.Length - 1]
+                            , squad.GetFreestyleFormationPoses);
+
+                        break;
+                    }
+            }
+
+            GivePoses(arrivedPos);
+            return true;
+        }
+        return false;
+    }
+
+    public override void ExitAction()
+    {
+        base.ExitAction();
+        Debug.Log("Squad arrived to target");
+    }
 
     public override void UpdateAction()
     {
         if(staticPath.corners.Length == 0)
+        {
+            OnAbort.Invoke();
             return;
-
+        }
 
         base.UpdateAction();
         if(IsStaticPath == false)
             staticTarget = movingTarget.transform.position;
-        
-        List<Vector3> poses = new List<Vector3>();
 
-        switch(squad.GetFormationStyle)
+            List<Unit> units = squad.GetControlledUnits;
+        for (int i = 0; i < units.Count; ++i)
         {
-            case Squad.FormationStyle.None:
-                {
-                    Vector3 squadPos = squad.GetSquadAveragePos();
+            if (units[i].SquadOrder == null && units[i].GetDestination() != arrivedPos[i])
+                units[i].SetTargetPos(arrivedPos[i]);
 
-                    Vector3 target;
-                    if(ComputeStaticPathPos(squadPos, out target))
-                        poses = ComputeSquadFormation.FreestyleFormation(target, squad.GetFreestyleFormationPoses);
-                    break;
-                }
-            case Squad.FormationStyle.Line:
-                {
-                    break;
-                }
-            case Squad.FormationStyle.Circle:
-                {
-
-                    break;
-                }
         }
 
-        GivePoses(poses);
+        if (IsSquadArrived())
+            OnComplete.Invoke();
+
+
+        //List<Vector3> poses = new List<Vector3>();
+
+        //switch(squad.GetFormationStyle)
+        //{
+        //    case Squad.FormationStyle.None:
+        //        {
+        //            Vector3 squadPos = squad.GetSquadAveragePos();
+
+        //            Vector3 target;
+        //            if(ComputeStaticPathPos(squadPos, out target))
+        //                poses = ComputeSquadFormation.FreestyleFormation(target, squad.GetFreestyleFormationPoses);
+        //            break;
+        //        }
+        //    case Squad.FormationStyle.Line:
+        //        {
+        //            break;
+        //        }
+        //    case Squad.FormationStyle.Circle:
+        //        {
+
+        //            break;
+        //        }
+        //}
+
+        //GivePoses(poses);
+    }
+
+    private bool IsSquadArrived()
+    {
+        //get nearest unit pos to target --> if minDistToTarget <= distanceToFinalTarget = arrived stop moving
+        bool considerFinalDist = distanceToFinalTarget > distanceToTarget;
+        List<Unit> units = squad.GetControlledUnits;
+
+        if (considerFinalDist)
+        {
+            for (int i = 0; i < units.Count; ++i)
+            {
+                float distToTarget = (units[i].transform.position - staticTarget).magnitude;
+                //this unit is close enough to the final target 
+                if (distToTarget <= distanceToFinalTarget)
+                {
+                    StopAllUnit();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        else
+        {
+            //check if some units still moving
+            for (int i = 0; i < units.Count; ++i)
+            {
+                if (units[i].SquadOrder as MoveOrder != null)
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     private bool ComputeStaticPathPos(Vector3 squadPos, out Vector3 targetPos)
     {
-
         //get nearest unit pos to target --> if minDistToTarget <= distanceToFinalTarget = arrived stop moving
         bool considerFinalDist = distanceToFinalTarget > distanceToTarget;
         //float minDistToTarget = float.MaxValue;
         int indexUnitChecked = 0;
 
         //check if squad average pos is arrived to the waypoint
-        bool squadArrived = (squadPos - staticPath.corners[currentIndex]).magnitude <= distanceToTarget;
+        bool squadArrived = (squadPos - staticPath.corners[currentIndex]).magnitude < distanceToTarget;
         
         List<Unit> units = squad.GetControlledUnits;
         //check if all units arrived; this check because the terrain can affect the formation and shift the average squad pos
@@ -162,7 +257,7 @@ public class SquadMoveTo : SquadAction
                     }
                 }
 
-                if (unit.HasReachDest(distanceToTarget) == false)
+                if (unit.SquadOrder as MoveOrder != null /*.HasReachDest(distanceToTarget) == false*/)
                 {
                     //a unit is still moving => not arrived
                     broke = true;
@@ -217,17 +312,18 @@ public class SquadMoveTo : SquadAction
         List<Unit> squadUnits = squad.GetControlledUnits;
         for (int i = 0; i < squadUnits.Count; ++i)
         {
-            squadUnits[i].SetTargetPos(poses[i]);
+            //if (/*squadUnits[i].HasReachDest(distanceToTarget) || */squadUnits[i].SquadOrder == null)
+            squadUnits[i].SetTargetPos(poses[i], distanceToTarget);
         }
     }
 
     private void StopAllUnit()
     {
         foreach (Unit unit in squad.GetControlledUnits)
-            unit.StopMoving();
-
-        OnComplete.Invoke();
+            unit.SquadOrder = null;
     }
+
+
 
     public override void DrawGizmo()
     {
@@ -240,7 +336,8 @@ public class SquadMoveTo : SquadAction
             Gizmos.DrawWireSphere(staticPath.corners[i], 2f);
         }
 
-        Gizmos.DrawCube(debugSquadPos, Vector3.one + Vector3.up * 3f);
+        foreach (Vector3 v in arrivedPos)
+            Gizmos.DrawCube(v, Vector3.one + Vector3.up * 3f);
 
         Gizmos.DrawCube(debugTarget, Vector3.one + Vector3.up * 3f);
 

@@ -46,7 +46,7 @@ public class FSM_Director : MonoBehaviour
             return;
         }
 
-        Debug.Log("squad: " + gameObject.name + " // " + m_states[m_currentState].name + " ==> " + m_states[index].name);
+        Debug.Log( fsmEntity.name + " // " + m_states[m_currentState].name + " ==> " + m_states[index].name);
 
         m_states[m_currentState].ExitState();
 

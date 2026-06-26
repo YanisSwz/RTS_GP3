@@ -19,12 +19,24 @@ public class Unit : BaseEntity
 
     FSM_Director fsm;
 
-    NavMeshAgent NavMeshAgent;
+    public NavMeshAgent NavMeshAgent;
 
     [HideInInspector]
     public Squad squadRef = null;
 
-    public SquadOrder GetSquadOrder { get { return squadOrder; } }
+    public SquadOrder SquadOrder
+    {
+        get { return squadOrder; }
+        set
+        {
+            CancelSquadOrder();
+
+            squadOrder = value;
+            if (squadOrder != null)
+                squadOrder.Enter(this);
+        }
+    }
+
     private SquadOrder squadOrder = null;
 
     public UnitDataScriptable GetUnitData { get { return UnitData; } }
@@ -67,7 +79,7 @@ public class Unit : BaseEntity
         NavMeshAgent.acceleration = GetUnitData.Acceleration;
 
 
-        fsm = GetComponent<FSM_Director>();
+        fsm = GetComponentInChildren<FSM_Director>();
         fsm.fsmEntity = this;
     }
     override protected void Start()
@@ -136,9 +148,16 @@ public class Unit : BaseEntity
     {
         if (NavMeshAgent)
         {
-            NavMeshAgent.SetDestination(pos);
             NavMeshAgent.isStopped = false;
+            NavMeshAgent.SetDestination(pos);
         }
+    }
+
+    private void CancelSquadOrder()
+    {
+        if (squadOrder != null)
+            squadOrder.Exit(this);
+        squadOrder = null;
     }
 
     // Moving Task
@@ -148,26 +167,11 @@ public class Unit : BaseEntity
 
         StoppingDistance = (StoppingDistance < NavMeshAgent.stoppingDistance) ? NavMeshAgent.stoppingDistance : StoppingDistance;
 
+        //CancelSquadOrder();
+
         MoveOrder moveOrder = new MoveOrder();
         moveOrder.StoppingDistance = StoppingDistance;
-
-        if (squadOrder != null)
-            squadOrder.Exit(this);
-
-        squadOrder = moveOrder;
-        squadOrder.Enter(this);
-
-        //if (EntityTarget != null)
-        //    EntityTarget = null;
-
-        //if (CaptureTarget != null)
-        //    StopCapture();
-
-        //if (NavMeshAgent)
-        //{
-        //    NavMeshAgent.SetDestination(pos);
-        //    NavMeshAgent.isStopped = false;
-        //}
+        SquadOrder = moveOrder;
     }
 
     // Targetting Task - attack
@@ -184,20 +188,25 @@ public class Unit : BaseEntity
     }
 
     // Targetting Task - capture
-    public void SetCaptureTarget(TargetBuilding target)
+    public bool SetCaptureTarget(TargetBuilding target)
     {
         //check distance
-        if (CanCapture(target) == false)
-            return;
+        if (target.GetTeam() == GetTeam() || CanCapture(target) == false)
+        {
+            //go to idle because order failed
+            CancelSquadOrder();
+            return false;
+        }
 
-        if (EntityTarget != null)
-            EntityTarget = null;
+        //already capturing the target
+        if (IsCapturing(target) && (squadOrder as CaptureOrder) != null)
+            return true;
 
-        if (IsCapturing())
-            StopCapture();
 
-        if (target.GetTeam() != GetTeam())
-            StartCapture(target);
+        CaptureOrder captureOrder = new CaptureOrder();
+        SquadOrder = captureOrder;
+
+        return true;
     }
 
     // Targetting Task - repairing
@@ -295,6 +304,11 @@ public class Unit : BaseEntity
     public bool IsCapturing()
     {
         return CaptureTarget != null;
+    }
+
+    public bool IsCapturing(TargetBuilding target)
+    {
+        return CaptureTarget == target;
     }
 
     // Repairing Task

@@ -6,7 +6,6 @@ public class SquadOrder
 
     virtual public void Enter(Unit unit)
     {
-
     }
 
     virtual public void Update(Unit unit)
@@ -16,6 +15,5 @@ public class SquadOrder
 
     virtual public void Exit(Unit unit)
     {
-
     }
 }

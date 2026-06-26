@@ -1,16 +1,28 @@
 using UnityEngine;
 
-public class CaptureOrder : MonoBehaviour
+public class CaptureOrder : SquadOrder
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void Enter(Unit unit)
     {
-        
+        base.Enter(unit);
+
+        unit.StartCapture(unit.CaptureTarget);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Exit(Unit unit)
     {
-        
+        base.Exit(unit);
+
+        unit.StopCapture();
+    }
+
+    public override void Update(Unit unit)
+    {
+        base.Update(unit);
+
+        if (isActionComplete == false && unit.CanCapture(unit.CaptureTarget) == false)
+        {
+            isActionComplete = true;
+        }
     }
 }

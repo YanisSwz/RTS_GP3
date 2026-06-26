@@ -12,7 +12,7 @@ public abstract class FSM_Transition : MonoBehaviour
 
 //Check condition in tick
 [Serializable]
-public class FSM_ConditionTransition : FSM_Transition
+public abstract class FSM_ConditionTransition : FSM_Transition
 {
     public bool reverseCondition = false;
 

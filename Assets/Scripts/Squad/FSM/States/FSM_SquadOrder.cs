@@ -2,22 +2,29 @@ using UnityEngine;
 
 public class FSM_SquadOrder : FSM_State
 {
-    
     public override void EnterState()
     {
         base.EnterState();
-        fsmEntity.GetSquadOrder.Enter(fsmEntity);
+        //squad order "Enter" handled on squadOrderSwap
     }
 
     public override void UpdateState()
     {
         base.UpdateState();
-        fsmEntity.GetSquadOrder.Update(fsmEntity);
+
+        if (fsmEntity.SquadOrder != null)
+        {
+            //if complete remove action --> transit an other state
+            if (fsmEntity.SquadOrder.isActionComplete)
+                fsmEntity.SquadOrder = null;
+            else
+                fsmEntity.SquadOrder.Update(fsmEntity);
+        }
     }
 
     public override void ExitState()
     {
         base.ExitState();
-        fsmEntity.GetSquadOrder.Exit(fsmEntity);
+        //squad order "Exit" handled on squadOrderSwap
     }
 }

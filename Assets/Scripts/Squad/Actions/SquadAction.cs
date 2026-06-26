@@ -38,6 +38,11 @@ public abstract class SquadAction
 
     }
 
+    virtual public void ExitAction()
+    {
+
+    }
+
     virtual public void DrawGizmo()
     {
 

@@ -149,8 +149,6 @@ public sealed class PlayerController : UnitController
         OnCameraDragMoveEnd += StopMoveCamera;
 
         OnCameraZoom += TopCameraRef.Zoom;
-        //OnCameraMoveHorizontal += TopCameraRef.KeyboardMoveHorizontal;
-        //OnCameraMoveVertical += TopCameraRef.KeyboardMoveVertical;
 
         // Gameplay shortcuts
         OnFocusBasePressed += SetCameraFocusOnMainFactory;
@@ -661,7 +659,7 @@ public sealed class PlayerController : UnitController
                         maxCaptureRadius = capDist;
                 }
 
-                //add move to action
+                //add move to actions
                 SquadMoveTo moveToAction = new SquadMoveTo();
                 moveToAction.Init(currentSquad, target.transform.position + ((currentSquad.GetSquadAveragePos() - target.transform.position).normalized * 5f), 1f);
                 moveToAction.distanceToFinalTarget = maxCaptureRadius;
