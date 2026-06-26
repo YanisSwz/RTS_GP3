@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
+using UnityEngine.Events;
 
 public class Unit : BaseEntity
 {
@@ -10,12 +9,23 @@ public class Unit : BaseEntity
 
     Transform BulletSlot;
     float LastActionDate = 0f;
-    BaseEntity EntityTarget = null;
-    TargetBuilding CaptureTarget = null;
+
+    [HideInInspector]
+    public BaseEntity EntityTarget = null;
+    [HideInInspector]
+    public TargetBuilding CaptureTarget = null;
+    [HideInInspector]
+    public Vector3 MoveToTarget = Vector3.zero;
+
+    FSM_Director fsm;
+
     NavMeshAgent NavMeshAgent;
 
     [HideInInspector]
     public Squad squadRef = null;
+
+    public SquadOrder GetSquadOrder { get { return squadOrder; } }
+    private SquadOrder squadOrder = null;
 
     public UnitDataScriptable GetUnitData { get { return UnitData; } }
     public int Cost { get { return UnitData.Cost; } }
@@ -55,6 +65,10 @@ public class Unit : BaseEntity
         NavMeshAgent.speed = GetUnitData.Speed;
         NavMeshAgent.angularSpeed = GetUnitData.AngularSpeed;
         NavMeshAgent.acceleration = GetUnitData.Acceleration;
+
+
+        fsm = GetComponent<FSM_Director>();
+        fsm.fsmEntity = this;
     }
     override protected void Start()
     {
@@ -99,7 +113,8 @@ public class Unit : BaseEntity
 
     public bool HasReachDest(float radius = -1f, bool realDest = false)
     {
-        return ((realDest ? GetRealDestination() : GetDestination()) - NavMeshAgent.transform.position).magnitude < ((radius < 0) ? NavMeshAgent.stoppingDistance : radius);
+        return ((realDest ? GetRealDestination() : GetDestination()) - NavMeshAgent.transform.position).magnitude 
+            < ((radius < NavMeshAgent.stoppingDistance) ? NavMeshAgent.stoppingDistance : radius);
     }
 
     public Vector3 GetDestination()
@@ -117,20 +132,42 @@ public class Unit : BaseEntity
         }
     }
 
-    // Moving Task
-    public void SetTargetPos(Vector3 pos)
+    public void MoveTo(Vector3 pos)
     {
-        if (EntityTarget != null)
-            EntityTarget = null;
-
-        if (CaptureTarget != null)
-            StopCapture();
-
         if (NavMeshAgent)
         {
             NavMeshAgent.SetDestination(pos);
             NavMeshAgent.isStopped = false;
         }
+    }
+
+    // Moving Task
+    public void SetTargetPos(Vector3 pos, float StoppingDistance = -1f)
+    {
+        MoveToTarget = pos;
+
+        StoppingDistance = (StoppingDistance < NavMeshAgent.stoppingDistance) ? NavMeshAgent.stoppingDistance : StoppingDistance;
+
+        MoveOrder moveOrder = new MoveOrder();
+        moveOrder.StoppingDistance = StoppingDistance;
+
+        if (squadOrder != null)
+            squadOrder.Exit(this);
+
+        squadOrder = moveOrder;
+        squadOrder.Enter(this);
+
+        //if (EntityTarget != null)
+        //    EntityTarget = null;
+
+        //if (CaptureTarget != null)
+        //    StopCapture();
+
+        //if (NavMeshAgent)
+        //{
+        //    NavMeshAgent.SetDestination(pos);
+        //    NavMeshAgent.isStopped = false;
+        //}
     }
 
     // Targetting Task - attack
