@@ -3,6 +3,7 @@ using UnityEngine;
 public class MoveOrder : SquadOrder
 {
     public float StoppingDistance = 0.5f;
+    public bool stopOnArrived = false;
     public override void Enter(Unit unit)
     {
         Debug.Log(unit.gameObject.name + " start move to order");
@@ -14,7 +15,8 @@ public class MoveOrder : SquadOrder
     {
         Debug.Log(unit.gameObject.name + " arrived to target pos");
         base.Exit(unit);
-        unit.StopMoving();
+        if(stopOnArrived)
+            unit.StopMoving();
     }
 
     public override void Update(Unit unit)

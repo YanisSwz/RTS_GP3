@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using static UnityEditor.PlayerSettings;
 
 public class Unit : BaseEntity
 {
@@ -16,6 +17,9 @@ public class Unit : BaseEntity
     public TargetBuilding CaptureTarget = null;
     [HideInInspector]
     public Vector3 MoveToTarget = Vector3.zero;
+
+    private Vector3 prevEndPathPointComputed = Vector3.zero;
+    private bool destUpdate = false;
 
     FSM_Director fsm;
 
@@ -92,6 +96,9 @@ public class Unit : BaseEntity
     }
     override protected void Update()
     {
+        //if (destUpdate && prevEndPathPointComputed != GetDestination())
+        //    destUpdate = false;
+
         // Attack / repair task debug test $$$ to be removed for AI implementation
         if (EntityTarget != null)
         {
@@ -125,6 +132,9 @@ public class Unit : BaseEntity
 
     public bool HasReachDest(float radius = -1f, bool realDest = false)
     {
+        //if (realDest == false && destUpdate)
+        //    return false;
+
         return ((realDest ? GetRealDestination() : GetDestination()) - NavMeshAgent.transform.position).magnitude 
             < ((radius < NavMeshAgent.stoppingDistance) ? NavMeshAgent.stoppingDistance : radius);
     }
@@ -139,6 +149,9 @@ public class Unit : BaseEntity
     {
         if (NavMeshAgent)
         {
+            prevEndPathPointComputed = GetDestination();
+            //destUpdate = true;
+
             NavMeshAgent.SetDestination(transform.position);
             NavMeshAgent.isStopped = true;
         }
@@ -149,6 +162,9 @@ public class Unit : BaseEntity
         if (NavMeshAgent)
         {
             NavMeshAgent.isStopped = false;
+
+            prevEndPathPointComputed = GetDestination();
+            destUpdate = pos != NavMeshAgent.destination;
             NavMeshAgent.SetDestination(pos);
         }
     }
@@ -161,16 +177,15 @@ public class Unit : BaseEntity
     }
 
     // Moving Task
-    public void SetTargetPos(Vector3 pos, float StoppingDistance = -1f)
+    public void SetTargetPos(Vector3 pos, float StoppingDistance = -1f, bool stopOnArrived = false)
     {
         MoveToTarget = pos;
 
         StoppingDistance = (StoppingDistance < NavMeshAgent.stoppingDistance) ? NavMeshAgent.stoppingDistance : StoppingDistance;
 
-        //CancelSquadOrder();
-
         MoveOrder moveOrder = new MoveOrder();
         moveOrder.StoppingDistance = StoppingDistance;
+        moveOrder.stopOnArrived = stopOnArrived;
         SquadOrder = moveOrder;
     }
 
@@ -202,6 +217,7 @@ public class Unit : BaseEntity
         if (IsCapturing(target) && (squadOrder as CaptureOrder) != null)
             return true;
 
+        CaptureTarget = target;
 
         CaptureOrder captureOrder = new CaptureOrder();
         SquadOrder = captureOrder;
@@ -274,7 +290,7 @@ public class Unit : BaseEntity
             return false;
 
         // distance check
-        if ((target.transform.position - transform.position).sqrMagnitude > GetUnitData.CaptureDistanceMax * GetUnitData.CaptureDistanceMax)
+        if ((target.transform.position - transform.position).magnitude < GetUnitData.CaptureDistanceMax)
             return false;
 
         return true;

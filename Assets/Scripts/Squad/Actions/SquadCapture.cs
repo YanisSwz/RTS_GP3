@@ -60,10 +60,15 @@ public class SquadCapture : SquadAction
             //todo  units[i].GetDestination() != arrivedPos[i]
             if (units[i].SquadOrder == null)
             {
+                if ((units[i].GetDestination() - captureFormation[i]).magnitude > 0.5f)
+                {
+                    units[i].SetTargetPos(captureFormation[i], 0.5f, false);
+                    continue;
+                }
+
                 //if can't capture, move to slot
                 if (units[i].SetCaptureTarget(target) == false)
-                    units[i].SetTargetPos(captureFormation[i], 0.5f);
-
+                    units[i].SetTargetPos(captureFormation[i], 0.5f, false);
                 //stay in idle => can retaliate if enemy
                 else
                     units[i].SquadOrder = null;
