@@ -1,28 +1,56 @@
 using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
+using System;
+
+public enum InputValue
+{
+    None = 0,
+    BuildPoints = 1,
+    ArmyPower = 2,
+    CapturedLabs = 3,
+    BuiltFactories = 4,
+    AvailableUnits = 5,
+    AvailableBuildPos = 6
+}
 
 [System.Serializable]
 public class Goal
 {
+    public Goal() 
+    {
+        LoadData();
+    }
+
+    public void LoadData() 
+    {
+        if (!goalData)
+            return;
+
+        type = goalData.type;
+        activationThreshold = goalData.activationThreshold;
+        minUtility = goalData.minUtility;
+        maxUtility = goalData.maxUtility;
+        utilityEvaluators = goalData.utilityEvaluators;
+    }
+
+
     [SerializeField]
-    private string name = "goal";
+    private ScriptableGoal goalData;
+
+    // TODO: Remove debug
     [SerializeField]
     private float utility = 0f;
-    [SerializeField]
-    [Range(0f, 1f)]
+    private GoalType type = GoalType.None;
     private float activationThreshold = 0f;
-    [SerializeField]
     private float minUtility = 0f;
-    [SerializeField]
     private float maxUtility = 1f;
-    [SerializeField]
     private List<UtilityEvaluator> utilityEvaluators = new List<UtilityEvaluator>();
 
-    public string Name { get { return name; } }
+    public GoalType Type { get { return type; } }
+    public string Name { get { return type.ToString(); } }
     public float Utility { get { return utility; } }
 
-    public void Evaluate(AIController controller) 
+    public void Evaluate(AIController controller)
     {
         utility = 0f;
 
@@ -30,10 +58,10 @@ public class Goal
         foreach (UtilityEvaluator evaluator in utilityEvaluators)
             totalWeight += evaluator.Weight;
 
-        foreach (UtilityEvaluator evaluator in utilityEvaluators) 
+        foreach (UtilityEvaluator evaluator in utilityEvaluators)
         {
             float value = 0f;
-            switch (evaluator.InputValue) 
+            switch (evaluator.InputValue)
             {
                 case InputValue.None:
                     break;
@@ -45,6 +73,15 @@ public class Goal
                     break;
                 case InputValue.CapturedLabs:
                     value = controller.CapturedTargets;
+                    break;
+                case InputValue.BuiltFactories:
+                    value = controller.GetFactoryList.Count;
+                    break;
+                case InputValue.AvailableUnits:
+                    value = controller.availableUnits.Count;
+                    break;
+                case InputValue.AvailableBuildPos:
+                    value = controller.AvailableBuildPositions.Count;
                     break;
             }
 
