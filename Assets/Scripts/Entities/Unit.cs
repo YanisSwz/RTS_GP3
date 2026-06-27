@@ -96,9 +96,6 @@ public class Unit : BaseEntity
     }
     override protected void Update()
     {
-        //if (destUpdate && prevEndPathPointComputed != GetDestination())
-        //    destUpdate = false;
-
         // Attack / repair task debug test $$$ to be removed for AI implementation
         if (EntityTarget != null)
         {
@@ -132,11 +129,14 @@ public class Unit : BaseEntity
 
     public bool HasReachDest(float radius = -1f, bool realDest = false)
     {
-        //if (realDest == false && destUpdate)
-        //    return false;
-
-        return ((realDest ? GetRealDestination() : GetDestination()) - NavMeshAgent.transform.position).magnitude 
-            < ((radius < NavMeshAgent.stoppingDistance) ? NavMeshAgent.stoppingDistance : radius);
+        float dist = NavMeshAgent.remainingDistance;
+        if (dist != Mathf.Infinity 
+            && NavMeshAgent.pathStatus == NavMeshPathStatus.PathComplete 
+            && dist < ((radius < NavMeshAgent.stoppingDistance) ? NavMeshAgent.stoppingDistance : radius))
+        {
+            return true;
+        }
+        return false;
     }
 
     public Vector3 GetDestination()
@@ -149,9 +149,6 @@ public class Unit : BaseEntity
     {
         if (NavMeshAgent)
         {
-            prevEndPathPointComputed = GetDestination();
-            //destUpdate = true;
-
             NavMeshAgent.SetDestination(transform.position);
             NavMeshAgent.isStopped = true;
         }
@@ -161,11 +158,8 @@ public class Unit : BaseEntity
     {
         if (NavMeshAgent)
         {
-            NavMeshAgent.isStopped = false;
-
-            prevEndPathPointComputed = GetDestination();
-            destUpdate = pos != NavMeshAgent.destination;
             NavMeshAgent.SetDestination(pos);
+            NavMeshAgent.isStopped = false;
         }
     }
 
@@ -176,9 +170,21 @@ public class Unit : BaseEntity
         squadOrder = null;
     }
 
+    public int GetNavMeshArea()
+    {
+        if (NavMeshAgent == null)
+            return -1;
+
+        return this.NavMeshAgent.areaMask;
+    }
+
     // Moving Task
     public void SetTargetPos(Vector3 pos, float StoppingDistance = -1f, bool stopOnArrived = false)
     {
+        //already go here
+        if (MoveToTarget == pos && squadOrder as MoveOrder != null)
+            return;
+
         MoveToTarget = pos;
 
         StoppingDistance = (StoppingDistance < NavMeshAgent.stoppingDistance) ? NavMeshAgent.stoppingDistance : StoppingDistance;
@@ -290,7 +296,7 @@ public class Unit : BaseEntity
             return false;
 
         // distance check
-        if ((target.transform.position - transform.position).magnitude < GetUnitData.CaptureDistanceMax)
+        if ((target.transform.position - transform.position).magnitude > GetUnitData.CaptureDistanceMax)
             return false;
 
         return true;

@@ -118,8 +118,6 @@ public class SquadMoveTo : SquadAction
             {
                 case Squad.FormationStyle.None:
                     {
-                        //Vector3 target;
-                        //ComputeStaticPathPos(squadPos, out target);
                         arrivedPos = ComputeSquadFormation.FreestyleFormation(staticPath.corners[staticPath.corners.Length - 1]
                             , squad.GetFreestyleFormationPoses);
 
@@ -150,13 +148,6 @@ public class SquadMoveTo : SquadAction
         base.UpdateAction();
         if (IsStaticPath == false)
             staticTarget = movingTarget.transform.position;
-
-        List<Unit> units = squad.GetControlledUnits;
-        for (int i = 0; i < units.Count; ++i)
-        {
-            if (units[i].SquadOrder == null && units[i].GetDestination() != arrivedPos[i])
-                units[i].SetTargetPos(arrivedPos[i], distanceToTarget);
-        }
 
         if (IsSquadArrived())
             OnComplete.Invoke();

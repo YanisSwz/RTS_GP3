@@ -8,6 +8,8 @@ public class FSM_Director : MonoBehaviour
 
     [HideInInspector]
     public Unit fsmEntity;
+
+    public bool showDebug = false;
     void Start()
     {
         int nbChild = transform.childCount;
@@ -46,7 +48,8 @@ public class FSM_Director : MonoBehaviour
             return;
         }
 
-        Debug.Log( fsmEntity.name + " // " + m_states[m_currentState].name + " ==> " + m_states[index].name);
+        if(showDebug)
+            Debug.Log( fsmEntity.name + " // " + m_states[m_currentState].name + " ==> " + m_states[index].name);
 
         m_states[m_currentState].ExitState();
 

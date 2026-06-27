@@ -38,7 +38,7 @@ public class SquadCapture : SquadAction
         List<Unit> units = squad.GetControlledUnits;
         for (int i = 0; i < captureFormation.Count; ++i)
         {
-            units[i].SetTargetPos(captureFormation[i], 0.5f);
+            units[i].SetTargetPos(captureFormation[i], 0.5f, false);
         }
     }
 
@@ -57,23 +57,17 @@ public class SquadCapture : SquadAction
         List<Unit> units = squad.GetControlledUnits;
         for (int i = 0; i < captureFormation.Count; ++i)
         {
-            //todo  units[i].GetDestination() != arrivedPos[i]
             if (units[i].SquadOrder == null)
             {
-                if ((units[i].GetDestination() - captureFormation[i]).magnitude > 0.5f)
-                {
-                    units[i].SetTargetPos(captureFormation[i], 0.5f, false);
-                    continue;
-                }
-
                 //if can't capture, move to slot
                 if (units[i].SetCaptureTarget(target) == false)
-                    units[i].SetTargetPos(captureFormation[i], 0.5f, false);
-                //stay in idle => can retaliate if enemy
-                else
-                    units[i].SquadOrder = null;
+                {
+                    if((captureFormation[i] - target.transform.position).magnitude <= units[i].GetUnitData.CaptureDistanceMax)
+                        units[i].SetTargetPos(captureFormation[i], 0.5f, false);
 
-                //maybe rotate toward the field
+                    //else stay in idle => can retaliate if enemy
+                    //maybe rotate toward the field
+                }
             }
         }
 
