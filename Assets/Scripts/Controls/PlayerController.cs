@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using static UnityEngine.GraphicsBuffer;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -612,17 +614,21 @@ public sealed class PlayerController : UnitController
                     //add move to action
                     SquadMoveTo moveToAction = new SquadMoveTo();
                     if (other as Unit)
-                        moveToAction.Init(currentSquad, other.gameObject, 5f);
+                        moveToAction.Init(currentSquad, other.gameObject, 1f);
                     //if factory => static target
                     else
-                        moveToAction.Init(currentSquad, other.transform.position, 5f);
+                        moveToAction.Init(currentSquad, other.transform.position + ((currentSquad.GetSquadAveragePos() - other.transform.position).normalized * 10f), 1f);
 
                     moveToAction.distanceToFinalTarget = maxAttackRadius;
 
                     actions.Add(moveToAction);
 
                     //add attk action
-                    //Todo
+
+                    SquadAttack squadAttack = new SquadAttack();
+                    squadAttack.Init(currentSquad, other.gameObject, maxAttackRadius);
+                    squadAttack.enemyBaseTarget = other;
+                    actions.Add(squadAttack);
 
                     //send action
                     currentSquad.GiveActions(actions);
