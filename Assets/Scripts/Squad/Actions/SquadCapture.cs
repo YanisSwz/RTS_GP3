@@ -84,9 +84,11 @@ public class SquadCapture : SquadAction
 
         for (int i = 0; i < captureFormation.Count; ++i)
         {
-
-            Gizmos.color = units[i].HasReachDest(0.5f) ? Color.green : Color.blue;
-            Gizmos.DrawWireSphere(captureFormation[i], 2f);
+            if (units[i])
+            {
+                Gizmos.color = units[i].HasReachDest(0.5f) ? Color.green : Color.blue;
+                Gizmos.DrawWireSphere(captureFormation[i], 2f);
+            }
         }
     }
 }
