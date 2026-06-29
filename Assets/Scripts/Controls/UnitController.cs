@@ -46,8 +46,10 @@ public class UnitController : MonoBehaviour
     protected Transform TeamRoot = null;
     public Transform GetTeamRoot() { return TeamRoot; }
 
-    //[HideInInspector]
+    //Squad
+    [HideInInspector]
     public List<Squad> squads = new List<Squad>();
+    public LayerMask detectionLayerForSquad;
 
     public List<Unit> UnitList
     {
@@ -232,11 +234,11 @@ public class UnitController : MonoBehaviour
     virtual protected void Update ()
     {
         foreach (Squad squad in squads)
-            squad.Update();
+            squad.Update(this);
 	}
     #endregion
 
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         foreach (Squad squad in squads)
             squad.DrawGizmo();

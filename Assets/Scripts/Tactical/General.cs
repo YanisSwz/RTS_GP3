@@ -27,6 +27,7 @@ public struct GoalSequence
 [System.Serializable]
 public class General
 {
+    public AIController GetController { get { return owner; } }
     private AIController owner = null;
     private int currentActionIndex = -1;
     private Goal currentGoal = null;

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System;
 
 // $$$ TO DO :)
 
@@ -21,6 +22,14 @@ public sealed class AIController : UnitController
     public string currentGoalName = "none";
     public float currentGoalUtility = -1f;
     public List<TargetBuilding> discoveredLabs = new List<TargetBuilding>();
+
+
+    [Header("--- Menace Memory ---")]
+    public float timeOutMemory = 30f;
+    public float toleranceRadiusMemory = 10f;
+    public float refreshRate = 5f;
+    private float currentRefreshTime = 0f;
+    public List<MenaceMemory> menacesMemory = new List<MenaceMemory>();
 
     //unit not recruited by a squad
     [HideInInspector]
@@ -57,6 +66,15 @@ public sealed class AIController : UnitController
     protected override void Update()
     {
         base.Update();
+
+        //check menace memory
+        if(currentRefreshTime >= refreshRate)
+        {
+            currentRefreshTime = 0f;
+            TimeOutMenaceMemoryClean();
+        }
+        else
+            currentRefreshTime += Time.deltaTime;
 
         if (Input.GetKeyUp(KeyCode.B))
         {
@@ -95,7 +113,7 @@ public sealed class AIController : UnitController
         if(availableBuildPositions.Count == 0)
             return false;
 
-        int buildIndex = Random.Range(0, availableBuildPositions.Count);
+        int buildIndex = UnityEngine.Random.Range(0, availableBuildPositions.Count);
         Vector3 spawn = availableBuildPositions[index].position;
         if (BuildFactory(index, spawn))
         {
@@ -125,5 +143,43 @@ public sealed class AIController : UnitController
         }
 
         return null;
+    }
+
+    private void TimeOutMenaceMemoryClean()
+    {
+        float currentTime = Time.time;
+
+        for (int i = 0; i < menacesMemory.Count; ++i)
+        {
+            if (currentTime - menacesMemory[i].time >= timeOutMemory)
+            {
+                menacesMemory.RemoveAt(i);
+                --i;
+            }
+        }
+    }
+
+    public void AddMenaceMemory(MenaceMemory newMenace)
+    {
+        for(int i = 0; i < menacesMemory.Count;++i)
+        {
+            if ((menacesMemory[i].enemyAveragePos - newMenace.enemyAveragePos).magnitude <= toleranceRadiusMemory)
+            {
+                menacesMemory[i] = newMenace;
+                return;
+            }
+        }
+
+        menacesMemory.Add(newMenace);
+    }
+
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+
+        foreach (MenaceMemory menace in menacesMemory)
+        {
+            Gizmos.DrawWireSphere(menace.enemyAveragePos, toleranceRadiusMemory);
+        }
     }
 }

@@ -130,6 +130,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: a23199e7-4f9a-44c7-aca9-bc10677b7acc
     m_ActionName: 'PlayerActions/OpenMenu[/Keyboard/tab]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114127896467981986}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: SelectAllCallback
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a4496340-3e11-45f8-b427-de9315fd4dda
+    m_ActionName: 'PlayerActions/SelectAll[/Keyboard/a]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: PlayerActions
@@ -147,8 +163,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1b00d11270e16946aaecf7086db9cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _TotalBuildPoints: 0
   Team: 0
-  StartingBuildPoints: 15
+  StartingBuildPoints: 40
+  detectionLayerForSquad:
+    serializedVersion: 2
+    m_Bits: 1024
   TargetCursorPrefab: {fileID: 66905664893773691, guid: 02a94059c167db04091254721ad19e34,
     type: 3}
   TargetCursorFloorOffset: 0.2

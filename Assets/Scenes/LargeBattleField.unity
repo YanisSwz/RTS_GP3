@@ -538,6 +538,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114858613120403676, guid: 0d9616ec63050ca4fa2fc0cc793599d0,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2543990839981046449, guid: 0d9616ec63050ca4fa2fc0cc793599d0,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -744,66 +749,6 @@ PrefabInstance:
       propertyPath: SceneEventSystem
       value: 
       objectReference: {fileID: 1101717270}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: squads.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: StartingBuildPoints
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897248047189261373, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.size
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897248047189261373, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[14].m_ActionId
-      value: a4496340-3e11-45f8-b427-de9315fd4dda
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897248047189261373, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[14].m_ActionName
-      value: 'PlayerActions/SelectAll[/Keyboard/a]'
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897248047189261373, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897248047189261373, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897248047189261373, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 589627996}
-    - target: {fileID: 3897248047189261373, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897248047189261373, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SelectAllCallback
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897248047189261373, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: PlayerController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897248047189261373, guid: dc4ee6691f59b07458286e0cfb38d82d,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 8446335230809480305, guid: dc4ee6691f59b07458286e0cfb38d82d,
         type: 3}
       propertyPath: FactoryMenuCanvas
@@ -3106,6 +3051,11 @@ PrefabInstance:
       propertyPath: 'buildPositions.Array.data[2]'
       value: 
       objectReference: {fileID: 1380018923}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: detectionLayerForSquad.m_Bits
+      value: 3584
+      objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
       propertyPath: goals.Array.data[4].maxUtility

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEngine.UI.CanvasScaler;
 
 [System.Serializable]
 public class FormSquad : GeneralAction

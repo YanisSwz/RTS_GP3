@@ -13,6 +13,8 @@ public class Squad
     public List<Unit> GetControlledUnits { get { return new List<Unit>(controlledUnits); } }
     List<Unit> controlledUnits = new List<Unit>();
 
+    LayerMask detectionMask;
+
     public enum FormationStyle
     {
         None,
@@ -26,12 +28,22 @@ public class Squad
     public List<Vector3> GetFreestyleFormationPoses { get { return new List<Vector3>(freestyleFormationPos); } }
     List<Vector3> freestyleFormationPos = new List<Vector3>();
 
+    //Actions
     [HideInInspector]
     public UnityEvent<Squad> OnAllActionsCompleted = new UnityEvent<Squad>();
     List<SquadAction> actions = new List<SquadAction>();
     int currentAction = -1;
 
+    //Sensor
     public List<Unit> enemiesInSight = new List<Unit>();
+    public UnityEvent<List<Unit>> OnEnemyInSight = new UnityEvent<List<Unit>>();
+
+    public List<TargetBuilding> labsInSight = new List<TargetBuilding>();
+    public UnityEvent<TargetBuilding> OnLabInSight = new UnityEvent<TargetBuilding>();
+
+    public List<Factory> factoriesInSight = new List<Factory>();
+    public UnityEvent<Factory> OnFactoryInSight = new UnityEvent<Factory>();
+
     List<Vector3> AABB = new List<Vector3>(new Vector3[4]);
 
     #region Squad Management
@@ -50,6 +62,8 @@ public class Squad
 
     public void FormSquad(UnitController controller, FormationStyle formationStyle, List<Unit> unitsRecruited)
     {
+        detectionMask = controller.detectionLayerForSquad;
+
         controller.squads.Add(this);
 
         currentStyle = formationStyle;
@@ -180,9 +194,9 @@ public class Squad
     private void AbortAction()
     {
         Debug.Log("Abort sequence");
-        //currentAction = -1;
+        currentAction = -1;
         OnAllActionsCompleted.Invoke(this);
-        //actions.Clear();
+        actions.Clear();
     }
 
     private void NextAction()
@@ -201,15 +215,15 @@ public class Squad
         actions[currentAction].StartAction();
     }
 
-    public void Update()
+    public void Update(UnitController controller)
     {
-        CalculateAABB();
+        CalculateAABB(controller);
 
         if (currentAction >= 0)
             actions[currentAction].UpdateAction();
     }
 
-    private void CalculateAABB()
+    private void CalculateAABB(UnitController controller)
     {
         Vector3 baseUnitPos = controlledUnits[0].transform.position;
         float baseAttakDist = controlledUnits[0].GetUnitData.AttackDistanceMax * 1.5f;
@@ -218,19 +232,19 @@ public class Squad
         float minY = baseUnitPos.z - baseAttakDist;
         float maxY = baseUnitPos.z + baseAttakDist;
 
-        for ( int i = 1; i <  controlledUnits.Count; ++i)
+        for (int i = 1; i < controlledUnits.Count; ++i)
         {
             Vector3 unitPos = controlledUnits[i].transform.position;
             float attakDist = controlledUnits[i].GetUnitData.AttackDistanceMax * 1.5f;
             if (unitPos.x - attakDist < minX)
                 minX = unitPos.x - attakDist;
-            
-            if(unitPos.x + attakDist > maxX)
+
+            if (unitPos.x + attakDist > maxX)
                 maxX = unitPos.x + attakDist;
 
             if (unitPos.z - attakDist < minY)
                 minY = unitPos.z - attakDist;
-            
+
             if (unitPos.z + attakDist > maxY)
                 maxY = unitPos.z + attakDist;
         }
@@ -244,15 +258,47 @@ public class Squad
         //todo layer
         List<RaycastHit> hitObj = new List<RaycastHit>(Physics.BoxCastAll(AABBCenter
             , new Vector3((AABB[1] - AABB[0]).magnitude * 0.5f, 3f, (AABB[2] - AABB[1]).magnitude * 0.5f)
-            , Vector3.up/*, Quaternion.identity, float.MaxValue, layer*/));
+            , Vector3.up, Quaternion.identity, float.MaxValue, detectionMask));
+
+        AIController aiController = controller as AIController;
 
         enemiesInSight.Clear();
         foreach (RaycastHit hit in hitObj)
         {
             Unit unitInSight = null;
-            if(hit.rigidbody && hit.rigidbody.gameObject.TryGetComponent<Unit>(out unitInSight) && unitInSight.GetTeam() != controlledUnits[0].GetTeam())
-                enemiesInSight.Add(unitInSight);
+            if (hit.rigidbody && hit.rigidbody.gameObject.TryGetComponent<Unit>(out unitInSight))
+            {
+                if (unitInSight.GetTeam() != controlledUnits[0].GetTeam())
+                    enemiesInSight.Add(unitInSight);
+
+                continue;
+            }
+
+            TargetBuilding discoveredLab = null;
+            if (hit.collider && hit.collider.gameObject.TryGetComponent<TargetBuilding>(out discoveredLab))
+            {
+                if (discoveredLab.GetTeam() != controlledUnits[0].GetTeam())
+                {
+                    labsInSight.Add(discoveredLab);
+                    OnLabInSight.Invoke(discoveredLab);
+                }
+                continue;
+            }
+
+            Factory discoverFactory = null;
+            if (hit.collider && hit.collider.gameObject.TryGetComponent<Factory>(out discoverFactory))
+            {
+                if (discoverFactory.GetTeam() != controlledUnits[0].GetTeam())
+                {
+                    factoriesInSight.Add(discoverFactory);
+                    OnFactoryInSight.Invoke(discoverFactory);
+                }
+                continue;
+            }
         }
+
+        if (enemiesInSight.Count > 0)
+            OnEnemyInSight.Invoke(enemiesInSight);
     }
 
     public void DrawGizmo()
