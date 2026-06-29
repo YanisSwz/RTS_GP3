@@ -59,13 +59,21 @@ MonoBehaviour:
     utility: 0
   - goalData: {fileID: 11400000, guid: c58af77a69bd70d4b8f2beeeebfcc5ec, type: 2}
     utility: 0
-  general:
-    sequences:
+  generals:
+  - sequences:
     - goalType: 1
       actions:
-      - rid: 6691051119383674937
+      - rid: 6691051187191939134
     - goalType: 4
-      actions: []
+      actions:
+      - rid: 6691051187191939135
+  - sequences:
+    - goalType: 1
+      actions:
+      - rid: 6691051187191939136
+    - goalType: 4
+      actions:
+      - rid: 6691051187191939137
   currentGoalName: none
   currentGoalUtility: -1
   discoveredLabs: []
@@ -73,7 +81,19 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 6691051119383674937
+    - rid: 6691051187191939134
       type: {class: Build, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6691051187191939135
+      type: {class: FormSquad, ns: , asm: Assembly-CSharp}
       data:
-        budgetMargin: 1.5
+        squadData: {fileID: 11400000, guid: 0fd68c5b8533c7c49a1eba317ae947ca, type: 2}
+        squadUnits: []
+    - rid: 6691051187191939136
+      type: {class: Build, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6691051187191939137
+      type: {class: FormSquad, ns: , asm: Assembly-CSharp}
+      data:
+        squadData: {fileID: 11400000, guid: 0fd68c5b8533c7c49a1eba317ae947ca, type: 2}
+        squadUnits: []

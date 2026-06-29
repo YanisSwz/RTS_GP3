@@ -25,4 +25,16 @@ public class SquadData
     private List<Line> lines = new List<Line>();
 
     public List<Line> Lines { get { return lines; } }
+    public Dictionary<int,int> GetUnits 
+    { 
+        get 
+        {
+            Dictionary<int, int> units = new Dictionary<int,int>();
+            for (int i = 0; i < lines.Count; i++) 
+            {
+                units[lines[i].unitType.TypeId] = lines[i].numberOfUnits;
+            }
+            return units;
+        } 
+    }   
 }

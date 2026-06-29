@@ -15,7 +15,7 @@ public sealed class AIController : UnitController
     private List<Goal> goals = new List<Goal>();
     private Goal currentGoal = null;
     [SerializeField]
-    private General general = null;
+    private List<General> generals = new List<General>();
 
     [Header("--- DEBUG ---")]
     public string currentGoalName = "none";
@@ -34,7 +34,8 @@ public sealed class AIController : UnitController
         foreach (Goal goal in goals) 
             goal.LoadData();
 
-        general.SetOwner(this);
+        foreach(General general in generals)
+            general.SetOwner(this);
 
         if(buildPositions.Count > 0)
             availableBuildPositions = new (buildPositions);
@@ -50,8 +51,6 @@ public sealed class AIController : UnitController
     public override void AddUnit(Unit unit)
     {
         base.AddUnit(unit);
-
-        availableUnits.Add(unit);
     }
 
     protected override void Update()
@@ -60,12 +59,9 @@ public sealed class AIController : UnitController
 
         if (Input.GetKeyUp(KeyCode.B))
         {
-            //FactoryList[0].RequestUnitBuild(0);
             SelectFactory(FactoryList[0]);
             RequestUnitBuild(0);
         }
-
-        //Debug.Log("UnitList.Count = " + UnitList.Count);
 
         float bestUtility = 0f;
         foreach (Goal goal in goals)
@@ -81,11 +77,13 @@ public sealed class AIController : UnitController
             }
         }
 
-        if(general.CurrentGoal != currentGoal)
+        foreach (General general in generals)
+        {
             general.SetGoal(currentGoal);
 
-        if(general.CurrentGoal != null)
-            general.UpdateSequence();
+            if (general.CurrentGoal != null)
+                general.UpdateSequence();
+        }
     }
 
     #endregion
@@ -114,13 +112,35 @@ public sealed class AIController : UnitController
         return RequestFactoryBuild(index, position);
     }
 
+    public bool CanRecruitUnit(int unitType) 
+    {
+        bool can = false;
+
+        foreach (Factory factory in FactoryList)
+        {
+            for (int i = 0; i < factory.AvailableUnitsCount; ++i)
+            {
+                if (factory.GetBuildableUnitData(i).TypeId == unitType)
+                {
+                    can = true;
+                    break;
+                }
+            }
+        }
+
+        return can;
+    }
+
     public UnityEvent<Unit> RecruitUnit(int unitType) 
     {
-        for(int i = 0; i < SelectedFactory.AvailableUnitsCount; ++i) 
+        foreach (Factory factory in FactoryList)
         {
-            if(SelectedFactory.GetBuildableUnitData(i).TypeId == unitType)
+            for (int i = 0; i < factory.AvailableUnitsCount; ++i)
             {
-                return RequestUnitBuild(i);
+                if (factory.GetBuildableUnitData(i).TypeId == unitType)
+                {
+                    return factory.RequestUnitBuild(i);
+                }
             }
         }
 
