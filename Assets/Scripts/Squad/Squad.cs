@@ -64,7 +64,7 @@ public class Squad
     {
         detectionMask = controller.detectionLayerForSquad;
 
-        controller.squads.Add(this);
+        controller.AddSquad(this);
 
         currentStyle = formationStyle;
         freestyleFormationPos.Clear();
@@ -165,7 +165,7 @@ public class Squad
 
         controlledUnits.Clear();
 
-        controller.squads.Remove(this);
+        controller.RemoveSquad(this);
     }
     #endregion
 
@@ -312,7 +312,10 @@ public class Squad
 
         Gizmos.color = Color.red;
         foreach (Unit unitInSight in enemiesInSight)
-            Gizmos.DrawCube(unitInSight.transform.position + Vector3.up * 2f, Vector3.one + Vector3.up);
+        {
+            if(unitInSight)
+                Gizmos.DrawCube(unitInSight.transform.position + Vector3.up * 2f, Vector3.one + Vector3.up);
+        }
     }
     #endregion
 }

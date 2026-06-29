@@ -77,15 +77,53 @@ public class SquadAttack : SquadAction
             {
                 //todo switch target
                 if (unit.EntityTarget == null)
-                    unit.SetAttackTarget(enemyBaseTarget);
+                {
+                    if(enemyBaseTarget)
+                        unit.SetAttackTarget(enemyBaseTarget);
+                    else
+                    {
+                        Unit target = PickNearestEnemy(unit);
+                        if(target != null)
+                        {
+                            if(unit.CanAttack(target))
+                                unit.SetAttackTarget(target);
+                            //else
+                                //todo move to
+                        }
+                    }
+                }
             }
         }
+    }
+
+    private Unit PickNearestEnemy(Unit unitAskTarget)
+    {
+        Unit result = null;
+        Vector3 pos = unitAskTarget.transform.position;
+
+        float nearestDist = float.MaxValue;
+        List<Unit> enemiesInSight = squad.enemiesInSight;
+
+        for (int i = 0; i < enemiesInSight.Count; ++i)
+        {
+            if (enemiesInSight[i] == null)
+                continue;
+
+            float dist = (enemiesInSight[i].transform.position - pos).magnitude;
+            if (dist < nearestDist)
+            {
+                nearestDist = dist;
+                result = enemiesInSight[i];
+            }
+        }
+
+        return result;
     }
 
     private bool IsAllEnemyDead()
     {
         //todo see all target in sight
-        return enemyBaseTarget == null;
+        return enemyBaseTarget == null && squad.enemiesInSight.Count == 0;
     }
 
     public override void UpdateAction()

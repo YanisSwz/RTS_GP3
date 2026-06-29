@@ -48,7 +48,9 @@ public class UnitController : MonoBehaviour
 
     //Squad
     [HideInInspector]
-    public List<Squad> squads = new List<Squad>();
+    protected List<Squad> squads = new List<Squad>();
+
+    private List<Squad> squadsToRemove = new List<Squad>();
     public LayerMask detectionLayerForSquad;
 
     public List<Unit> UnitList
@@ -138,6 +140,18 @@ public class UnitController : MonoBehaviour
         TotalBuildPoints -= points;
         CapturedTargets--;
     }
+
+    public void AddSquad(Squad squad)
+    {
+        squads.Add(squad);
+    }
+
+    public void RemoveSquad(Squad squad)
+    {
+        squadsToRemove.Add(squad);
+    }
+
+
     #endregion
 
     #region Factory methods
@@ -233,6 +247,9 @@ public class UnitController : MonoBehaviour
     }
     virtual protected void Update ()
     {
+        foreach (Squad squad in squadsToRemove)
+            squads.Remove(squad);
+
         foreach (Squad squad in squads)
             squad.Update(this);
 	}
@@ -240,6 +257,7 @@ public class UnitController : MonoBehaviour
 
     protected virtual void OnDrawGizmos()
     {
+
         foreach (Squad squad in squads)
             squad.DrawGizmo();
     }
