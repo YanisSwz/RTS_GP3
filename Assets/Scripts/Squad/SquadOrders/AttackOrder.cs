@@ -1,16 +1,26 @@
 using UnityEngine;
 
-public class AttackOrder : MonoBehaviour
+public class AttackOrder : SquadOrder
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void Enter(Unit unit)
     {
-        
+        base.Enter(unit);
+        if (unit.ComputeAttack() == false)
+            isActionComplete = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Exit(Unit unit)
     {
+        base.Exit(unit);
+    }
+
+    public override void Update(Unit unit)
+    {
+        base.Update(unit);
         
+        if (isActionComplete == false && unit.EntityTarget == null)
+            isActionComplete = true;
+
+        unit.ComputeAttack();
     }
 }

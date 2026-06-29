@@ -39,75 +39,17 @@ public class SquadMoveTo : SquadAction
 
         Vector3 squadPos = squad.GetSquadAveragePos();
 
+        if (IsStaticPath == false)
+            staticTarget = movingTarget.transform.position;
+
         debugTarget = staticTarget;
         debugFirstUnit = squad.GetControlledUnits[0].transform.position;
 
-        if (CalculatePath(squad.GetControlledUnits[0].transform.position, debugTarget) == false)
+        if (CalculatePath(squad.GetControlledUnits[0].transform.position, staticTarget) == false)
         {
             Debug.Log("path failed to compute");
             OnAbort.Invoke();
         }
-
-        ////compute static path for virtual leader
-        //if (CalculatePath(squadPos, debugTarget) == false)
-        //{
-
-        //    //fail because average pos is not on the navmesh (like in a factory)
-        //    //recompute a path with the first unit in the squad as the anchor
-        //    if (CalculatePath(squad.GetControlledUnits[0].transform.position, debugTarget) == false)
-        //    {
-        //        Debug.Log("path failed to compute");
-        //        OnAbort.Invoke();
-        //    }
-        //}
-
-
-        /*
-        //compute static path for virtual leader
-        if (NavMesh.CalculatePath(squadPos, staticTarget, NavMesh.AllAreas, staticPath))
-        {
-            List<Vector3> poses = new List<Vector3>();
-            switch (squad.GetFormationStyle)
-            {
-                case Squad.FormationStyle.None:
-                    {
-                        Vector3 target;
-                        ComputeStaticPathPos(squadPos, out target);
-                        poses = ComputeSquadFormation.FreestyleFormation(target, squad.GetFreestyleFormationPoses);
-                        break;
-                    }
-            }
-
-            GivePoses(poses);
-        }
-        else
-        {
-            //fail because average pos is not on the navmesh (like in a factory)
-            //recompute a path by th first unit in the squad
-
-            debugFirstUnit = squad.GetControlledUnits[0].transform.position;
-            if (NavMesh.CalculatePath(squad.GetControlledUnits[0].transform.position, staticTarget, NavMesh.AllAreas, staticPath))
-            {
-                List<Vector3> poses = new List<Vector3>();
-                switch (squad.GetFormationStyle)
-                {
-                    case Squad.FormationStyle.None:
-                        {
-                            Vector3 target;
-                            ComputeStaticPathPos(squadPos, out target);
-                            poses = ComputeSquadFormation.FreestyleFormation(target, squad.GetFreestyleFormationPoses);
-                            break;
-                        }
-                }
-
-                GivePoses(poses);
-            }
-            else
-            {
-                Debug.Log("path failed to compute");
-                OnAbort.Invoke();
-            }
-        }*/
     }
 
     private bool CalculatePath(Vector3 anchor, Vector3 target)
@@ -147,7 +89,10 @@ public class SquadMoveTo : SquadAction
 
         base.UpdateAction();
         if (IsStaticPath == false)
+        {
             staticTarget = movingTarget.transform.position;
+            CalculatePath(squad.GetControlledUnits[0].transform.position, staticTarget);
+        }
 
         if (IsSquadArrived())
             OnComplete.Invoke();
@@ -156,6 +101,7 @@ public class SquadMoveTo : SquadAction
     private bool IsSquadArrived()
     {
         //get nearest unit pos to target --> if minDistToTarget <= distanceToFinalTarget = arrived stop moving
+        //used for capture and attack
         bool considerFinalDist = distanceToFinalTarget > distanceToTarget;
         List<Unit> units = squad.GetControlledUnits;
 
