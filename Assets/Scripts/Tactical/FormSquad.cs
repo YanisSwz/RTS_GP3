@@ -14,7 +14,7 @@ public class FormSquad : GeneralAction
     private Dictionary<int, int> unitsToRecruit = new Dictionary<int, int>();
     private Squad squad = null;
     private int squadSize = 0;
-    private float squadCost = 0f;
+    private int squadCost = 0;
     private int currentSquadBudget = 0;
     private int minUnitCost = int.MaxValue;
 
@@ -22,6 +22,9 @@ public class FormSquad : GeneralAction
     {
         base.Enter(controller, power);
 
+        squadUnits.Clear();
+        squadSize = 0;
+        minUnitCost = int.MaxValue;
         unitsToRecruit = squadData.squadData.GetUnits;
         EvaluateSquadCost(controller, power);
     }
