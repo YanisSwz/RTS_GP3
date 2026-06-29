@@ -55,7 +55,7 @@ public class FormSquad : GeneralAction
             // Actions test
             List<SquadAction> actions = new List<SquadAction>();
             SquadMoveTo moveTo = new SquadMoveTo();
-            moveTo.Init(squad, new Vector3(212f, 0f, 412f), 1f);
+            moveTo.Init(squad, new Vector3(310f, 0f, 236f), 1f);
             actions.Add(moveTo);
             squad.GiveActions(actions);
 
