@@ -5,21 +5,14 @@ using UnityEngine;
 [System.Serializable]
 public class Build : GeneralAction
 {
-    /// <summary>
-    /// margin we want to guarantee before building (to avoid being at 0 after building)
-    /// </summary>
-    [SerializeField]
-    [Range(1f, 4f)]
-    private float budgetMargin = 1.5f;
-
-    public override void Execute(AIController controller)
+    public override void Execute(AIController controller, float power)
     {
         Dictionary<int, int> factoryPrices = GameServices.GetGameServices().GetFactoryPrices();
 
         bool built = false;
         foreach (KeyValuePair<int, int> factoryPrice in factoryPrices.OrderByDescending(x => x.Value))
         {
-            if (controller.TotalBuildPoints >= factoryPrice.Value * budgetMargin)
+            if (controller.TotalBuildPoints * power >= factoryPrice.Value)
             {
                 controller.TryBuildingFactory(factoryPrice.Key);
                 built = true;

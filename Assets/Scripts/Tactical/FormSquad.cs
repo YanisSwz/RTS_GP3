@@ -11,42 +11,92 @@ public class FormSquad : GeneralAction
     [SerializeField]
     private List<Unit> squadUnits = null;
 
+    private Dictionary<int, int> unitsToRecruit = new Dictionary<int, int>();
     private Squad squad = null;
     private int squadSize = 0;
-    private int currentLineIndex = -1;
-    private int currentUnitIndex = -1;
+    private float squadCost = 0f;
+    private int currentSquadBudget = 0;
+    private int minUnitCost = int.MaxValue;
 
-    public override void Enter(AIController controller)
+    public override void Enter(AIController controller, float power)
     {
-        base.Enter(controller);
+        base.Enter(controller, power);
 
-        currentLineIndex = 0;
-        currentUnitIndex = 0;
+        unitsToRecruit = squadData.squadData.GetUnits;
+        EvaluateSquadCost(controller, power);
     }
 
-    public override void Execute(AIController controller)
+    public override void Execute(AIController controller, float power)
     {
-        for (int i = currentLineIndex; i < squadData.squadData.Lines.Count; ++i)
+        GetAvailableUnits(controller);
+        RecruitUnits(controller);
+        CheckSquadReadiness(controller);
+    }
+
+    private void EvaluateSquadCost(AIController controller, float power)
+    {
+        for (int i = 0; i < squadData.squadData.Lines.Count; ++i)
         {
-            for (int j = currentUnitIndex; j < squadData.squadData.Lines[i].numberOfUnits; ++j)
+            int cost = squadData.squadData.Lines[i].unitType.Cost;
+            if (cost < minUnitCost)
+                minUnitCost = cost;
+
+            squadCost += cost * squadData.squadData.Lines[i].numberOfUnits;
+
+        }
+        currentSquadBudget = Mathf.RoundToInt(Mathf.Min(squadCost, controller.TotalBuildPoints * power));
+    }
+
+    private void GetAvailableUnits(AIController controller)
+    {
+        List<Unit> availableUnitsCopy = new List<Unit>(controller.availableUnits);
+        for (int i = 0; i < availableUnitsCopy.Count; ++i)
+        {
+            int unitKey = availableUnitsCopy[i].GetTypeId;
+            if (unitsToRecruit.ContainsKey(unitKey))
             {
-                UnityEvent<Unit> unitRecruited = controller.RecruitUnit(squadData.squadData.Lines[i].unitType.TypeId);
+                squadUnits.Add(availableUnitsCopy[i]);
+                controller.availableUnits.Remove(availableUnitsCopy[i]);
+                currentSquadBudget -= availableUnitsCopy[i].Cost;
+
+                ++squadSize;
+                unitsToRecruit[unitKey] = unitsToRecruit[unitKey] - 1;
+                if (unitsToRecruit[unitKey] == 0)
+                    unitsToRecruit.Remove(unitKey);
+            }
+        }
+    }
+
+    private void RecruitUnits(AIController controller)
+    {
+        Dictionary<int, int> unitsCopy = new(unitsToRecruit);
+        foreach (KeyValuePair<int, int> entry in unitsCopy)
+        {
+            if (!controller.CanRecruitUnit(entry.Key))
+            {
+                unitsToRecruit.Remove(entry.Key);
+                continue;
+            }
+
+            for (int j = 0; j < entry.Value; ++j)
+            {
+                UnityEvent<Unit> unitRecruited = controller.RecruitUnit(entry.Key);
                 if (unitRecruited != null)
                 {
-                    ++squadSize;
                     unitRecruited.AddListener(AddUnit);
-                }
-                else 
-                {
-                    currentUnitIndex = j;
-                    return;
+
+                    ++squadSize;
+                    unitsToRecruit[entry.Key] = unitsToRecruit[entry.Key] - 1;
+                    if (unitsToRecruit[entry.Key] == 0)
+                        unitsToRecruit.Remove(entry.Key);
                 }
             }
-            currentUnitIndex = 0;
-            ++currentLineIndex;
         }
+    }
 
-        if (squadUnits.Count == squadSize)
+    private void CheckSquadReadiness(AIController controller)
+    {
+        if (squadUnits.Count == squadSize && currentSquadBudget < minUnitCost)
         {
             squad = new Squad();
             squad.FormSquad(controller, Squad.FormationStyle.None, squadUnits);
@@ -65,5 +115,6 @@ public class FormSquad : GeneralAction
     private void AddUnit(Unit unit)
     {
         squadUnits.Add(unit);
+        currentSquadBudget -= unit.Cost;
     }
 }

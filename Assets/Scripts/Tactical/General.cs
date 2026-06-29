@@ -16,7 +16,7 @@ public struct GoalSequence
     public GoalSequence(GoalType _goalType, List<GeneralAction> _actions) 
     {
         goalType = _goalType;
-        actions = _actions;
+        actions = new (_actions);
     }
 
     public GoalType goalType;
@@ -30,6 +30,7 @@ public class General
     public AIController GetController { get { return owner; } }
     private AIController owner = null;
     private int currentActionIndex = -1;
+    private float currentPower = 0f;
     private Goal currentGoal = null;
     public Goal CurrentGoal { get { return currentGoal; } }
 
@@ -43,6 +44,13 @@ public class General
 
     public void SetGoal(Goal goal) 
     {
+        if(goal == currentGoal)
+        {
+            currentGoal.SetUtility(goal.Utility);
+            currentPower = currentGoal.Utility;
+            return;
+        }
+
         int index = sequences.FindIndex(x => x.goalType == goal.Type);
         if(index != -1) 
         {
@@ -51,7 +59,8 @@ public class General
             {
                 currentActionIndex = 0;
                 currentGoal = goal;
-                actions[currentActionIndex].Enter(owner);
+                currentPower = currentGoal.Utility;
+                actions[currentActionIndex].Enter(owner, currentPower);
             }
         }
     }
@@ -60,7 +69,6 @@ public class General
     {
         if (currentActionIndex == -1 || currentActionIndex >= actions.Count)
         {
-            currentGoal = null;
             return;
         }
 
@@ -69,13 +77,12 @@ public class General
             ++currentActionIndex;
             if (currentActionIndex >= actions.Count)
             {
-                currentGoal = null;
                 return;
             }
 
-            actions[currentActionIndex].Enter(owner);
+            actions[currentActionIndex].Enter(owner, currentPower);
         }
 
-        actions[currentActionIndex].Execute(owner);
+        actions[currentActionIndex].Execute(owner, currentPower);
     }
 }
