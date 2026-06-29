@@ -10,7 +10,8 @@ public enum InputValue
     CapturedLabs = 3,
     BuiltFactories = 4,
     AvailableUnits = 5,
-    AvailableBuildPos = 6
+    AvailableBuildPos = 6, 
+    DiscoveredLabs = 7
 }
 
 [System.Serializable]
@@ -82,6 +83,9 @@ public class Goal
                     break;
                 case InputValue.AvailableBuildPos:
                     value = controller.AvailableBuildPositions.Count;
+                    break;
+                case InputValue.DiscoveredLabs:
+                    value = controller.discoveredLabs.Count;
                     break;
             }
 

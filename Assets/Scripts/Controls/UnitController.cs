@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 // points system for units creation (Ex : light units = 1 pt, medium = 2pts, heavy = 3 pts)
 // max points can be increased by capturing TargetBuilding entities
@@ -170,10 +171,10 @@ public class UnitController : MonoBehaviour
             SelectedFactory.SetSelected(false);
         SelectedFactory = null;
     }
-    protected bool RequestUnitBuild(int unitMenuIndex)
+    protected UnityEvent<Unit> RequestUnitBuild(int unitMenuIndex)
     {
         if (SelectedFactory == null)
-            return false;
+            return null;
 
         return SelectedFactory.RequestUnitBuild(unitMenuIndex);
     }

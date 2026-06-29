@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 public enum ETeam
 {
@@ -29,6 +31,8 @@ public class GameServices : MonoBehaviour
 
     Terrain CurrentTerrain = null;
     Bounds PlayableBounds;
+
+    Factory referenceFactory = null;
 
     #region Static methods
     public static GameServices GetGameServices()
@@ -97,7 +101,19 @@ public class GameServices : MonoBehaviour
             return new Vector3(DefaultPlayableBoundsSize, 10.0f, DefaultPlayableBoundsSize);
         }
     }
+    public Dictionary<int,int> GetFactoryPrices()
+    {
+        Dictionary<int,int> prices = new Dictionary<int,int>();
+        if (!referenceFactory)
+            return prices;
 
+        for(int i = 0; i < referenceFactory.AvailableFactoriesCount; ++i) 
+        {
+            prices[i] = referenceFactory.GetFactoryCost(i);
+        }
+        return prices;
+
+    }
     #endregion
 
     #region MonoBehaviour methods
@@ -135,6 +151,8 @@ public class GameServices : MonoBehaviour
             PlayableBounds.SetMinMax(   new Vector3(-DefaultPlayableBoundsSize, -10.0f, -DefaultPlayableBoundsSize) + clampedOne * NonPlayableBorder / 2f,
                                         new Vector3(DefaultPlayableBoundsSize, 10.0f, DefaultPlayableBoundsSize) - clampedOne * NonPlayableBorder / 2f);
         }
+
+        referenceFactory = FindFirstObjectByType<Factory>();
     }
     void OnDrawGizmos()
     {

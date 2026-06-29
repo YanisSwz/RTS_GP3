@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using System.Linq;
+
 public sealed class Factory : BaseEntity
 {
     [SerializeField]
@@ -36,6 +39,7 @@ public sealed class Factory : BaseEntity
     public int AvailableUnitsCount { get { return Mathf.Min(MaxAvailableUnits, FactoryData.AvailableUnits.Length); } }
     public int AvailableFactoriesCount { get { return Mathf.Min(MaxAvailableFactories, FactoryData.AvailableFactories.Length); } }
     public Action<Unit> OnUnitBuilt;
+    private List<UnityEvent<Unit>> UnitBuildEvent = new List<UnityEvent<Unit>>();
     public Action<Factory> OnFactoryBuilt;
     public Action OnBuildCanceled;
     public bool IsBuildingUnit { get { return CurrentState == State.BuildingUnit; } }
@@ -107,15 +111,20 @@ public sealed class Factory : BaseEntity
             case State.BuildingUnit:
                 if (Time.time > EndBuildDate)
                 {
-                    OnUnitBuilt?.Invoke(BuildUnit());
+                    Unit builtUnit = BuildUnit();
+                    UnitBuildEvent[0].Invoke(builtUnit);
+                    UnitBuildEvent[0].RemoveAllListeners();
+                    UnitBuildEvent.RemoveAt(0);
+                    OnUnitBuilt?.Invoke(builtUnit);
                     OnUnitBuilt = null; // remove registered methods
                     CurrentState = State.Available;
+
 
                     // manage build queue : chain with new unit build if necessary
                     if (BuildingQueue.Count != 0)
                     {
                         int unitIndex = BuildingQueue.Dequeue();
-                        StartBuildUnit(unitIndex);
+                        StartBuildUnit(unitIndex, true);
                     }
                 }
                 else if (BuildGaugeImage)
@@ -186,33 +195,42 @@ public sealed class Factory : BaseEntity
         }
         return counter;
     }
-    public bool RequestUnitBuild(int unitMenuIndex)
+    public UnityEvent<Unit> RequestUnitBuild(int unitMenuIndex)
     {
         int cost = GetUnitCost(unitMenuIndex);
         if (Controller.TotalBuildPoints < cost || BuildingQueue.Count >= MaxBuildingQueueSize)
-            return false;
+            return null;
 
         Controller.TotalBuildPoints -= cost;
 
-        StartBuildUnit(unitMenuIndex);
-
-        return true;
+        return StartBuildUnit(unitMenuIndex);
     }
-    void StartBuildUnit(int unitMenuIndex)
+
+    UnityEvent<Unit> StartBuildUnit(int unitMenuIndex, bool internalCall = false)
     {
         if (IsUnitIndexValid(unitMenuIndex) == false)
-            return;
+            return null;
 
         // Factory is being constucted
         if (CurrentState == State.UnderConstruction)
-            return;
+            return null;
 
         // Build queue
         if (CurrentState == State.BuildingUnit)
         {
             if (BuildingQueue.Count < MaxBuildingQueueSize)
+            {
                 BuildingQueue.Enqueue(unitMenuIndex);
-            return;
+            }
+            if (!internalCall)
+            {
+                UnitBuildEvent.Add(new UnityEvent<Unit>());
+                return UnitBuildEvent[^1];
+            }
+            else 
+            {
+                return null;
+            }
         }
 
         CurrentBuildDuration = GetBuildableUnitData(unitMenuIndex).BuildDuration;
@@ -231,6 +249,16 @@ public sealed class Factory : BaseEntity
                 (Controller as PlayerController)?.UpdateFactoryBuildQueueUI(RequestedEntityBuildIndex);
             }
         };
+
+        if (!internalCall)
+        {
+            UnitBuildEvent.Add(new UnityEvent<Unit>());
+            return UnitBuildEvent[^1];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     // Finally spawn requested unit
