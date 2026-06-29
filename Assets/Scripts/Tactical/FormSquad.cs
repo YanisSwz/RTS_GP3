@@ -12,28 +12,27 @@ public class FormSquad : GeneralAction
     private List<Unit> squadUnits = null;
 
     private Dictionary<int, int> unitsToRecruit = new Dictionary<int, int>();
-    private Squad squad = null;
     private int squadSize = 0;
     private int squadCost = 0;
     private int currentSquadBudget = 0;
     private int minUnitCost = int.MaxValue;
 
-    public override void Enter(AIController controller, float power)
+    public override void Enter(General owner, float power)
     {
-        base.Enter(controller, power);
+        base.Enter(owner, power);
 
         squadUnits.Clear();
         squadSize = 0;
         minUnitCost = int.MaxValue;
         unitsToRecruit = squadData.squadData.GetUnits;
-        EvaluateSquadCost(controller, power);
+        EvaluateSquadCost(owner.GetController, power);
     }
 
-    public override void Execute(AIController controller, float power)
+    public override void Execute(General owner, float power)
     {
-        GetAvailableUnits(controller);
-        RecruitUnits(controller);
-        CheckSquadReadiness(controller);
+        GetAvailableUnits(owner.GetController);
+        RecruitUnits(owner.GetController);
+        CheckSquadReadiness(owner);
     }
 
     private void EvaluateSquadCost(AIController controller, float power)
@@ -97,12 +96,16 @@ public class FormSquad : GeneralAction
         }
     }
 
-    private void CheckSquadReadiness(AIController controller)
+    private void CheckSquadReadiness(General owner)
     {
         if (squadUnits.Count == squadSize && currentSquadBudget < minUnitCost)
         {
-            squad = new Squad();
-            squad.FormSquad(controller, Squad.FormationStyle.None, squadUnits);
+            Squad squad = new Squad();
+            squad.FormSquad(owner.GetController, Squad.FormationStyle.None, squadUnits);
+
+            SquadLeader leader = new SquadLeader();
+            leader.GiveSquad(squad, owner);
+            owner.AddLeader(leader);
 
             // Actions test
             List<SquadAction> actions = new List<SquadAction>();

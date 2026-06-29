@@ -4,18 +4,17 @@ using UnityEngine.InputSystem.XR;
 
 public class SquadLeader
 {
-    List<Squad> controlledSquads = new List<Squad>();
-    General general;
+    Squad controlledSquad = null;
+    General general = null;
+    List<SquadAction> orders = new List<SquadAction>();
 
-    public void GiveSquads(List<Squad> _controlledSquads)
+    public void GiveSquad(Squad _controlledSquad, General owner)
     {
-        controlledSquads = new List<Squad>(_controlledSquads);
+        general = owner;
+        controlledSquad = _controlledSquad;
 
-        foreach (Squad squad in controlledSquads)
-        {
-            squad.OnEnemyInSight.AddListener(EnemiesInSightCallback);
-            squad.OnLabInSight.AddListener(LabInSightCallback);
-        }
+        controlledSquad.OnEnemyInSight.AddListener(EnemiesInSightCallback);
+        controlledSquad.OnLabInSight.AddListener(LabInSightCallback);
     }
 
     private void LabInSightCallback(TargetBuilding lab)

@@ -36,6 +36,12 @@ public class General
 
     public List<GoalSequence> sequences = new List<GoalSequence>();
     public List<GeneralAction> actions = new List<GeneralAction>();
+    public List<SquadLeader> leaders = new List<SquadLeader>();
+
+    public void AddLeader(SquadLeader leader) 
+    {
+        leaders.Add(leader);
+    }
 
     public void SetOwner(AIController controller) 
     {
@@ -60,7 +66,7 @@ public class General
                 currentActionIndex = 0;
                 currentGoal = goal;
                 currentPower = currentGoal.Utility;
-                actions[currentActionIndex].Enter(owner, currentPower);
+                actions[currentActionIndex].Enter(this, currentPower);
             }
         }
     }
@@ -80,9 +86,9 @@ public class General
                 return;
             }
 
-            actions[currentActionIndex].Enter(owner, currentPower);
+            actions[currentActionIndex].Enter(this, currentPower);
         }
 
-        actions[currentActionIndex].Execute(owner, currentPower);
+        actions[currentActionIndex].Execute(this, currentPower);
     }
 }
