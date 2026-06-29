@@ -1,8 +1,8 @@
-using NUnit.Framework.Interfaces;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.UI.CanvasScaler;
 
 public class Squad
 {
@@ -30,6 +30,9 @@ public class Squad
     public UnityEvent<Squad> OnAllActionsCompleted = new UnityEvent<Squad>();
     List<SquadAction> actions = new List<SquadAction>();
     int currentAction = -1;
+
+    public List<Unit> enemiesInSight = new List<Unit>();
+    List<Vector3> AABB = new List<Vector3>(new Vector3[4]);
 
     #region Squad Management
     public Vector3 GetSquadAveragePos()
@@ -200,14 +203,70 @@ public class Squad
 
     public void Update()
     {
+        CalculateAABB();
+
         if (currentAction >= 0)
             actions[currentAction].UpdateAction();
+    }
+
+    private void CalculateAABB()
+    {
+        Vector3 baseUnitPos = controlledUnits[0].transform.position;
+        float baseAttakDist = controlledUnits[0].GetUnitData.AttackDistanceMax * 1.5f;
+        float minX = baseUnitPos.x - baseAttakDist;
+        float maxX = baseUnitPos.x + baseAttakDist;
+        float minY = baseUnitPos.z - baseAttakDist;
+        float maxY = baseUnitPos.z + baseAttakDist;
+
+        for ( int i = 1; i <  controlledUnits.Count; ++i)
+        {
+            Vector3 unitPos = controlledUnits[i].transform.position;
+            float attakDist = controlledUnits[i].GetUnitData.AttackDistanceMax * 1.5f;
+            if (unitPos.x - attakDist < minX)
+                minX = unitPos.x - attakDist;
+            
+            if(unitPos.x + attakDist > maxX)
+                maxX = unitPos.x + attakDist;
+
+            if (unitPos.z - attakDist < minY)
+                minY = unitPos.z - attakDist;
+            
+            if (unitPos.z + attakDist > maxY)
+                maxY = unitPos.z + attakDist;
+        }
+
+        AABB[0] = new Vector3(minX, baseUnitPos.y, minY);
+        AABB[1] = new Vector3(maxX, baseUnitPos.y, minY);
+        AABB[2] = new Vector3(maxX, baseUnitPos.y, maxY);
+        AABB[3] = new Vector3(minX, baseUnitPos.y, maxY);
+        Vector3 AABBCenter = (AABB[0] + AABB[1] + AABB[2] + AABB[3]) / 4f;
+
+        //todo layer
+        List<RaycastHit> hitObj = new List<RaycastHit>(Physics.BoxCastAll(AABBCenter
+            , new Vector3((AABB[1] - AABB[0]).magnitude * 0.5f, 3f, (AABB[2] - AABB[1]).magnitude * 0.5f)
+            , Vector3.up/*, Quaternion.identity, float.MaxValue, layer*/));
+
+        enemiesInSight.Clear();
+        foreach (RaycastHit hit in hitObj)
+        {
+            Unit unitInSight = null;
+            if(hit.rigidbody && hit.rigidbody.gameObject.TryGetComponent<Unit>(out unitInSight) && unitInSight.GetTeam() != controlledUnits[0].GetTeam())
+                enemiesInSight.Add(unitInSight);
+        }
     }
 
     public void DrawGizmo()
     {
         if (currentAction >= 0)
             actions[currentAction].DrawGizmo();
+
+        Gizmos.color = Color.yellow;
+        foreach (Vector3 v in AABB)
+            Gizmos.DrawCube(v, Vector3.one + Vector3.up * 3);
+
+        Gizmos.color = Color.red;
+        foreach (Unit unitInSight in enemiesInSight)
+            Gizmos.DrawCube(unitInSight.transform.position + Vector3.up * 2f, Vector3.one + Vector3.up);
     }
     #endregion
 }
