@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[Serializable]
 public class Squad
 {
+    public int exerttest;
     public int GetNbUnit { get { return controlledUnits.Count; } }
 
     //return a copy
@@ -71,7 +71,7 @@ public class Squad
             //remove unit of squad on its death 
             unit.OnDeadEvent += () =>
             {
-                RemoveUnit(unit, controller);
+                RemoveUnit(unit, controller, true);
             };
         }
 
@@ -113,14 +113,17 @@ public class Squad
 
             if (currentStyle == FormationStyle.None)
             {
-                //remove freestyle pos of this unit
-                freestyleFormationPos.RemoveAt(index);
-
-                //re compute freestyle pos
-                Vector3 averagePos = GetSquadAveragePos();
-                for (int i = 0; i < controlledUnits.Count; ++i)
+                if (freestyleFormationPos.Count > 0)
                 {
-                    freestyleFormationPos[i] = controlledUnits[i].transform.position - averagePos;
+                    //remove freestyle pos of this unit
+                    freestyleFormationPos.RemoveAt(index);
+
+                    //re compute freestyle pos
+                    Vector3 averagePos = GetSquadAveragePos();
+                    for (int i = 0; i < controlledUnits.Count; ++i)
+                    {
+                        freestyleFormationPos[i] = controlledUnits[i].transform.position - averagePos;
+                    }
                 }
             }
         }

@@ -150,16 +150,7 @@ public class SquadMoveTo : SquadAction
     }
 
     public override void DrawGizmo()
-    {
-        Gizmos.color = Color.green;
-        for (int i = 0; i < staticPath.corners.Count(); ++i)
-        {
-            if(i >= currentIndex)
-                Gizmos.color = Color.red;
-
-            Gizmos.DrawWireSphere(staticPath.corners[i], 2f);
-        }
-
+    { 
         foreach (Vector3 v in arrivedPos)
             Gizmos.DrawCube(v, Vector3.one + Vector3.up * 3f);
 
