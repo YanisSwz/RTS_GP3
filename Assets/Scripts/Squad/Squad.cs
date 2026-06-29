@@ -174,9 +174,9 @@ public class Squad
     private void AbortAction()
     {
         Debug.Log("Abort sequence");
-        currentAction = -1;
+        //currentAction = -1;
         OnAllActionsCompleted.Invoke(this);
-        actions.Clear();
+        //actions.Clear();
     }
 
     private void NextAction()

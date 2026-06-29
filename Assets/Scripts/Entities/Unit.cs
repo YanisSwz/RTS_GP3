@@ -99,10 +99,13 @@ public class Unit : BaseEntity
         // Attack / repair task debug test $$$ to be removed for AI implementation
         if (EntityTarget != null)
         {
-            if (EntityTarget.GetTeam() != GetTeam())
-                ComputeAttack();
-            else
+            if (EntityTarget.GetTeam() == GetTeam())
                 ComputeRepairing();
+
+            //if (EntityTarget.GetTeam() != GetTeam())
+            //    ComputeAttack();
+            //else
+            //    ComputeRepairing();
         }
 	}
     #endregion
@@ -196,16 +199,21 @@ public class Unit : BaseEntity
     }
 
     // Targetting Task - attack
-    public void SetAttackTarget(BaseEntity target)
+    public bool SetAttackTarget(BaseEntity target)
     {
-        if (CanAttack(target) == false)
-            return;
+        //check distance
+        if (target.GetTeam() == GetTeam() || CanAttack(target) == false)
+        {
+            //go to idle because order failed
+            CancelSquadOrder();
+            return false;
+        }
 
-        if (CaptureTarget != null)
-            StopCapture();
+        EntityTarget = target;
 
-        if (target.GetTeam() != GetTeam())
-            StartAttacking(target);
+        AttackOrder attackOrder = new AttackOrder();
+        SquadOrder = attackOrder;
+        return true;
     }
 
     // Targetting Task - capture
@@ -256,14 +264,14 @@ public class Unit : BaseEntity
     }
 
     // Attack Task
-    public void StartAttacking(BaseEntity target)
-    {
-        EntityTarget = target;
-    }
-    public void ComputeAttack()
+   
+    public bool ComputeAttack()
     {
         if (CanAttack(EntityTarget) == false)
-            return;
+        {
+            EntityTarget = null;
+            return false;
+        }
 
         if (NavMeshAgent)
             NavMeshAgent.isStopped = true;
@@ -289,6 +297,7 @@ public class Unit : BaseEntity
             int damages = Mathf.FloorToInt(UnitData.DPS * UnitData.AttackFrequency);
             EntityTarget.AddDamage(damages);
         }
+        return true;
     }
     public bool CanCapture(TargetBuilding target)
     {
