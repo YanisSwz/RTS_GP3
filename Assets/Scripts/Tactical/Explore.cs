@@ -13,17 +13,20 @@ public class Explore : Dispatch
     {
         base.Enter(owner, power);
 
-        Vector3? test = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, new Vector3(1f, 0f, -1f), radius, 90f, tolerance);
-        if (test.HasValue)
+        foreach (SquadLeader leader in owner.Leaders)
         {
-            targetPosition = test.Value;
-            ExploreLeaderAction exploreAction = new ExploreLeaderAction();
-            exploreAction.exploreDest = targetPosition;
-            exploreAction.exploreRadius = patrolRadius;
-            exploreAction.tolerenceRadius = tolerance;
-            exploreAction.Init(owner.Leaders[0]);
-            
-            owner.Leaders[0].GiveGeneralOrder(exploreAction);
+           Vector3? test = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, new Vector3(1f, 0f, -1f), radius, 90f, tolerance);
+            if (test.HasValue)
+            {
+                targetPosition = test.Value;
+                ExploreLeaderAction exploreAction = new ExploreLeaderAction();
+                exploreAction.exploreDest = targetPosition;
+                exploreAction.exploreRadius = patrolRadius;
+                exploreAction.tolerenceRadius = tolerance;
+                exploreAction.Init(leader);
+
+                leader.GiveGeneralOrder(exploreAction);
+            }
         }
 
         isComplete = true;

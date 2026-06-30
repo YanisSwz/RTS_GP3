@@ -7,10 +7,8 @@ public class FormSquad : GeneralAction
 {
     [SerializeField]
     private SquadDataPreset squadData = null;
-
-    [SerializeField]
-    private List<Unit> squadUnits = null;
-
+    
+    private List<Unit> squadUnits = new List<Unit>();
     private Dictionary<int, int> unitsToRecruit = new Dictionary<int, int>();
     private int squadSize = 0;
     private int squadCost = 0;
@@ -21,9 +19,8 @@ public class FormSquad : GeneralAction
     {
         base.Enter(owner, power);
 
-        squadUnits.Clear();
-        squadSize = 0;
-        minUnitCost = int.MaxValue;
+        Reset();
+
         unitsToRecruit = squadData.squadData.GetUnits;
         EvaluateSquadCost(owner.GetController, power);
     }
@@ -100,11 +97,11 @@ public class FormSquad : GeneralAction
     {
         if (squadUnits.Count == squadSize && (currentSquadBudget < minUnitCost || owner.GetController.TotalBuildPoints == 0))
         {
-            if(squadSize == 0)
+            if (squadSize == 0)
             {
-                isComplete = true;
+                Reset();
                 return;
-            }    
+            }
 
             Squad squad = new Squad();
             squad.LinePoses = squadData.squadData.Lines;
@@ -114,8 +111,20 @@ public class FormSquad : GeneralAction
             leader.GiveSquad(squad, owner);
             owner.AddLeader(leader);
 
+            //Vector3 rallyPoint = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, 100f);
+
+            Reset();
             isComplete = true;
         }
+    }
+
+    private void Reset() 
+    {
+        squadUnits.Clear();
+        squadSize = 0;
+        squadCost = 0;
+        currentSquadBudget = 0;
+        minUnitCost = int.MaxValue;
     }
 
     private void AddUnit(Unit unit)
