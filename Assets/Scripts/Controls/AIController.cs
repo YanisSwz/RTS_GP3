@@ -57,10 +57,7 @@ public sealed class AIController : UnitController
         SelectedFactory = FactoryList[0];
     }
 
-    public override void AddUnit(Unit unit)
-    {
-        base.AddUnit(unit);
-    }
+ 
 
     protected override void Update()
     {
@@ -105,6 +102,11 @@ public sealed class AIController : UnitController
     }
 
     #endregion
+
+    public override void AddUnit(Unit unit)
+    {
+        base.AddUnit(unit);
+    }
 
     public override void CaptureTarget(int points, TargetBuilding lab)
     {

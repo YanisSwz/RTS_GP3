@@ -11,12 +11,12 @@ public enum GoalType
 }
 
 [System.Serializable]
-public struct GoalSequence 
+public struct GoalSequence
 {
-    public GoalSequence(GoalType _goalType, List<GeneralAction> _actions) 
+    public GoalSequence(GoalType _goalType, List<GeneralAction> _actions)
     {
         goalType = _goalType;
-        actions = new (_actions);
+        actions = new(_actions);
     }
 
     public GoalType goalType;
@@ -35,58 +35,63 @@ public class General
     public Goal CurrentGoal { get { return currentGoal; } }
 
     public List<GoalSequence> sequences = new List<GoalSequence>();
-    public List<GeneralAction> actions = new List<GeneralAction>();
+    private List<GeneralAction> actions = new List<GeneralAction>();
     private List<SquadLeader> leaders = new List<SquadLeader>();
     public List<SquadLeader> Leaders { get { return leaders; } }
-    public void AddLeader(SquadLeader leader) 
+    public void AddLeader(SquadLeader leader)
     {
         leaders.Add(leader);
     }
 
-    public void SetOwner(AIController controller) 
+    public void SetOwner(AIController controller)
     {
         owner = controller;
     }
 
-    public void SetGoal(Goal goal) 
+    public void SetGoal(Goal goal)
     {
-        if(goal == currentGoal)
+        if (goal == currentGoal)
         {
             currentGoal.SetUtility(goal.Utility);
             currentPower = currentGoal.Utility;
             return;
         }
 
-        int index = sequences.FindIndex(x => x.goalType == goal.Type);
-        if(index != -1) 
+        if (currentGoal == null)
         {
-            actions = sequences[index].actions;
-            if (actions.Count > 0)
+            int index = sequences.FindIndex(x => x.goalType == goal.Type);
+            if (index != -1)
             {
-                currentActionIndex = 0;
-                currentGoal = goal;
-                currentPower = currentGoal.Utility;
-                actions[currentActionIndex].Enter(this, currentPower);
+                actions = sequences[index].actions;
+                if (actions.Count > 0)
+                {
+                    currentActionIndex = 0;
+                    currentGoal = goal;
+                    currentPower = currentGoal.Utility;
+                    actions[currentActionIndex].Enter(this, currentPower);
+                }
             }
         }
     }
 
     public void LeaderActionCompleted(SquadLeader leader)
     {
-        List<SquadAction> actions = new List<SquadAction>();
+        List<SquadAction> squadActions = new List<SquadAction>();
         SquadMoveTo moveTo = new SquadMoveTo();
         moveTo.Init(leader.Squad, GameServices.GetRandomPoint(owner.GetFactoryList[0].transform.position, Vector3.forward, 30, 360, 50f).Value, 1f);
-        actions.Add(moveTo);
-        leader.Squad.GiveActions(actions);
+        squadActions.Add(moveTo);
+        leader.Squad.GiveActions(squadActions);
 
         leader.Squad.DestroySquad(GetController);
 
         leaders.Remove(leader);
+
+        actions[currentActionIndex].Complete();
     }
 
     public void UpdateSequence()
     {
-        if (currentActionIndex == -1 || currentActionIndex >= actions.Count)
+        if (currentActionIndex == -1)
         {
             return;
         }
@@ -96,6 +101,7 @@ public class General
             ++currentActionIndex;
             if (currentActionIndex >= actions.Count)
             {
+                currentGoal = null;
                 return;
             }
 

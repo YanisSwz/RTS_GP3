@@ -8,26 +8,29 @@ public class Capture : Dispatch
     {
         base.Enter(owner, power);
 
-        TargetBuilding targetLab = null;
-
-        float bestDistance = Mathf.Infinity;
-        Vector3 basePos = owner.Leaders[0].Squad.GetSquadAveragePos();
-        foreach (TargetBuilding lab in owner.GetController.discoveredLabs)
+        foreach (SquadLeader leader in owner.Leaders)
         {
-            float dist = Vector3.Distance(basePos, lab.transform.position);
-            if (dist < bestDistance)
+            TargetBuilding targetLab = null;
+
+            float bestDistance = Mathf.Infinity;
+            Vector3 basePos = leader.Squad.GetSquadAveragePos();
+            foreach (TargetBuilding lab in owner.GetController.discoveredLabs)
             {
-                bestDistance = dist;
-                targetObject = lab.gameObject;
-                targetLab = lab;
+                float dist = Vector3.Distance(basePos, lab.transform.position);
+                if (dist < bestDistance)
+                {
+                    bestDistance = dist;
+                    targetObject = lab.gameObject;
+                    targetLab = lab;
+                }
             }
+
+            CaptureLeaderAction captureLeaderAction = new CaptureLeaderAction();
+            captureLeaderAction.targetCapture = targetLab;
+            captureLeaderAction.Init(leader);
+
+            //send action
+            leader.GiveGeneralOrder(captureLeaderAction);
         }
-
-        CaptureLeaderAction captureLeaderAction = new CaptureLeaderAction();
-        captureLeaderAction.targetCapture = targetLab;
-        captureLeaderAction.Init(owner.Leaders[0]);
-
-        //send action
-        owner.Leaders[0].GiveGeneralOrder(captureLeaderAction);
     }
 }
