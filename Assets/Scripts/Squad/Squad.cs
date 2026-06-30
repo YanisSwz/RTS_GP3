@@ -143,6 +143,9 @@ public class Squad
                     }
                 }
             }
+
+            if (currentAction >= 0)
+                actions[currentAction].RecomputeAction(index);
         }
     }
 
