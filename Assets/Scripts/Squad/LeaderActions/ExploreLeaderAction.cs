@@ -17,16 +17,6 @@ public class ExploreLeaderAction : LeaderAction
         leader.Squad.OnAllActionsCompleted.AddListener(NextDestToSearch);
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-        List<Unit> units = leader.Squad.GetControlledUnits;
-        foreach (Unit unit in units)
-        {
-            unit.SquadOrder = null;
-        }
-    }
-
     private void ExplorationCompleted(TargetBuilding target)
     {
         OnCompleted.Invoke();

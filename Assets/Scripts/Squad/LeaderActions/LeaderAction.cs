@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -20,5 +21,8 @@ public abstract class LeaderAction
 
     virtual public void Exit()
     {
+        List<Unit> units = leader.Squad.GetControlledUnits;
+        foreach (Unit unit in units)
+            unit.SquadOrder = null;
     }
 }
