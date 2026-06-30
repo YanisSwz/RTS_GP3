@@ -152,7 +152,6 @@ public class Unit : BaseEntity
     {
         if (NavMeshAgent)
         {
-            NavMeshAgent.SetDestination(transform.position);
             NavMeshAgent.isStopped = true;
         }
     }
@@ -185,17 +184,28 @@ public class Unit : BaseEntity
     public void SetTargetPos(Vector3 pos, float StoppingDistance = -1f, bool stopOnArrived = false)
     {
         //already go here
-        if (MoveToTarget == pos && squadOrder as MoveOrder != null)
+        MoveOrder isMoveOrder = squadOrder as MoveOrder;
+        if (MoveToTarget == pos && isMoveOrder != null)
             return;
 
         MoveToTarget = pos;
 
         StoppingDistance = (StoppingDistance < NavMeshAgent.stoppingDistance) ? NavMeshAgent.stoppingDistance : StoppingDistance;
 
-        MoveOrder moveOrder = new MoveOrder();
-        moveOrder.StoppingDistance = StoppingDistance;
-        moveOrder.stopOnArrived = stopOnArrived;
-        SquadOrder = moveOrder;
+        //update current moveTo
+        if (isMoveOrder != null)
+        {
+            isMoveOrder.StoppingDistance = StoppingDistance;
+            isMoveOrder.stopOnArrived = stopOnArrived;
+            isMoveOrder.Enter(this);
+        }
+        else
+        {
+            MoveOrder moveOrder = new MoveOrder();
+            moveOrder.StoppingDistance = StoppingDistance;
+            moveOrder.stopOnArrived = stopOnArrived;
+            SquadOrder = moveOrder;
+        }
     }
 
     // Targetting Task - attack

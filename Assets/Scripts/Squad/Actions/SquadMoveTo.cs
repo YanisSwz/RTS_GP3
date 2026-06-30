@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class SquadMoveTo : SquadAction
 {
     //staticPath
-    int currentIndex = 0;
     NavMeshPath staticPath = new NavMeshPath();
 
     bool IsStaticPath = false;
@@ -31,7 +30,7 @@ public class SquadMoveTo : SquadAction
         base.Init(_squad, _movingTarget, _distanceToTarget);
         IsStaticPath = false;
     }
-
+   
     public override void StartAction()
     {
         Debug.Log("Squad Start Moving to target");

@@ -29,6 +29,12 @@ public abstract class SquadAction
         movingTarget = _movingTarget;
         distanceToTarget = _distanceToTarget;
     }
+
+    virtual public void RecomputeAction(int indexUnitRemoved)
+    {
+
+    }
+
     virtual public void StartAction()
     {
     }

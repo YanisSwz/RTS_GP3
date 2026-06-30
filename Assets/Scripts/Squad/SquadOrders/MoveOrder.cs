@@ -1,6 +1,7 @@
 using System.Net;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.UI.CanvasScaler;
 
 public class MoveOrder : SquadOrder
@@ -15,11 +16,10 @@ public class MoveOrder : SquadOrder
     int nbTry = 3;
     public override void Enter(Unit unit)
     {
-        Debug.Log(unit.gameObject.name + " start move to order");
         base.Enter(unit);
+        nbTry = 0;
         prevDest = unit.GetDestination();
         GetEndPos(unit);
-
         unit.MoveTo(unit.MoveToTarget);
     }
 
@@ -47,7 +47,6 @@ public class MoveOrder : SquadOrder
 
     public override void Exit(Unit unit) 
     {
-        Debug.Log(unit.gameObject.name + " arrived to target pos");
         base.Exit(unit);
         if(stopOnArrived)
             unit.StopMoving();

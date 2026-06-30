@@ -59,8 +59,6 @@ public class SquadAttack : SquadAction
             ++keyIndex;
             baseAngle += angleInrease;
         }
-
-        //GiveTarget();
     }
     public override void ExitAction()
     {

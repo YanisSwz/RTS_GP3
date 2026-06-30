@@ -14,6 +14,12 @@ public class SquadCapture : SquadAction
         staticTarget = _movingTarget.transform.position;
     }
 
+    public override void RecomputeAction(int indexUnitRemoved)
+    {
+        base.RecomputeAction(indexUnitRemoved);
+        captureFormation.RemoveAt(indexUnitRemoved);
+    }
+
     public override void StartAction()
     {
         Debug.Log("Start Capture");
