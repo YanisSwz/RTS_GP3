@@ -41,11 +41,6 @@ public class SquadLeader
     {
         GiveGeneralOrder(null);
 
-        //List<SquadAction> actions = new List<SquadAction>();
-        //Squad.GiveActions(actions);
-        
-        Squad.DestroySquad(general.GetController);
-
         OnActionComplete.Invoke(this);
     }
 
