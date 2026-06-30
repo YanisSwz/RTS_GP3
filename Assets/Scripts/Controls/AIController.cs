@@ -151,18 +151,43 @@ public sealed class AIController : UnitController
 
     public UnityEvent<Unit> RecruitUnit(int unitType) 
     {
+        SelectBestFactory(unitType);
+        return RequestUnitBuild(GetUnitFactoryIndex(unitType));
+    }
+
+    private int GetUnitFactoryIndex(int unitType)
+    {
+        for (int i = 0; i < SelectedFactory.AvailableUnitsCount; ++i)
+        {
+            if (SelectedFactory.GetBuildableUnitData(i).TypeId == unitType)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void SelectBestFactory(int unitType) 
+    {
+        Factory bestFactory = FactoryList[0];
+        int bestQueueSize = int.MaxValue;
         foreach (Factory factory in FactoryList)
         {
             for (int i = 0; i < factory.AvailableUnitsCount; ++i)
             {
                 if (factory.GetBuildableUnitData(i).TypeId == unitType)
                 {
-                    return factory.RequestUnitBuild(i);
+                    if(factory.BuildingQueueSize < bestQueueSize)
+                    {
+                        bestFactory = factory;
+                        bestQueueSize = factory.BuildingQueueSize;
+                        break;
+                    }
                 }
             }
         }
 
-        return null;
+        SelectedFactory = bestFactory;
     }
 
     private void TimeOutMenaceMemoryClean()

@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 public class SquadLeader
 {
     Squad controlledSquad = null;
     General general = null;
     List<SquadAction> orders = new List<SquadAction>();
+
+    public Squad Squad { get { return controlledSquad; } }
 
     public void GiveSquad(Squad _controlledSquad, General owner)
     {

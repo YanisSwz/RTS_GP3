@@ -98,21 +98,20 @@ public class FormSquad : GeneralAction
 
     private void CheckSquadReadiness(General owner)
     {
-        if (squadUnits.Count == squadSize && currentSquadBudget < minUnitCost)
+        if (squadUnits.Count == squadSize && (currentSquadBudget < minUnitCost || owner.GetController.TotalBuildPoints == 0))
         {
+            if(squadSize == 0)
+            {
+                isComplete = true;
+                return;
+            }    
+
             Squad squad = new Squad();
             squad.FormSquad(owner.GetController, Squad.FormationStyle.None, squadUnits);
 
             SquadLeader leader = new SquadLeader();
             leader.GiveSquad(squad, owner);
             owner.AddLeader(leader);
-
-            // Actions test
-            List<SquadAction> actions = new List<SquadAction>();
-            SquadMoveTo moveTo = new SquadMoveTo();
-            moveTo.Init(squad, new Vector3(308f, 0f, 234f), 1f);
-            actions.Add(moveTo);
-            squad.GiveActions(actions);
 
             isComplete = true;
         }

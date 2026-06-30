@@ -15,10 +15,6 @@ MonoBehaviour:
   squadData:
     lines:
     - unitType: {fileID: 11400000, guid: 4f2d24809fd51e4469fbbdee459ac35d, type: 2}
-      numberOfUnits: 4
-      unitSpacing: 0
-      lineSpacing: 0
-    - unitType: {fileID: 11400000, guid: b4a2cf66d48b98043b5a7e8bfb7b27a4, type: 2}
       numberOfUnits: 2
       unitSpacing: 0
       lineSpacing: 0

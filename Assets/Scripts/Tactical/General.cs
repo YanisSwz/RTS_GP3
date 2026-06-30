@@ -36,8 +36,8 @@ public class General
 
     public List<GoalSequence> sequences = new List<GoalSequence>();
     public List<GeneralAction> actions = new List<GeneralAction>();
-    public List<SquadLeader> leaders = new List<SquadLeader>();
-
+    private List<SquadLeader> leaders = new List<SquadLeader>();
+    public List<SquadLeader> Leaders { get { return leaders; } }
     public void AddLeader(SquadLeader leader) 
     {
         leaders.Add(leader);
