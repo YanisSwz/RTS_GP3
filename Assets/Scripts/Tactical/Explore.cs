@@ -28,7 +28,5 @@ public class Explore : Dispatch
                 leader.GiveGeneralOrder(exploreAction);
             }
         }
-
-        isComplete = true;
     }
 }
