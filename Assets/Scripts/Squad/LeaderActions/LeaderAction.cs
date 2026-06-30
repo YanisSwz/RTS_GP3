@@ -6,6 +6,8 @@ public abstract class LeaderAction
     protected SquadLeader leader;
     public UnityEvent OnCompleted = new UnityEvent();
 
+
+
     virtual public void Init(SquadLeader _leader)
     {
         leader = _leader;
@@ -18,10 +20,5 @@ public abstract class LeaderAction
 
     virtual public void Exit()
     {
-    }
-
-    virtual public void Update()
-    {
-
     }
 }

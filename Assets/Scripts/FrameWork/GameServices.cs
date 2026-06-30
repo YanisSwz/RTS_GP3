@@ -115,6 +115,19 @@ public class GameServices : MonoBehaviour
         return prices;
 
     }
+
+    static public Vector3? GetRandomPoint(Vector3 position, float radius, float angle, float tolerance)
+    {
+        Vector3 randomDirection = Quaternion.AngleAxis(Random.Range(0f, angle), Vector3.up) * Vector3.right;
+        Vector3 randomPosition = position + randomDirection * radius;
+
+        NavMeshHit hit;
+        Vector3? finalPosition = null;
+        if (NavMesh.SamplePosition(randomPosition, out hit, tolerance, 1))
+            finalPosition = hit.position;
+
+        return finalPosition;
+    }
     #endregion
 
     #region MonoBehaviour methods

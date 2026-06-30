@@ -38,6 +38,8 @@ public class General
     public List<GeneralAction> actions = new List<GeneralAction>();
     private List<SquadLeader> leaders = new List<SquadLeader>();
     public List<SquadLeader> Leaders { get { return leaders; } }
+
+    private List<SquadLeader> squadToRelease = new List<SquadLeader>();
     public void AddLeader(SquadLeader leader) 
     {
         leaders.Add(leader);
@@ -71,8 +73,20 @@ public class General
         }
     }
 
+    public void LeaderActionCompleted(SquadLeader leader)
+    {
+        squadToRelease.Add(leader);
+        Debug.LogError("Lab in sight");
+    }
+
     public void UpdateSequence()
     {
+        if (squadToRelease.Count > 0)
+        {
+            foreach(SquadLeader squad in squadToRelease) 
+                squad.Squad.DestroySquad(owner);
+        }
+
         if (currentActionIndex == -1 || currentActionIndex >= actions.Count)
         {
             return;

@@ -6,7 +6,6 @@ using static UnityEngine.UI.CanvasScaler;
 
 public class Squad
 {
-    public int exerttest;
     public int GetNbUnit { get { return controlledUnits.Count; } }
 
     //return a copy
@@ -210,8 +209,8 @@ public class Squad
         if (actions.Count == currentAction)
         {
             currentAction = -1;
-            OnAllActionsCompleted.Invoke(this);
             actions.Clear();
+            OnAllActionsCompleted.Invoke(this);
             return;
         }
 
@@ -306,7 +305,7 @@ public class Squad
 
     public void DrawGizmo()
     {
-        if (currentAction >= 0)
+        if (currentAction >= 0 && actions.Count > 0)
             actions[currentAction].DrawGizmo();
 
         Gizmos.color = Color.yellow;
