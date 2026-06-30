@@ -50,7 +50,6 @@ public class Goal
     public GoalType Type { get { return type; } }
     public string Name { get { return type.ToString(); } }
     public float Utility { get { return utility; } }
-
     public void SetUtility(float newUtility) { utility = newUtility; }
 
     public void Evaluate(AIController controller)

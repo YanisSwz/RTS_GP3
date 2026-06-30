@@ -75,12 +75,14 @@ MonoBehaviour:
       - rid: 6691051209925328964
       - rid: 6691051209925328965
   - sequences:
-    - goalType: 1
-      actions:
-      - rid: 6691051209925328953
     - goalType: 4
       actions:
-      - rid: 6691051209925328954
+      - rid: 6691051209925328972
+      - rid: 6691051209925328973
+    - goalType: 3
+      actions:
+      - rid: 6691051209925328974
+      - rid: 6691051209925328975
   currentGoalName: none
   currentGoalUtility: -1
   discoveredLabs: []
@@ -98,15 +100,6 @@ MonoBehaviour:
       type: {class: FormSquad, ns: , asm: Assembly-CSharp}
       data:
         squadData: {fileID: 11400000, guid: 3178416a38fe565459394d2105c47bdc, type: 2}
-        squadUnits: []
-    - rid: 6691051209925328953
-      type: {class: Build, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 6691051209925328954
-      type: {class: FormSquad, ns: , asm: Assembly-CSharp}
-      data:
-        squadData: {fileID: 11400000, guid: 0fd68c5b8533c7c49a1eba317ae947ca, type: 2}
-        squadUnits: []
     - rid: 6691051209925328956
       type: {class: Explore, ns: , asm: Assembly-CSharp}
       data:
@@ -117,7 +110,23 @@ MonoBehaviour:
       type: {class: FormSquad, ns: , asm: Assembly-CSharp}
       data:
         squadData: {fileID: 11400000, guid: 3178416a38fe565459394d2105c47bdc, type: 2}
-        squadUnits: []
     - rid: 6691051209925328965
+      type: {class: Capture, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6691051209925328972
+      type: {class: FormSquad, ns: , asm: Assembly-CSharp}
+      data:
+        squadData: {fileID: 11400000, guid: 3178416a38fe565459394d2105c47bdc, type: 2}
+    - rid: 6691051209925328973
+      type: {class: Explore, ns: , asm: Assembly-CSharp}
+      data:
+        radius: 100
+        tolerance: 50
+        patrolRadius: 40
+    - rid: 6691051209925328974
+      type: {class: FormSquad, ns: , asm: Assembly-CSharp}
+      data:
+        squadData: {fileID: 11400000, guid: 3178416a38fe565459394d2105c47bdc, type: 2}
+    - rid: 6691051209925328975
       type: {class: Capture, ns: , asm: Assembly-CSharp}
       data: 

@@ -11,12 +11,12 @@ public enum GoalType
 }
 
 [System.Serializable]
-public struct GoalSequence 
+public struct GoalSequence
 {
-    public GoalSequence(GoalType _goalType, List<GeneralAction> _actions) 
+    public GoalSequence(GoalType _goalType, List<GeneralAction> _actions)
     {
         goalType = _goalType;
-        actions = new (_actions);
+        actions = new(_actions);
     }
 
     public GoalType goalType;
@@ -38,19 +38,19 @@ public class General
     public List<GeneralAction> actions = new List<GeneralAction>();
     private List<SquadLeader> leaders = new List<SquadLeader>();
     public List<SquadLeader> Leaders { get { return leaders; } }
-    public void AddLeader(SquadLeader leader) 
+    public void AddLeader(SquadLeader leader)
     {
         leaders.Add(leader);
     }
 
-    public void SetOwner(AIController controller) 
+    public void SetOwner(AIController controller)
     {
         owner = controller;
     }
 
-    public void SetGoal(Goal goal) 
+    public void SetGoal(Goal goal)
     {
-        if(goal == currentGoal)
+        if (goal == currentGoal)
         {
             currentGoal.SetUtility(goal.Utility);
             currentPower = currentGoal.Utility;
@@ -58,7 +58,7 @@ public class General
         }
 
         int index = sequences.FindIndex(x => x.goalType == goal.Type);
-        if(index != -1) 
+        if (index != -1)
         {
             actions = sequences[index].actions;
             if (actions.Count > 0)

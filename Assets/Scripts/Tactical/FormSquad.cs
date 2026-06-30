@@ -7,7 +7,7 @@ public class FormSquad : GeneralAction
 {
     [SerializeField]
     private SquadDataPreset squadData = null;
-
+    
     private List<Unit> squadUnits = new List<Unit>();
     private Dictionary<int, int> unitsToRecruit = new Dictionary<int, int>();
     private int squadSize = 0;
@@ -109,6 +109,8 @@ public class FormSquad : GeneralAction
             SquadLeader leader = new SquadLeader();
             leader.GiveSquad(squad, owner);
             owner.AddLeader(leader);
+
+            //Vector3 rallyPoint = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, 100f);
 
             Reset();
             isComplete = true;
