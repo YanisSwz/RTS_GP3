@@ -9,6 +9,7 @@ public class Squad
     public int GetNbUnit { get { return controlledUnits.Count; } }
 
     private bool isDestroyed = false;
+    public UnityEvent<Squad> OnSquadKilled = new UnityEvent<Squad>();
 
     //return a copy
     public List<Unit> GetControlledUnits { get { return new List<Unit>(controlledUnits); } }
@@ -130,6 +131,7 @@ public class Squad
             if (controlledUnits.Count == 0)
             {
                 DestroySquad(controller);
+                OnSquadKilled.Invoke(this);
                 return;
             }
 

@@ -19,8 +19,16 @@ public class SquadLeader
         OnActionComplete.AddListener(general.LeaderActionCompleted);
         controlledSquad = _controlledSquad;
 
+        controlledSquad.OnSquadKilled.AddListener(SquadKilled);
         controlledSquad.OnEnemyInSight.AddListener(EnemiesInSightCallback);
         controlledSquad.OnLabInSight.AddListener(LabInSightCallback);
+    }
+
+    private void SquadKilled(Squad squad)
+    {
+        Debug.Log("squad killed");
+        controlledSquad = null;
+        DestroyLeader();
     }
 
     public void GiveGeneralOrder(LeaderAction action)

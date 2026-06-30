@@ -21,6 +21,9 @@ public abstract class LeaderAction
 
     virtual public void Exit()
     {
+        if (leader.Squad == null)
+            return;
+
         List<Unit> units = leader.Squad.GetControlledUnits;
         foreach (Unit unit in units)
             unit.SquadOrder = null;

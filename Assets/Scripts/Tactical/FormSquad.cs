@@ -106,7 +106,7 @@ public class FormSquad : GeneralAction
             }
 
             Squad squad = new Squad();
-            squad.LinePoses = squadData.squadData.Lines;
+            squad.LinePoses = new List<Line>(squadData.squadData.Lines);
             squad.FormSquad(owner.GetController, Squad.FormationStyle.Line, squadUnits);
 
             SquadLeader leader = new SquadLeader();
@@ -115,7 +115,6 @@ public class FormSquad : GeneralAction
 
             if (recruited)
             {
-                Debug.LogError("Go to rally");
                 Vector3? rallyPoint = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, Vector3.right + Vector3.back, 60f, 45f, 35f);
                 if (rallyPoint.HasValue)
                 {

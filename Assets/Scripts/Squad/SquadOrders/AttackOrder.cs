@@ -12,6 +12,7 @@ public class AttackOrder : SquadOrder
     public override void Exit(Unit unit)
     {
         base.Exit(unit);
+        unit.EntityTarget = null;
     }
 
     public override void Update(Unit unit)

@@ -76,13 +76,16 @@ public class General
 
     public void LeaderActionCompleted(SquadLeader leader)
     {
-        List<SquadAction> squadActions = new List<SquadAction>();
-        SquadMoveTo moveTo = new SquadMoveTo();
-        moveTo.Init(leader.Squad, GameServices.GetRandomPoint(owner.GetFactoryList[0].transform.position, Vector3.forward, 30, 360, 50f).Value, 1f);
-        squadActions.Add(moveTo);
-        leader.Squad.GiveActions(squadActions);
+        if (leader.Squad != null)
+        {
+            List<SquadAction> squadActions = new List<SquadAction>();
+            SquadMoveTo moveTo = new SquadMoveTo();
+            moveTo.Init(leader.Squad, GameServices.GetRandomPoint(owner.GetFactoryList[0].transform.position, Vector3.forward, 30, 360, 50f).Value, 1f);
+            squadActions.Add(moveTo);
+            leader.Squad.GiveActions(squadActions);
 
-        leader.Squad.DestroySquad(GetController);
+            leader.Squad.DestroySquad(GetController);
+        }
 
         leaders.Remove(leader);
 
