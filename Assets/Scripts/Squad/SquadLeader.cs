@@ -9,6 +9,8 @@ public class SquadLeader
     General general = null;
     LeaderAction generalOrder = null;
 
+    bool arrivedToRallyPoint = false;
+
     public UnityEvent<SquadLeader> OnActionComplete = new UnityEvent<SquadLeader>();
 
     public Squad Squad { get { return controlledSquad; } }
@@ -19,8 +21,20 @@ public class SquadLeader
         OnActionComplete.AddListener(general.LeaderActionCompleted);
         controlledSquad = _controlledSquad;
 
+        //callback arrive to rally point
+        controlledSquad.OnAllActionsCompleted.AddListener(SquadArrivedToRallyPoint);
+
         controlledSquad.OnEnemyInSight.AddListener(EnemiesInSightCallback);
         controlledSquad.OnLabInSight.AddListener(LabInSightCallback);
+    }
+
+    public void SquadArrivedToRallyPoint(Squad squad)
+    {
+        arrivedToRallyPoint = true;
+        squad.OnAllActionsCompleted.RemoveListener(SquadArrivedToRallyPoint);
+
+        generalOrder.Enter();
+        generalOrder.OnCompleted.AddListener(ActionComplete);
     }
 
     public void GiveGeneralOrder(LeaderAction action)
@@ -30,7 +44,7 @@ public class SquadLeader
 
         generalOrder = action;
 
-        if (generalOrder != null)
+        if (generalOrder != null && arrivedToRallyPoint)
         {
             generalOrder.Enter();
             generalOrder.OnCompleted.AddListener(ActionComplete);
@@ -41,6 +55,7 @@ public class SquadLeader
         GiveGeneralOrder(null);
         OnActionComplete.Invoke(this);
     }
+
     private void ActionComplete()
     {
         DestroyLeader();
