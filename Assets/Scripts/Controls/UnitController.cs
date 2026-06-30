@@ -249,6 +249,7 @@ public class UnitController : MonoBehaviour
     {
         foreach (Squad squad in squadsToRemove)
             squads.Remove(squad);
+        squadsToRemove.Clear();
 
         foreach (Squad squad in squads)
             squad.Update(this);

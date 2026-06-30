@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class SquadAttack : SquadAction
 {
@@ -77,20 +78,18 @@ public class SquadAttack : SquadAction
                 //todo switch target
                 if (unit.EntityTarget == null)
                 {
-                    if(enemyBaseTarget)
-                        unit.SetAttackTarget(enemyBaseTarget);
-                    else
+                    BaseEntity target = enemyBaseTarget != null ? enemyBaseTarget : PickNearestEnemy(unit);
+
+                    if(target != null)
                     {
-                        Unit target = PickNearestEnemy(unit);
-                        if(target != null)
+                        if(unit.SetAttackTarget(target) == false)
                         {
-                            if(unit.CanAttack(target))
-                                unit.SetAttackTarget(target);
-                            //else
-                                //todo move to
+                            unit.SetTargetPos(target.transform.position, unit.GetUnitData.AttackDistanceMax * 0.5f);
                         }
                     }
                 }
+                else
+                    unit.SetTargetPos(unit.EntityTarget.transform.position, unit.GetUnitData.AttackDistanceMax * 0.5f);
             }
         }
     }

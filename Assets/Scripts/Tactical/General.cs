@@ -94,7 +94,7 @@ public class General
 
     public void UpdateSequence()
     {
-        if (currentActionIndex == -1)
+        if (currentActionIndex == -1 || actions.Count == 0)
         {
             return;
         }
