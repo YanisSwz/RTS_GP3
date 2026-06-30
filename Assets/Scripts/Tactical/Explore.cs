@@ -15,12 +15,11 @@ public class Explore : Dispatch
         Vector3? test = GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, radius, 90f);
         if (test.HasValue)
         {
-            target = test.Value;
-            Debug.Log(target);
+            targetPosition = test.Value;
 
             List<SquadAction> actions = new List<SquadAction>();
             SquadMoveTo moveTo = new SquadMoveTo();
-            moveTo.Init(owner.Leaders[0].Squad, target, 1f);
+            moveTo.Init(owner.Leaders[0].Squad, targetPosition, 1f);
             actions.Add(moveTo);
             owner.Leaders[0].Squad.GiveActions(actions);
         }

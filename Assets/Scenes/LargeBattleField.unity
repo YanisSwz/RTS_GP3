@@ -3072,6 +3072,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2073166610}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2123643053 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114577780331047682, guid: 0d9616ec63050ca4fa2fc0cc793599d0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1531135451}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ebd48912a4e2a14d909c566d931e7fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2146023536
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3269,6 +3281,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
+      propertyPath: discoveredLabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
       propertyPath: 'availableUnits.Array.data[0]'
       value: 
       objectReference: {fileID: 0}
@@ -3324,6 +3341,11 @@ PrefabInstance:
       objectReference: {fileID: 1380018923}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
+      propertyPath: 'discoveredLabs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2123643053}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
       propertyPath: goals.Array.data[4].maxUtility
       value: 1
       objectReference: {fileID: 0}
@@ -3348,11 +3370,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 0fd68c5b8533c7c49a1eba317ae947ca,
         type: 2}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: managedReferences[6691051209925328956].radius
-      value: 250
-      objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
       propertyPath: captureGoal.armyPowerUtility.m_Curve.Array.size
