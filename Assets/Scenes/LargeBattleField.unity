@@ -3361,6 +3361,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
+      propertyPath: 'managedReferences[6691051209925328962]'
+      value: Assembly-CSharp Build
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
       propertyPath: goals.Array.data[4].activationThreshold
       value: 0.167
       objectReference: {fileID: 0}
