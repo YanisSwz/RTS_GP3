@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class SquadLeader
 {
@@ -39,6 +40,12 @@ public class SquadLeader
     private void ActionComplete()
     {
         GiveGeneralOrder(null);
+
+        //List<SquadAction> actions = new List<SquadAction>();
+        //Squad.GiveActions(actions);
+        
+        Squad.DestroySquad(general.GetController);
+
         OnActionComplete.Invoke(this);
     }
 

@@ -8,6 +8,8 @@ public class Squad
 {
     public int GetNbUnit { get { return controlledUnits.Count; } }
 
+    private bool isDestroyed = false;
+
     //return a copy
     public List<Unit> GetControlledUnits { get { return new List<Unit>(controlledUnits); } }
     List<Unit> controlledUnits = new List<Unit>();
@@ -150,6 +152,11 @@ public class Squad
 
     public void DestroySquad(UnitController controller)
     {
+        isDestroyed = true;
+
+        List<SquadAction> nullAction = new List<SquadAction>();
+        GiveActions(nullAction);
+
         freestyleFormationPos.Clear();
 
         AIController aiController = controller as AIController;
@@ -267,6 +274,9 @@ public class Squad
         enemiesInSight.Clear();
         foreach (RaycastHit hit in hitObj)
         {
+            if (isDestroyed)
+                return;
+
             Unit unitInSight = null;
             if (hit.rigidbody && hit.rigidbody.gameObject.TryGetComponent<Unit>(out unitInSight))
             {
