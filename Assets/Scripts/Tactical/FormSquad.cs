@@ -111,7 +111,15 @@ public class FormSquad : GeneralAction
             leader.GiveSquad(squad, owner);
             owner.AddLeader(leader);
 
-            //Vector3 rallyPoint = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, 100f);
+            Vector3? rallyPoint = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, Vector3.right + Vector3.back, 50f, 45f, 25f);
+            if (rallyPoint.HasValue)
+            {
+                List<SquadAction> action = new List<SquadAction>();
+                SquadMoveTo moveTo = new SquadMoveTo();
+                moveTo.Init(squad, rallyPoint.Value, 1f);
+                action.Add(moveTo);
+                squad.GiveActions(action);
+            }
 
             Reset();
             isComplete = true;
