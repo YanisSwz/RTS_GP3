@@ -70,6 +70,10 @@ MonoBehaviour:
       actions:
       - rid: 6691051187191939135
       - rid: 6691051209925328956
+    - goalType: 3
+      actions:
+      - rid: 6691051209925328959
+      - rid: 6691051209925328960
   - sequences:
     - goalType: 1
       actions:
@@ -107,3 +111,12 @@ MonoBehaviour:
       type: {class: Explore, ns: , asm: Assembly-CSharp}
       data:
         radius: 250
+        tolerance: 50
+    - rid: 6691051209925328959
+      type: {class: FormSquad, ns: , asm: Assembly-CSharp}
+      data:
+        squadData: {fileID: 11400000, guid: 3178416a38fe565459394d2105c47bdc, type: 2}
+        squadUnits: []
+    - rid: 6691051209925328960
+      type: {class: Capture, ns: , asm: Assembly-CSharp}
+      data: 

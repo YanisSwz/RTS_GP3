@@ -16,10 +16,9 @@ public class Explore : Dispatch
         Vector3? test = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, radius, 90f, tolerance);
         if (test.HasValue)
         {
-            target = test.Value;
-            Debug.Log(target);
+            targetPosition = test.Value;
             ExploreLeaderAction exploreAction = new ExploreLeaderAction();
-            exploreAction.exploreDest = target;
+            exploreAction.exploreDest = targetPosition;
             exploreAction.exploreRadius = patrolRadius;
             exploreAction.tolerenceRadius = tolerance;
             exploreAction.Init(owner.Leaders[0]);
