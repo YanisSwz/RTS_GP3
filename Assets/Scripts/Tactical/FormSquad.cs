@@ -111,7 +111,7 @@ public class FormSquad : GeneralAction
             leader.GiveSquad(squad, owner);
             owner.AddLeader(leader);
 
-            Vector3? rallyPoint = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, Vector3.right + Vector3.back, 50f, 45f, 25f);
+            Vector3? rallyPoint = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, Vector3.right + Vector3.back, 60f, 45f, 35f);
             if (rallyPoint.HasValue)
             {
                 List<SquadAction> action = new List<SquadAction>();
