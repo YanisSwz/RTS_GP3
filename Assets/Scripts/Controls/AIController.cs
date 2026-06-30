@@ -22,6 +22,7 @@ public sealed class AIController : UnitController
     public string currentGoalName = "none";
     public float currentGoalUtility = -1f;
     public List<TargetBuilding> discoveredLabs = new List<TargetBuilding>();
+    public List<Factory> discoveredEnemyFactories = new List<Factory>();
 
 
     [Header("--- Menace Memory ---")]

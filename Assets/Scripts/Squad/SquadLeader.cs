@@ -22,6 +22,7 @@ public class SquadLeader
         controlledSquad.OnSquadKilled.AddListener(SquadKilled);
         controlledSquad.OnEnemyInSight.AddListener(EnemiesInSightCallback);
         controlledSquad.OnLabInSight.AddListener(LabInSightCallback);
+        controlledSquad.OnFactoryInSight.AddListener(EnemyFactoryInSightCallback);
     }
 
     private void SquadKilled(Squad squad)
@@ -53,6 +54,13 @@ public class SquadLeader
     private void ActionComplete()
     {
         DestroyLeader();
+    }
+
+    private void EnemyFactoryInSightCallback(Factory factory)
+    {
+        AIController controller = general.GetController;
+        if(!controller.discoveredEnemyFactories.Contains(factory))
+            controller.discoveredEnemyFactories.Add(factory);
     }
 
     private void LabInSightCallback(TargetBuilding lab)
