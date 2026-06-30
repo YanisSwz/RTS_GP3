@@ -129,13 +129,13 @@ public class UnitController : MonoBehaviour
         };
         UnitList.Add(unit);
     }
-    public void CaptureTarget(int points)
+    public virtual void CaptureTarget(int points, TargetBuilding lab)
     {
         Debug.Log("CaptureTarget");
         TotalBuildPoints += points;
         CapturedTargets++;
     }
-    public void LoseTarget(int points)
+    public virtual void LoseTarget(int points, TargetBuilding lab)
     {
         TotalBuildPoints -= points;
         CapturedTargets--;

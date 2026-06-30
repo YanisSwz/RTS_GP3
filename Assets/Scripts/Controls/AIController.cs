@@ -106,6 +106,17 @@ public sealed class AIController : UnitController
 
     #endregion
 
+    public override void CaptureTarget(int points, TargetBuilding lab)
+    {
+        base.CaptureTarget(points, lab);
+        discoveredLabs.Remove(lab);
+    }
+    public override void LoseTarget(int points, TargetBuilding lab)
+    {
+        base.LoseTarget(points, lab);
+        discoveredLabs.Add(lab);
+    }
+
     public bool TryBuildingFactory(int index) 
     {
         if(availableBuildPositions.Count == 0)

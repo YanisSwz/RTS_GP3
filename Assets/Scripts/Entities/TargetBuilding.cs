@@ -128,14 +128,14 @@ public class TargetBuilding : MonoBehaviour
         {
             UnitController teamController = GameServices.GetControllerByTeam(newTeam);
             if (teamController != null)
-                teamController.CaptureTarget(BuildPoints);
+                teamController.CaptureTarget(BuildPoints, this);
 
             if (OwningTeam != ETeam.Neutral)
             {
                 // remove points to previously owning team
                 teamController = GameServices.GetControllerByTeam(OwningTeam);
                 if (teamController != null)
-                    teamController.LoseTarget(BuildPoints);
+                    teamController.LoseTarget(BuildPoints, this);
             }
         }
 
