@@ -119,11 +119,17 @@ public class FormSquad : GeneralAction
                 moveTo.Init(squad, rallyPoint.Value, 1f);
                 action.Add(moveTo);
                 squad.GiveActions(action);
+
+                squad.OnAllActionsCompleted.AddListener(CompleteRally);
             }
 
             Reset();
-            isComplete = true;
         }
+    }
+
+    private void CompleteRally(Squad squad) 
+    {
+        isComplete = true;
     }
 
     private void Reset() 
