@@ -11,6 +11,8 @@ public class ExploreLeaderAction : LeaderAction
     {
         base.Enter();
 
+        Debug.Log("StartExplore Leader");
+
         SendSquadExplore(exploreDest);
 
         leader.Squad.OnLabInSight.AddListener(ExplorationCompleted);
@@ -19,6 +21,7 @@ public class ExploreLeaderAction : LeaderAction
 
     private void ExplorationCompleted(TargetBuilding target)
     {
+        Debug.Log("End Explore Leader");
         OnCompleted.Invoke();
     }
 
@@ -36,7 +39,7 @@ public class ExploreLeaderAction : LeaderAction
 
     private void NextDestToSearch(Squad squad)
     {
-        Vector3? nextDest = GameServices.GetRandomPoint(squad.GetControlledUnits[0].transform.position, exploreRadius, 360f, 50f);
+        Vector3? nextDest = GameServices.GetRandomPoint(squad.GetControlledUnits[0].transform.position, squad.GetControlledUnits[0].transform.forward, exploreRadius, 200f, 50f);
 
         if(nextDest.HasValue)
             SendSquadExplore(nextDest.Value);

@@ -125,4 +125,19 @@ public class ComputeSquadFormation
         unitsPoses.Add(lineStartPos + direction * spaceBetweenLine);
         return unitsPoses;
     }
+
+    static public List<Vector3> PreComputeLine(List<Line> lines, Vector3 firstLinePos, Vector3 direction)
+    {
+        direction = direction.normalized;
+
+        List<Vector3> unitsPoses = new List<Vector3>();
+        Vector3 anchor = firstLinePos;
+        foreach (Line line in lines)
+        {
+            anchor += line.lineSpacing * direction;
+            unitsPoses.AddRange(LinePoses(direction, anchor, line.numberOfUnits, line.numberOfUnits, line.unitSpacing, 0f));
+        }
+
+        return unitsPoses;
+    }
 }

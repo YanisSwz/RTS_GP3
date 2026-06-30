@@ -79,7 +79,6 @@ public class SquadCapture : SquadAction
 
         if (target.GetTeam() == units[0].GetTeam())
         {
-            Debug.Log("End Capture");
             OnComplete.Invoke();
         }
     }

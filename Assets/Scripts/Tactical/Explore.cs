@@ -13,7 +13,7 @@ public class Explore : Dispatch
     {
         base.Enter(owner, power);
 
-        Vector3? test = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, radius, 90f, tolerance);
+        Vector3? test = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, new Vector3(1f, 0f, -1f), radius, 90f, tolerance);
         if (test.HasValue)
         {
             targetPosition = test.Value;

@@ -59,9 +59,15 @@ public class SquadMoveTo : SquadAction
             {
                 case Squad.FormationStyle.None:
                     {
-                        arrivedPos = ComputeSquadFormation.FreestyleFormation(staticPath.corners[staticPath.corners.Length - 1]
+                        arrivedPos = ComputeSquadFormation.FreestyleFormation(staticPath.corners[^1]
                             , squad.GetFreestyleFormationPoses);
 
+                        break;
+                    }
+
+                case Squad.FormationStyle.Line:
+                    {
+                        arrivedPos = ComputeSquadFormation.PreComputeLine(squad.LinePoses, staticPath.corners[^1], target - anchor);
                         break;
                     }
             }

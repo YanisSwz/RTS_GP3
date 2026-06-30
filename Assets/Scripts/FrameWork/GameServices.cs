@@ -116,9 +116,13 @@ public class GameServices : MonoBehaviour
 
     }
 
-    static public Vector3? GetRandomPoint(Vector3 position, float radius, float angle, float tolerance)
+    static public Vector3? GetRandomPoint(Vector3 position, Vector3 direction, float radius, float angle, float tolerance)
     {
-        Vector3 randomDirection = Quaternion.AngleAxis(Random.Range(0f, angle), Vector3.up) * Vector3.right;
+        direction = direction.normalized;
+
+        float halfAngle = angle * 0.5f;
+
+        Vector3 randomDirection = Quaternion.AngleAxis(Random.Range(-halfAngle, halfAngle), Vector3.up) * direction;
         Vector3 randomPosition = position + randomDirection * radius;
 
         NavMeshHit hit;

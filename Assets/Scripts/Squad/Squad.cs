@@ -19,15 +19,19 @@ public class Squad
     public enum FormationStyle
     {
         None,
-        Line,
-        Circle
+        Line
     }
     public FormationStyle GetFormationStyle { get { return currentStyle; } }
     FormationStyle currentStyle = FormationStyle.None;
     
+    //Freestyle porperty
     //copy of this list
     public List<Vector3> GetFreestyleFormationPoses { get { return new List<Vector3>(freestyleFormationPos); } }
     List<Vector3> freestyleFormationPos = new List<Vector3>();
+
+    //Line porperty
+    public List<Line> LinePoses { get { return new List<Line>(lineFormationPos); } set { lineFormationPos = value; } }
+    List<Line> lineFormationPos = new List<Line>();
 
     //Actions
     [HideInInspector]
@@ -129,21 +133,44 @@ public class Squad
                 return;
             }
 
-            if (currentStyle == FormationStyle.None)
+            switch (currentStyle)
             {
-                if (freestyleFormationPos.Count > 0)
-                {
-                    //remove freestyle pos of this unit
-                    freestyleFormationPos.RemoveAt(index);
-
-                    //re compute freestyle pos
-                    Vector3 averagePos = GetSquadAveragePos();
-                    for (int i = 0; i < controlledUnits.Count; ++i)
+                case FormationStyle.None:
                     {
-                        freestyleFormationPos[i] = controlledUnits[i].transform.position - averagePos;
+                        if (freestyleFormationPos.Count > 0)
+                        {
+                            //remove freestyle pos of this unit
+                            freestyleFormationPos.RemoveAt(index);
+
+                            //re compute freestyle pos
+                            Vector3 averagePos = GetSquadAveragePos();
+                            for (int i = 0; i < controlledUnits.Count; ++i)
+                            {
+                                freestyleFormationPos[i] = controlledUnits[i].transform.position - averagePos;
+                            }
+                        }
+                        break;
                     }
-                }
+
+                case FormationStyle.Line:
+                    {
+                        int indexUnitInFormation = 0;
+                        for(int i = 0; i < lineFormationPos.Count; ++i)
+                        {
+                            indexUnitInFormation += lineFormationPos[i].numberOfUnits;
+                            if (index <= indexUnitInFormation)
+                            {
+                                Line line = lineFormationPos[i];
+                                line.numberOfUnits = lineFormationPos[i].numberOfUnits - 1;
+
+                                lineFormationPos[i] = line;
+                                break;
+                            }
+                        }
+                        break;
+                    }
             }
+           
 
             if (currentAction >= 0)
                 actions[currentAction].RecomputeAction(index);

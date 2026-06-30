@@ -257,7 +257,6 @@ public class UnitController : MonoBehaviour
 
     protected virtual void OnDrawGizmos()
     {
-
         foreach (Squad squad in squads)
             squad.DrawGizmo();
     }

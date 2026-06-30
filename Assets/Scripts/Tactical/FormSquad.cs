@@ -107,7 +107,8 @@ public class FormSquad : GeneralAction
             }    
 
             Squad squad = new Squad();
-            squad.FormSquad(owner.GetController, Squad.FormationStyle.None, squadUnits);
+            squad.LinePoses = squadData.squadData.Lines;
+            squad.FormSquad(owner.GetController, Squad.FormationStyle.Line, squadUnits);
 
             SquadLeader leader = new SquadLeader();
             leader.GiveSquad(squad, owner);

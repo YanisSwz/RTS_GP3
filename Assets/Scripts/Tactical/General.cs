@@ -75,7 +75,7 @@ public class General
     {
         List<SquadAction> actions = new List<SquadAction>();
         SquadMoveTo moveTo = new SquadMoveTo();
-        moveTo.Init(leader.Squad, GameServices.GetRandomPoint(owner.GetFactoryList[0].transform.position, 30, 360, 50f).Value, 1f);
+        moveTo.Init(leader.Squad, GameServices.GetRandomPoint(owner.GetFactoryList[0].transform.position, Vector3.forward, 30, 360, 50f).Value, 1f);
         actions.Add(moveTo);
         leader.Squad.GiveActions(actions);
 

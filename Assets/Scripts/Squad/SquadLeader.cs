@@ -36,12 +36,14 @@ public class SquadLeader
             generalOrder.OnCompleted.AddListener(ActionComplete);
         }
     }
-
-    private void ActionComplete()
+    public void DestroyLeader()
     {
         GiveGeneralOrder(null);
-
         OnActionComplete.Invoke(this);
+    }
+    private void ActionComplete()
+    {
+        DestroyLeader();
     }
 
     private void LabInSightCallback(TargetBuilding lab)
