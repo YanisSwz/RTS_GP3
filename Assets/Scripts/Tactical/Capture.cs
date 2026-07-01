@@ -20,7 +20,6 @@ public class Capture : Dispatch
                 if (dist < bestDistance)
                 {
                     bestDistance = dist;
-                    targetObject = lab.gameObject;
                     targetLab = lab;
                 }
             }

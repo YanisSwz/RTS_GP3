@@ -4,15 +4,19 @@ using UnityEngine;
 [System.Serializable]
 public class Attack : Dispatch
 {
+    public int nbTrySearchEnemy = 5;
+    public float searchEnemyRadius = 50f;
+
     public override void Enter(General owner, float power)
     {
         base.Enter(owner, power);
 
+        //select factory
         if (owner.GetController.discoveredEnemyFactories.Count > 0)
         {
             if (owner.GetController.discoveredEnemyFactories.Count == 1)
             {
-                targetObject = owner.GetController.discoveredEnemyFactories[0].gameObject;
+                targetPosition = owner.GetController.discoveredEnemyFactories[0].transform.position;
             }
             else
             {
@@ -26,38 +30,15 @@ public class Attack : Dispatch
                         if (dist < bestDistance)
                         {
                             bestDistance = dist;
-                            targetObject = factory.gameObject;
+                            targetPosition = factory.transform.position;
                         }
                     }
                 }
             }
-
-            foreach (SquadLeader leader in owner.Leaders)
-            {
-                List<SquadAction> actions = new List<SquadAction>();
-                SquadMoveTo moveTo = new SquadMoveTo();
-                moveTo.Init(leader.Squad, targetObject, 1f);
-
-                float bestDistance = 0f;
-                foreach (Unit unit in leader.Squad.GetControlledUnits)
-                {
-                    float attackDist = unit.GetUnitData.AttackDistanceMax;
-                    if (attackDist > bestDistance)
-                        bestDistance = attackDist;
-                }
-
-                moveTo.distanceToFinalTarget = bestDistance;
-                actions.Add(moveTo);
-
-                SquadAttack squadAttack = new SquadAttack();
-                squadAttack.Init(leader.Squad, targetObject, bestDistance);
-                actions.Add(squadAttack);
-
-                leader.Squad.GiveActions(actions);
-            }
         }
         else 
         {
+            //select menace pos
             foreach (SquadLeader leader in owner.Leaders)
             {
                 float bestDistance = Mathf.Infinity;
@@ -71,13 +52,18 @@ public class Attack : Dispatch
                         targetPosition = menace.enemyAveragePos;
                     }
                 }
-
-                List<SquadAction> actions = new List<SquadAction>();
-                SquadMoveTo moveTo = new SquadMoveTo();
-                moveTo.Init(leader.Squad, targetPosition, 1f);
-                actions.Add(moveTo);
-                leader.Squad.GiveActions(actions);
             }
+        }
+
+        foreach (SquadLeader leader in owner.Leaders)
+        {
+            AttackLeaderAction attackAction = new AttackLeaderAction();
+            attackAction.Init(leader);
+            attackAction.menacePos = targetPosition;
+            attackAction.explorationTryBeforeFail = nbTrySearchEnemy;
+            attackAction.searchEnemyRadius = searchEnemyRadius;
+
+            leader.GiveGeneralOrder(attackAction);
         }
     }
 }

@@ -153,6 +153,7 @@ public class FormSquad : GeneralAction
     private void CompleteRally(Squad squad)
     {
         isComplete = true;
+        Reset();
     }
 
     private void Reset()
