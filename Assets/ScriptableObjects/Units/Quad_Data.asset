@@ -25,7 +25,7 @@ MonoBehaviour:
   RPS: 10
   RepairFrequency: 1
   RepairDistanceMax: 10
-  Speed: 7
+  Speed: 10
   AngularSpeed: 150
   Acceleration: 12
   IsFlying: 0
