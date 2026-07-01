@@ -30,7 +30,7 @@ public class SquadMoveTo : SquadAction
         base.Init(_squad, _movingTarget, _distanceToTarget);
         IsStaticPath = false;
     }
-   
+
     public override void StartAction()
     {
         Debug.Log("Squad Start Moving to target");
@@ -43,6 +43,17 @@ public class SquadMoveTo : SquadAction
 
         debugTarget = staticTarget;
         debugFirstUnit = squad.GetControlledUnits[0].transform.position;
+
+        Vector3? pos = GameServices.GetRandomPoint(staticTarget, Vector3.right, 0.5f, 360f, 5f);
+        if (pos.HasValue)
+        {
+            staticTarget = pos.Value;
+        }
+        else
+        {
+            Debug.Log("path failed to compute");
+            OnAbort.Invoke();
+        }
 
         if (CalculatePath(squad.GetControlledUnits[0].transform.position, staticTarget) == false)
         {
@@ -93,7 +104,7 @@ public class SquadMoveTo : SquadAction
         }
 
         base.UpdateAction();
-        if (IsStaticPath == false)
+        if (IsStaticPath == false && movingTarget != null)
         {
             staticTarget = movingTarget.transform.position;
             CalculatePath(squad.GetControlledUnits[0].transform.position, staticTarget);
