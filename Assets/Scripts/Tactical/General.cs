@@ -34,7 +34,8 @@ public class General
     private Goal currentGoal = null;
     public Goal CurrentGoal { get { return currentGoal; } }
 
-    public List<GoalSequence> sequences = new List<GoalSequence>();
+    [SerializeField]
+    private List<GoalSequence> sequences = new List<GoalSequence>();
     private List<GeneralAction> actions = new List<GeneralAction>();
     private List<SquadLeader> leaders = new List<SquadLeader>();
     public List<SquadLeader> Leaders { get { return leaders; } }
@@ -57,19 +58,16 @@ public class General
             return;
         }
 
-        if (currentGoal == null)
+        int index = sequences.FindIndex(x => x.goalType == goal.Type);
+        if (index != -1)
         {
-            int index = sequences.FindIndex(x => x.goalType == goal.Type);
-            if (index != -1)
+            actions = sequences[index].actions;
+            if (actions.Count > 0)
             {
-                actions = sequences[index].actions;
-                if (actions.Count > 0)
-                {
-                    currentActionIndex = 0;
-                    currentGoal = goal;
-                    currentPower = currentGoal.Utility;
-                    actions[currentActionIndex].Enter(this, currentPower);
-                }
+                currentActionIndex = 0;
+                currentGoal = goal;
+                currentPower = currentGoal.Utility;
+                actions[currentActionIndex].Enter(this, currentPower);
             }
         }
     }
@@ -99,6 +97,12 @@ public class General
             return;
         }
 
+        if(currentGoal.Utility == 0f)
+        {
+            AbortSequence();
+            return;
+        }
+
         if (actions[currentActionIndex].IsComplete)
         {
             ++currentActionIndex;
@@ -112,5 +116,21 @@ public class General
         }
 
         actions[currentActionIndex].Execute(this, currentPower);
+    }
+
+    public void ActionFailed(GeneralAction action) 
+    {
+        action.Abort();
+        AbortSequence();
+    }
+
+    private void AbortSequence() 
+    {
+        List<SquadLeader> copy = new List<SquadLeader>(leaders);
+        foreach (SquadLeader leader in copy) 
+            leader.DestroyLeader();
+
+        currentActionIndex = -1;
+        currentGoal = null;
     }
 }

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Build
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableGoal
   type: 1
-  activationThreshold: 0
+  activationThreshold: 0.5
   minUtility: 0
   maxUtility: 1
   utilityEvaluators:
-  - weight: 1
+  - weight: 2
     inputValue: 1
     utilityCurve:
       serializedVersion: 2
@@ -96,7 +96,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  - weight: 0.5
+  - weight: 1
     inputValue: 4
     utilityCurve:
       serializedVersion: 2

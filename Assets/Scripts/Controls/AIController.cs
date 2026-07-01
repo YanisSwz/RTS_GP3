@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Events;
 using System;
+using System.Linq;
 
 // $$$ TO DO :)
 
@@ -73,12 +74,6 @@ public sealed class AIController : UnitController
         else
             currentRefreshTime += Time.deltaTime;
 
-        if (Input.GetKeyUp(KeyCode.B))
-        {
-            SelectFactory(FactoryList[0]);
-            RequestUnitBuild(0);
-        }
-
         float bestUtility = 0f;
         foreach (Goal goal in goals)
         {
@@ -95,9 +90,9 @@ public sealed class AIController : UnitController
 
         foreach (General general in generals)
         {
-            general.SetGoal(currentGoal);
-
-            if (general.CurrentGoal != null)
+            if (general.CurrentGoal == null)
+                general.SetGoal(currentGoal);
+            else
                 general.UpdateSequence();
         }
     }

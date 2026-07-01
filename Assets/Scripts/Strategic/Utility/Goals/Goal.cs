@@ -11,7 +11,9 @@ public enum InputValue
     BuiltFactories = 4,
     AvailableUnits = 5,
     AvailableBuildPos = 6, 
-    DiscoveredLabs = 7
+    DiscoveredLabs = 7,
+    MenacesCount = 8,
+    DiscoveredEnemyFactories = 9
 }
 
 [System.Serializable]
@@ -87,6 +89,12 @@ public class Goal
                     break;
                 case InputValue.DiscoveredLabs:
                     value = controller.discoveredLabs.Count;
+                    break;
+                case InputValue.MenacesCount:
+                    value = controller.menacesMemory.Count;
+                    break;
+                case InputValue.DiscoveredEnemyFactories:
+                    value = controller.discoveredEnemyFactories.Count;
                     break;
             }
 

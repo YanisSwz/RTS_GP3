@@ -10,15 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67b21379d4a3fce40acfcdfba3f2b885, type: 3}
-  m_Name: TestSquad
+  m_Name: ExploreSquad
   m_EditorClassIdentifier: Assembly-CSharp::SquadDataPreset
   squadData:
     lines:
-    - unitType: {fileID: 11400000, guid: bf00dbe58a21fca46b8e307a06af5050, type: 2}
+    - unitType: {fileID: 11400000, guid: 4f2d24809fd51e4469fbbdee459ac35d, type: 2}
       numberOfUnits: 3
-      unitSpacing: 0
+      unitSpacing: 2
       lineSpacing: 0
-    - unitType: {fileID: 11400000, guid: 02bf545fde7d7f64d86e63f93a59ee9b, type: 2}
+    - unitType: {fileID: 11400000, guid: b4a2cf66d48b98043b5a7e8bfb7b27a4, type: 2}
+      numberOfUnits: 2
+      unitSpacing: 6
+      lineSpacing: -3
+    - unitType: {fileID: 11400000, guid: bf00dbe58a21fca46b8e307a06af5050, type: 2}
       numberOfUnits: 1
       unitSpacing: 0
-      lineSpacing: 0
+      lineSpacing: -5
