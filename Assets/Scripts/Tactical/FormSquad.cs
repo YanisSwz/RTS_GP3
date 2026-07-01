@@ -2,6 +2,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.Rendering;
 
 [System.Serializable]
@@ -172,5 +173,15 @@ public class FormSquad : GeneralAction
     {
         squadUnits.Add(unit);
         currentSquadBudget -= unit.Cost;
+        unit.OnDeadEvent += () =>
+        {
+            RemoveUnit(unit);
+        };
+    }
+
+    private void RemoveUnit(Unit unit) 
+    {
+        squadUnits.Remove(unit);
+        currentSquadBudget += unit.Cost;
     }
 }
