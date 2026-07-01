@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,6 +13,8 @@ public class SquadLeader
     public UnityEvent<SquadLeader> OnActionComplete = new UnityEvent<SquadLeader>();
     private bool actionPause = false;
     public Squad Squad { get { return controlledSquad; } }
+
+    private bool isAttacking = false;
 
     public void GiveSquad(Squad _controlledSquad, General owner)
     {
@@ -86,49 +89,67 @@ public class SquadLeader
 
         general.GetController.AddMenaceMemory(menace);
 
-        if(!actionPause)
-        {
-            actionPause = true;
 
-            DecisionOnEnemySee(menace, units);
-        }
+        DecisionOnEnemySee(menace, units);
     }
 
     private void DecisionOnEnemySee(MenaceMemory menace, List<Unit> units)
     {
         //todo compare power, => attack or retraite
 
-        if (generalOrder != null)
-            generalOrder.PauseAction();
-
-        List<SquadAction> actions = new List<SquadAction>();
-        SquadMoveTo moveTo = new SquadMoveTo();
-        moveTo.Init(Squad, units[0].gameObject, 1f);
-
-        float dist = 0f;
-        foreach (Unit unit in Squad.GetControlledUnits)
+        if (generalOrder != null && actionPause == false)
         {
-            float attackDist = unit.GetUnitData.AttackDistanceMax;
-            if(attackDist > dist)
-                dist = attackDist;
+            actionPause = true;
+            generalOrder.PauseAction();
         }
 
-        moveTo.distanceToFinalTarget = dist;
-        actions.Add(moveTo);
+        int teamPower = 0;
+        foreach (Unit unit in Squad.GetControlledUnits)
+            teamPower += unit.Cost;
 
-        SquadAttack squadAttack = new SquadAttack();
-        squadAttack.Init(Squad, units[0].gameObject, dist);
-        actions.Add(squadAttack);
+        if (teamPower >= menace.enemyPower)
+        {
+            //attack target
+            if (isAttacking == false)
+            {
+                isAttacking = true;
+                List<SquadAction> actions = new List<SquadAction>();
+                SquadMoveTo moveTo = new SquadMoveTo();
+                moveTo.Init(Squad, units[0].gameObject, 1f);
 
-        Squad.GiveActions(actions);
-        
-        Squad.OnAllActionsCompleted.AddListener(EnemyKilledCallback);
+                float dist = 0f;
+                foreach (Unit unit in Squad.GetControlledUnits)
+                {
+                    float attackDist = unit.GetUnitData.AttackDistanceMax;
+                    if (attackDist > dist)
+                        dist = attackDist;
+                }
+
+                moveTo.distanceToFinalTarget = dist;
+                actions.Add(moveTo);
+
+                SquadAttack squadAttack = new SquadAttack();
+                squadAttack.Init(Squad, units[0].gameObject, dist);
+                actions.Add(squadAttack);
+
+                Squad.GiveActions(actions);
+
+                Squad.OnAllActionsCompleted.AddListener(EnemyKilledCallback);
+            }
+        }
+        else
+        {
+            //retreat
+            DestroyLeader();
+        }
     }
 
     private void EnemyKilledCallback(Squad squad)
     {
+        //on enemies killed => resume general order
         generalOrder.ResumeAction();
         actionPause = false;
+        isAttacking = false;
     }
 
 }

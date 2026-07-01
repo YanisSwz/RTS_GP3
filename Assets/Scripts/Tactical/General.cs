@@ -74,21 +74,25 @@ public class General
         }
     }
 
+    private void GetRetreatPos(Squad squad)
+    {
+        //todo evaluate retreat target (base/lab)
+
+        List<SquadAction> squadActions = new List<SquadAction>();
+        SquadMoveTo moveTo = new SquadMoveTo();
+        moveTo.Init(squad, GameServices.GetRandomPoint(owner.GetFactoryList[0].transform.position, Vector3.forward, 30, 360, 50f).Value, 1f);
+        squadActions.Add(moveTo);
+        squad.GiveActions(squadActions);
+
+        squad.DestroySquad(GetController);
+    }
+
     public void LeaderActionCompleted(SquadLeader leader)
     {
         if (leader.Squad != null)
-        {
-            List<SquadAction> squadActions = new List<SquadAction>();
-            SquadMoveTo moveTo = new SquadMoveTo();
-            moveTo.Init(leader.Squad, GameServices.GetRandomPoint(owner.GetFactoryList[0].transform.position, Vector3.forward, 30, 360, 50f).Value, 1f);
-            squadActions.Add(moveTo);
-            leader.Squad.GiveActions(squadActions);
-
-            leader.Squad.DestroySquad(GetController);
-        }
-
+            GetRetreatPos(leader.Squad);
+        
         leaders.Remove(leader);
-
         actions[currentActionIndex].Complete();
     }
 
