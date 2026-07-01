@@ -4,6 +4,19 @@ using UnityEngine;
 public class CaptureLeaderAction : LeaderAction
 {
     public TargetBuilding targetCapture;
+
+    public override void PauseAction()
+    {
+        base.PauseAction();
+        leader.Squad.OnAllActionsCompleted.RemoveListener(CaptureCompleted);
+    }
+
+    public override void ResumeAction()
+    {
+        base.ResumeAction();
+        Enter();
+    }
+
     public override void Enter()
     {
         base.Enter();

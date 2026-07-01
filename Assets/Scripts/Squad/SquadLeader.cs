@@ -10,7 +10,7 @@ public class SquadLeader
     LeaderAction generalOrder = null;
 
     public UnityEvent<SquadLeader> OnActionComplete = new UnityEvent<SquadLeader>();
-
+    private bool actionPause = false;
     public Squad Squad { get { return controlledSquad; } }
 
     public void GiveSquad(Squad _controlledSquad, General owner)
@@ -76,11 +76,59 @@ public class SquadLeader
         menace.time = Time.time;
         menace.nbEnemiesSpotted = units.Count;
 
+        menace.enemyPower = 0;
+        foreach (Unit unit in units)
+            menace.enemyPower += unit.Cost;
+
         foreach (Unit unit in units)
             menace.enemyAveragePos += unit.transform.position;
         menace.enemyAveragePos /= (float)(menace.nbEnemiesSpotted);
 
         general.GetController.AddMenaceMemory(menace);
+
+        if(!actionPause)
+        {
+            actionPause = true;
+
+            DecisionOnEnemySee(menace, units);
+        }
+    }
+
+    private void DecisionOnEnemySee(MenaceMemory menace, List<Unit> units)
+    {
+        //todo compare power, => attack or retraite
+
+        if (generalOrder != null)
+            generalOrder.PauseAction();
+
+        List<SquadAction> actions = new List<SquadAction>();
+        SquadMoveTo moveTo = new SquadMoveTo();
+        moveTo.Init(Squad, units[0].gameObject, 1f);
+
+        float dist = 0f;
+        foreach (Unit unit in Squad.GetControlledUnits)
+        {
+            float attackDist = unit.GetUnitData.AttackDistanceMax;
+            if(attackDist > dist)
+                dist = attackDist;
+        }
+
+        moveTo.distanceToFinalTarget = dist;
+        actions.Add(moveTo);
+
+        SquadAttack squadAttack = new SquadAttack();
+        squadAttack.Init(Squad, units[0].gameObject, dist);
+        actions.Add(squadAttack);
+
+        Squad.GiveActions(actions);
+        
+        Squad.OnAllActionsCompleted.AddListener(EnemyKilledCallback);
+    }
+
+    private void EnemyKilledCallback(Squad squad)
+    {
+        generalOrder.ResumeAction();
+        actionPause = false;
     }
 
 }

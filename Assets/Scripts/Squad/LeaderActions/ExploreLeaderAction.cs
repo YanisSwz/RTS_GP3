@@ -7,6 +7,24 @@ public class ExploreLeaderAction : LeaderAction
     public float exploreRadius = 30f;
     public float tolerenceRadius = 50f;
 
+
+    public override void PauseAction()
+    {
+        base.PauseAction();
+        leader.Squad.OnLabInSight.RemoveListener(ExplorationCompleted);
+        leader.Squad.OnAllActionsCompleted.RemoveListener(NextDestToSearch);
+        Exit();
+    }
+
+    public override void ResumeAction()
+    {
+        base.ResumeAction();
+        leader.Squad.OnLabInSight.AddListener(ExplorationCompleted);
+        leader.Squad.OnAllActionsCompleted.AddListener(NextDestToSearch);
+
+        NextDestToSearch(leader.Squad);
+    }
+
     public override void Enter()
     {
         base.Enter();

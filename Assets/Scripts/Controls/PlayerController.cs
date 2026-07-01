@@ -625,16 +625,11 @@ public sealed class PlayerController : UnitController
 
                     SquadAttack squadAttack = new SquadAttack();
                     squadAttack.Init(currentSquad, other.gameObject, maxAttackRadius);
-                    squadAttack.enemyBaseTarget = other;
+                    //squadAttack.enemyBaseTarget = other;
                     actions.Add(squadAttack);
 
                     //send action
                     currentSquad.GiveActions(actions);
-
-
-                    //// Direct call to attacking task $$$ to be improved by AI behaviour
-                    //foreach (Unit unit in SelectedUnitList)
-                    //    unit.SetAttackTarget(other);
                 }
                 else if (other.NeedsRepairing())
                 {

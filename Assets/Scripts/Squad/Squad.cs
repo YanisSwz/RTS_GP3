@@ -210,6 +210,9 @@ public class Squad
     #region Squad Action
     public void GiveActions(List<SquadAction> _actions)
     {
+        if (actions.Count > 0 && currentAction >= 0)
+            actions[currentAction].ExitAction();
+
         actions.Clear();
         if(_actions.Count == 0)
         {

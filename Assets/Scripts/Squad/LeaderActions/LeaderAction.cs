@@ -14,6 +14,16 @@ public abstract class LeaderAction
         leader = _leader;
     }
 
+    virtual public void PauseAction()
+    {
+
+    }
+
+    virtual public void ResumeAction()
+    {
+
+    }
+
     virtual public void Enter()
     {
 

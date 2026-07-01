@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class SquadAttack : SquadAction
 {
-    public BaseEntity enemyBaseTarget;
+    /*public*/ BaseEntity enemyBaseTarget;
 
     public override void Init(Squad _squad, GameObject _movingTarget, float _distanceToTarget)
     {
         base.Init(_squad, _movingTarget, _distanceToTarget);
+        enemyBaseTarget = _movingTarget.GetComponent<BaseEntity>();
     }
 
     public override void Init(Squad _squad, Vector3 _staticTarget, float _distanceToTarget)
