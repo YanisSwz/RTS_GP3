@@ -17,6 +17,7 @@ public class FormSquad : GeneralAction
     private int currentSquadBudget = 0;
     private int minUnitCost = int.MaxValue;
     private bool recruited = false;
+    private bool waitingToRally = false;
 
     public override void Enter(General owner, float power)
     {
@@ -35,7 +36,8 @@ public class FormSquad : GeneralAction
     {
         GetAvailableUnits(owner.GetController);
         RecruitUnits(owner.GetController);
-        CheckSquadReadiness(owner);
+        if(!waitingToRally)
+            CheckSquadReadiness(owner);
     }
 
     private void EvaluateSquadCost(General owner, float power)
@@ -127,7 +129,7 @@ public class FormSquad : GeneralAction
                     moveTo.Init(squad, rallyPoint.Value, 1f);
                     action.Add(moveTo);
                     squad.GiveActions(action);
-
+                    waitingToRally = true;
                     squad.OnAllActionsCompleted.AddListener(CompleteRally);
                 }
             }
@@ -152,8 +154,7 @@ public class FormSquad : GeneralAction
 
     private void CompleteRally(Squad squad)
     {
-        isComplete = true;
-        Reset();
+        Complete();
     }
 
     private void Reset()
@@ -164,6 +165,7 @@ public class FormSquad : GeneralAction
         currentSquadBudget = 0;
         minUnitCost = int.MaxValue;
         recruited = false;
+        waitingToRally = false;
     }
 
     private void AddUnit(Unit unit)
