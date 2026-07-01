@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,10 +22,13 @@ public class FormSquad : GeneralAction
     {
         base.Enter(owner, power);
 
-        Reset();
-
         unitsToRecruit = squadData.squadData.GetUnits;
-        EvaluateSquadCost(owner.GetController, power);
+        if(unitsToRecruit.Count == 0)
+        {
+            owner.ActionFailed(this);
+            return;
+        }
+        EvaluateSquadCost(owner, power);
     }
 
     public override void Execute(General owner, float power)
@@ -34,7 +38,7 @@ public class FormSquad : GeneralAction
         CheckSquadReadiness(owner);
     }
 
-    private void EvaluateSquadCost(AIController controller, float power)
+    private void EvaluateSquadCost(General owner, float power)
     {
         for (int i = 0; i < squadData.squadData.Lines.Count; ++i)
         {
@@ -45,7 +49,7 @@ public class FormSquad : GeneralAction
             squadCost += cost * squadData.squadData.Lines[i].numberOfUnits;
 
         }
-        currentSquadBudget = Mathf.RoundToInt(Mathf.Min(squadCost, controller.TotalBuildPoints * power));
+        currentSquadBudget = Mathf.RoundToInt(Mathf.Min(squadCost, owner.GetController.TotalBuildPoints * power));
     }
 
     private void GetAvailableUnits(AIController controller)
@@ -101,7 +105,7 @@ public class FormSquad : GeneralAction
         {
             if (squadSize == 0)
             {
-                Reset();
+                owner.ActionFailed(this);
                 return;
             }
 
@@ -131,9 +135,19 @@ public class FormSquad : GeneralAction
             {
                 Complete();
             }
-
-            Reset();
         }
+    }
+
+    public override void Complete() 
+    {
+        base.Complete();
+        Reset();
+    }
+
+    public override void Abort()
+    {
+        base.Abort();
+        Reset();
     }
 
     private void CompleteRally(Squad squad)

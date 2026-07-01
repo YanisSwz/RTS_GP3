@@ -20,7 +20,9 @@ public class Build : GeneralAction
             }
         }
 
-        // TODO: Add fail
-        isComplete = true;
+        if (built)
+            isComplete = true;
+        else
+            owner.ActionFailed(this);
     }
 }

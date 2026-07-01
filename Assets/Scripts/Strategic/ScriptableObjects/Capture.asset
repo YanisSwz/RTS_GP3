@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Capture
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableGoal
   type: 3
-  activationThreshold: 0
+  activationThreshold: 0.5
   minUtility: 0
   maxUtility: 1
   utilityEvaluators:

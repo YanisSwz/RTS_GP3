@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Explore
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableGoal
   type: 4
-  activationThreshold: 0
+  activationThreshold: 0.2
   minUtility: 0
   maxUtility: 1
   utilityEvaluators:
