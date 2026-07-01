@@ -36,7 +36,7 @@ public class FormSquad : GeneralAction
     public override void Execute(General owner, float power)
     {
         GetAvailableUnits(owner.GetController);
-        RecruitUnits(owner.GetController);
+        RecruitUnits(owner);
         if(!waitingToRally)
             CheckSquadReadiness(owner);
     }
@@ -75,12 +75,12 @@ public class FormSquad : GeneralAction
         }
     }
 
-    private void RecruitUnits(AIController controller)
+    private void RecruitUnits(General general)
     {
         Dictionary<int, int> unitsCopy = new(unitsToRecruit);
         foreach (KeyValuePair<int, int> entry in unitsCopy)
         {
-            if (!controller.CanRecruitUnit(entry.Key))
+            if (!general.GetController.CanRecruitUnit(entry.Key))
             {
                 unitsToRecruit.Remove(entry.Key);
                 continue;
@@ -88,7 +88,7 @@ public class FormSquad : GeneralAction
 
             for (int j = 0; j < entry.Value; ++j)
             {
-                UnityEvent<Unit> unitRecruited = controller.RecruitUnit(entry.Key);
+                UnityEvent<Unit> unitRecruited = general.GetController.RecruitUnit(entry.Key);
                 if (unitRecruited != null)
                 {
                     unitRecruited.AddListener(AddUnit);
@@ -183,5 +183,11 @@ public class FormSquad : GeneralAction
     {
         squadUnits.Remove(unit);
         currentSquadBudget += unit.Cost;
+        --squadSize;
+
+        if (unitsToRecruit.ContainsKey(unit.GetTypeId))
+            unitsToRecruit[unit.GetTypeId] += 1;
+        else
+            unitsToRecruit[unit.GetTypeId] = 1;
     }
 }

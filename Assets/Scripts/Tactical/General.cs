@@ -93,7 +93,12 @@ public class General
             GetRetreatPos(leader.Squad);
         
         leaders.Remove(leader);
-        actions[currentActionIndex].Complete();
+
+        actions[currentActionIndex].Abort();
+
+        currentActionIndex = -1;
+        currentGoal = null;
+
     }
 
     public void UpdateSequence()
