@@ -158,9 +158,5 @@ public class SquadMoveTo : SquadAction
     { 
         foreach (Vector3 v in arrivedPos)
             Gizmos.DrawCube(v, Vector3.one + Vector3.up * 3f);
-
-        Gizmos.DrawCube(debugTarget, Vector3.one + Vector3.up * 3f);
-
-        Gizmos.DrawCube(debugFirstUnit, Vector3.one + Vector3.up * 3f);
     }
 }

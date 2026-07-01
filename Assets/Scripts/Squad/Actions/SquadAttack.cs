@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SquadAttack : SquadAction
 {
-    /*public*/ BaseEntity enemyBaseTarget;
+    BaseEntity enemyBaseTarget;
 
     public override void Init(Squad _squad, GameObject _movingTarget, float _distanceToTarget)
     {
@@ -75,28 +75,32 @@ public class SquadAttack : SquadAction
         {
             if (unit.SquadOrder == null)
             {
-                //todo switch target
+                //if target killed
                 if (unit.EntityTarget == null)
                 {
+                    //get new target
                     BaseEntity target = enemyBaseTarget != null ? enemyBaseTarget : PickNearestEnemy(unit);
 
+                    //if no target stay idle
                     if(target != null)
                     {
+                        //check attack
                         if(unit.SetAttackTarget(target) == false)
                         {
-                            unit.SetTargetPos(target.transform.position, unit.GetUnitData.AttackDistanceMax * 0.5f);
+                            //if can't attack go to unit
+                            unit.SetTargetPos(target.transform.position, unit.GetUnitData.AttackDistanceMax * 0.75f);
                         }
                     }
                 }
                 else
-                    unit.SetTargetPos(unit.EntityTarget.transform.position, unit.GetUnitData.AttackDistanceMax * 0.5f);
+                    unit.SetTargetPos(unit.EntityTarget.transform.position, unit.GetUnitData.AttackDistanceMax * 0.75f);
             }
         }
     }
 
-    private Unit PickNearestEnemy(Unit unitAskTarget)
+    private BaseEntity PickNearestEnemy(Unit unitAskTarget)
     {
-        Unit result = null;
+        BaseEntity result = null;
         Vector3 pos = unitAskTarget.transform.position;
 
         float nearestDist = float.MaxValue;
@@ -115,13 +119,24 @@ public class SquadAttack : SquadAction
             }
         }
 
+        List<Factory> factoriesInSight = squad.factoriesInSight;
+        for(int i = 0; i < factoriesInSight.Count; ++i)
+        {
+            float dist = (factoriesInSight[i].transform.position - pos).magnitude;
+            if (dist < nearestDist)
+            {
+                nearestDist = dist;
+                result = factoriesInSight[i];
+            }
+        }
+
         return result;
     }
 
     private bool IsAllEnemyDead()
     {
         //todo see all target in sight
-        return enemyBaseTarget == null && squad.enemiesInSight.Count == 0;
+        return enemyBaseTarget == null && squad.enemiesInSight.Count == 0 && squad.factoriesInSight.Count == 0;
     }
 
     public override void UpdateAction()
@@ -135,7 +150,6 @@ public class SquadAttack : SquadAction
         {
             GiveTarget();
         }
-
     }
 
 
