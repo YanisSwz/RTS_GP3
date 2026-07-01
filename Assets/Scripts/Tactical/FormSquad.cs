@@ -114,6 +114,22 @@ public class FormSquad : GeneralAction
 
             Squad squad = new Squad();
             squad.LinePoses = new List<Line>(squadData.squadData.Lines);
+
+            for(int i = 0; i < squadUnits.Count; ++i)
+            {
+                if (squadUnits[i] == null)
+                {
+                    squadUnits.RemoveAt(i);
+                    --i;
+                }
+            }
+
+            if (squadUnits.Count == 0)
+            {
+                owner.ActionFailed(this);
+                return;
+            }
+
             squad.FormSquad(owner.GetController, Squad.FormationStyle.Line, squadUnits);
 
             SquadLeader leader = new SquadLeader();

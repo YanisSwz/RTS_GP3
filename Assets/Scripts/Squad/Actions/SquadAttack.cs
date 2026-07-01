@@ -23,10 +23,14 @@ public class SquadAttack : SquadAction
         Debug.Log("Squad Start Attacking");
 
         //form attack formation
+        AttackFormation(enemyBaseTarget.transform.position);
+    }
 
+    private void AttackFormation(Vector3 target)
+    {
         SortedDictionary<int, List<Unit>> sortSquad = new SortedDictionary<int, List<Unit>>();
 
-        foreach(Unit unit in squad.GetControlledUnits)
+        foreach (Unit unit in squad.GetControlledUnits)
         {
             int attkDist = (int)unit.GetUnitData.AttackDistanceMax;
             if (sortSquad.ContainsKey(attkDist))
@@ -35,13 +39,13 @@ public class SquadAttack : SquadAction
             }
             else
             {
-                sortSquad[attkDist]= new List<Unit>();
+                sortSquad[attkDist] = new List<Unit>();
                 sortSquad[attkDist].Add(unit);
             }
         }
 
-        float baseAngle = 10f;
-        float angleInrease = 5f;
+        float baseAngle = 15f;
+        float angleInrease = 10f;
 
         Vector3 squadPos = squad.GetSquadAveragePos();
 
@@ -50,7 +54,7 @@ public class SquadAttack : SquadAction
         foreach (int attkDist in sortSquad.Keys)
         {
             List<Unit> units = sortSquad[attkDist];
-            List<Vector3> poses = ComputeSquadFormation.CirclePoses((squadPos - enemyBaseTarget.transform.position).normalized, enemyBaseTarget.transform.position, attkDist * Mathf.Lerp(0.4f, 0.9f, keyIndex/nbKey), 1f
+            List<Vector3> poses = ComputeSquadFormation.CirclePoses((squadPos - target).normalized, target, attkDist * Mathf.Lerp(0.4f, 0.9f, keyIndex / nbKey), 1f
                 , units.Count, units.Count, 0, baseAngle, 0f);
             for (int i = 0; i < poses.Count; i++)
             {
@@ -61,12 +65,12 @@ public class SquadAttack : SquadAction
             baseAngle += angleInrease;
         }
     }
+
     public override void ExitAction()
     {
         base.ExitAction();
-        foreach (Unit unit in squad.GetControlledUnits)
-            unit.SquadOrder = null;
-        Debug.Log("Squad End Attacking");
+        //foreach (Unit unit in squad.GetControlledUnits)
+        //    unit.SquadOrder = null;
     }
 
     void GiveTarget()
@@ -144,6 +148,11 @@ public class SquadAttack : SquadAction
         base.UpdateAction();
         if (IsAllEnemyDead())
         {
+            Vector3 squadPos = squad.GetSquadAveragePos();
+
+            AttackFormation(squadPos + (squadPos - squad.GetControlledUnits[0].transform.position).normalized);
+            Debug.Log("Squad End Attacking");
+
             OnComplete.Invoke();
         }
         else

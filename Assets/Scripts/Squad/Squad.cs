@@ -41,6 +41,8 @@ public class Squad
     int currentAction = -1;
 
     //Sensor
+    public List<Unit> allyInSight = new List<Unit>();
+
     public List<Unit> enemiesInSight = new List<Unit>();
     public UnityEvent<List<Unit>> OnEnemyInSight = new UnityEvent<List<Unit>>();
 
@@ -309,7 +311,11 @@ public class Squad
 
         AIController aiController = controller as AIController;
 
+        allyInSight.Clear();
         enemiesInSight.Clear();
+        labsInSight.Clear();
+        factoriesInSight.Clear();
+
         foreach (RaycastHit hit in hitObj)
         {
             if (isDestroyed)
@@ -318,8 +324,13 @@ public class Squad
             Unit unitInSight = null;
             if (hit.rigidbody && hit.rigidbody.gameObject.TryGetComponent<Unit>(out unitInSight))
             {
+                //get enemies in sight
                 if (unitInSight.GetTeam() != controlledUnits[0].GetTeam())
                     enemiesInSight.Add(unitInSight);
+
+                //get ally if not in same team
+                else if (unitInSight.squadRef != this)
+                    allyInSight.Add(unitInSight);
 
                 continue;
             }

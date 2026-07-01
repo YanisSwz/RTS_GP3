@@ -95,8 +95,6 @@ public class SquadLeader
 
     private void DecisionOnEnemySee(MenaceMemory menace, List<Unit> units)
     {
-        //todo compare power, => attack or retraite
-
         if (generalOrder != null && actionPause == false)
         {
             actionPause = true;
@@ -104,6 +102,9 @@ public class SquadLeader
         }
 
         int teamPower = 0;
+        foreach (Unit unit in Squad.allyInSight)
+            teamPower += unit.Cost;
+
         foreach (Unit unit in Squad.GetControlledUnits)
             teamPower += unit.Cost;
 
@@ -147,6 +148,9 @@ public class SquadLeader
     private void EnemyKilledCallback(Squad squad)
     {
         //on enemies killed => resume general order
+        if (generalOrder == null)
+            Debug.LogError("order null");
+
         generalOrder.ResumeAction();
         actionPause = false;
         isAttacking = false;
