@@ -21,6 +21,9 @@ public class FSM_RetaliateState : FSM_State
     {
         base.UpdateState();
 
+        if (stateCancel)
+            return;
+
         //switch retaliate target
         if (CheckGiveUpRetaliateTarget() == false)
         {

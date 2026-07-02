@@ -1,8 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
-using static UnityEditor.PlayerSettings;
-
 public class Unit : BaseEntity
 {
     [SerializeField]
@@ -18,8 +17,12 @@ public class Unit : BaseEntity
     [HideInInspector]
     public Vector3 MoveToTarget = Vector3.zero;
 
-    private Vector3 prevEndPathPointComputed = Vector3.zero;
-    private bool destUpdate = false;
+    [Header("Repair")]
+    [HideInInspector]
+    public List<BaseEntity> entityToRepair = new List<BaseEntity>();
+    [SerializeField]
+    private LayerMask entityToRepairLayer;
+    [Header("------")]
 
     FSM_Director fsm;
 
@@ -168,6 +171,27 @@ public class Unit : BaseEntity
 
         //reset lastDamageDealer; fsm: squad order => idle => take damage in idle => retaliate last damage dealer
         LastDamageDealer = null;
+
+        if(GetUnitData.CanRepair)
+        {
+            entityToRepair.Clear();
+            GetAllyNeedHeal();
+        }
+    }
+
+    public void GetAllyNeedHeal()
+    {
+        List<RaycastHit> allyUnits = new List<RaycastHit>(Physics.SphereCastAll(transform.position, GetUnitData.AttackDistanceMax, Vector3.up, entityToRepairLayer));
+        entityToRepair.Clear();
+        foreach (RaycastHit hit in allyUnits)
+        {
+            BaseEntity ally = null;
+            if (hit.collider != null && hit.collider.gameObject != gameObject && hit.collider.gameObject.TryGetComponent<BaseEntity>(out ally))
+            {
+                if (ally.GetTeam() == GetTeam() && ally.NeedsRepairing())
+                    entityToRepair.Add(ally);
+            }
+        }
     }
 
     public int GetNavMeshArea()

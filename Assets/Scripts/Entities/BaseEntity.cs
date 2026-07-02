@@ -28,6 +28,7 @@ public abstract class BaseEntity : MonoBehaviour, ISelectable, IDamageable, IRep
     protected bool IsInitialized = false;
     protected UnityEngine.UI.Image MinimapImage;
 
+    [HideInInspector]
     public Unit LastDamageDealer = null;
 
     public Action OnDeadEvent;

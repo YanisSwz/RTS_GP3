@@ -90,6 +90,8 @@ public class FSM_State : MonoBehaviour
     [HideInInspector]
     public UnityEvent<FSM_State> ChangeStateEvent;
 
+    protected bool stateCancel = false;
+
     private void Awake()
     {
         foreach (FSM_NewStateTransition transition in transitions)
@@ -103,7 +105,9 @@ public class FSM_State : MonoBehaviour
 
     public virtual void EnterState()
     {
-        foreach(FSM_NewStateTransition transition in transitions)
+        stateCancel = false;
+
+        foreach (FSM_NewStateTransition transition in transitions)
         {
             transition.BindCallbackConditions();
             transition.ResetTransition(fsmEntity);
@@ -131,6 +135,9 @@ public class FSM_State : MonoBehaviour
         }
 
         if(choosenState > -1)
+        {
+            stateCancel = true;
             ChangeStateEvent.Invoke(transitions[choosenState].newState);
+        }
     }
 }

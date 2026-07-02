@@ -20,5 +20,11 @@ public class FSM_IdleState : FSM_State
     {
         base.UpdateState();
 
+        if (stateCancel)
+            return;
+
+        //if can repair check around if ally needs to be repare
+        if(fsmEntity.GetUnitData.CanRepair)
+            fsmEntity.GetAllyNeedHeal();
     }
 }
