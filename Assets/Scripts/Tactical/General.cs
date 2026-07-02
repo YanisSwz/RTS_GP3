@@ -11,17 +11,34 @@ public enum GoalType
 }
 
 [System.Serializable]
-public struct GoalSequence
+public class GoalSequence
 {
-    public GoalSequence(GoalType _goalType, List<GeneralAction> _actions)
+    public GoalSequence() 
     {
-        goalType = _goalType;
-        actions = new(_actions);
+        LoadData();
     }
 
-    public GoalType goalType;
-    [SerializeReference, SubclassSelector]
-    public List<GeneralAction> actions;
+    public void LoadData() 
+    {
+        if (!sequence)
+            return;
+
+        // Create new actions
+        for(int i = 0; i < sequence.actions.Count; ++i) 
+        {
+            actions.Add(sequence.actions[i].GenerateCopy());
+        }
+    }
+
+    [SerializeField]
+    private GoalType goalType;
+    [SerializeField]
+    private ScriptableSequence sequence;
+
+    private List<GeneralAction> actions = new List<GeneralAction>();
+
+    public GoalType GoalType { get { return goalType; } }
+    public List<GeneralAction> Actions { get { return actions; } }
 }
 
 [System.Serializable]
@@ -39,6 +56,13 @@ public class General
     private List<GeneralAction> actions = new List<GeneralAction>();
     private List<SquadLeader> leaders = new List<SquadLeader>();
     public List<SquadLeader> Leaders { get { return leaders; } }
+    
+    public void LoadData() 
+    {
+        foreach(GoalSequence sequence in sequences)
+            sequence.LoadData();
+    }
+    
     public void AddLeader(SquadLeader leader)
     {
         leaders.Add(leader);
@@ -58,10 +82,10 @@ public class General
             return;
         }
 
-        int index = sequences.FindIndex(x => x.goalType == goal.Type);
+        int index = sequences.FindIndex(x => x.GoalType == goal.Type);
         if (index != -1)
         {
-            actions = sequences[index].actions;
+            actions = sequences[index].Actions;
             if (actions.Count > 0)
             {
                 currentActionIndex = 0;
@@ -79,7 +103,7 @@ public class General
         {
             List<SquadAction> squadActions = new List<SquadAction>();
             SquadMoveTo moveTo = new SquadMoveTo();
-            moveTo.Init(squad, GameServices.GetRandomPoint(owner.GetFactoryList[0].transform.position, Vector3.forward, 30, 360, 50f).Value, 1f);
+            moveTo.Init(squad, GameServices.GetRandomPoint(owner.GetFactoryList[0].transform.position, Vector3.forward, 30f, 360f, 50f).Value, 1f);
             squadActions.Add(moveTo);
             squad.GiveActions(squadActions);
         }

@@ -24,7 +24,17 @@ public sealed class AIController : UnitController
     public float currentGoalUtility = -1f;
     public List<TargetBuilding> discoveredLabs = new List<TargetBuilding>();
     public List<Factory> discoveredEnemyFactories = new List<Factory>();
+    public int ArmyPower 
+    { 
+        get
+        {
+            int value = 0;
+            for (int i = 0; i < UnitList.Count; ++i)
+                value += UnitList[i].Cost;
 
+            return value;
+        } 
+    }
 
     [Header("--- Menace Memory ---")]
     public float timeOutMemory = 30f;
@@ -45,8 +55,11 @@ public sealed class AIController : UnitController
         foreach (Goal goal in goals) 
             goal.LoadData();
 
-        foreach(General general in generals)
+        foreach (General general in generals)
+        {
             general.SetOwner(this);
+            general.LoadData();
+        }
 
         if(buildPositions.Count > 0)
             availableBuildPositions = new (buildPositions);
@@ -88,12 +101,19 @@ public sealed class AIController : UnitController
             }
         }
 
+        List<Goal> goalsToAssign = goals.OrderByDescending(x => x.Utility).ToList();
+
         foreach (General general in generals)
         {
             if (general.CurrentGoal == null)
-                general.SetGoal(currentGoal);
+            {
+                general.SetGoal(goalsToAssign.First());
+                goalsToAssign.RemoveAt(0);
+            }
             else
+            {
                 general.UpdateSequence();
+            }
         }
     }
 

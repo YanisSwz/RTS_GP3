@@ -7,6 +7,15 @@ public class Attack : Dispatch
     public int nbTrySearchEnemy = 5;
     public float searchEnemyRadius = 50f;
 
+    public override GeneralAction GenerateCopy()
+    {
+        Attack copy = new Attack();
+        copy.nbTrySearchEnemy = nbTrySearchEnemy;
+        copy.searchEnemyRadius = searchEnemyRadius;
+
+        return copy;
+    }
+
     public override void Enter(General owner, float power)
     {
         base.Enter(owner, power);

@@ -9,6 +9,16 @@ public class Explore : Dispatch
     public float tolerance = 50f;
     public float patrolRadius = 40f;
 
+    public override GeneralAction GenerateCopy()
+    {
+        Explore explore = new Explore();
+        explore.radius = radius;
+        explore.tolerance = tolerance;
+        explore.patrolRadius = patrolRadius;
+
+        return explore;
+    }
+
     public override void Enter(General owner, float power)
     {
         base.Enter(owner, power);

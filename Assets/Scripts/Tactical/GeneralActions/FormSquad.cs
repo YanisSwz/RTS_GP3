@@ -1,16 +1,14 @@
-using System.Buffers;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem.XR;
-using UnityEngine.Rendering;
 
 [System.Serializable]
 public class FormSquad : GeneralAction
 {
     [SerializeField]
-    private SquadDataPreset squadData = null;
+    private List<SquadDataPreset> squadPresets = new List<SquadDataPreset>();
 
+    private int currentSquadPresetIndex = -1;
     private List<Unit> squadUnits = new List<Unit>();
     private Dictionary<int, int> unitsToRecruit = new Dictionary<int, int>();
     private int squadSize = 0;
@@ -20,12 +18,21 @@ public class FormSquad : GeneralAction
     private bool recruited = false;
     private bool waitingToRally = false;
 
+    public override GeneralAction GenerateCopy()
+    {
+        FormSquad formSquad = new FormSquad();
+        formSquad.squadPresets = squadPresets;
+
+        return formSquad;
+    }
+
     public override void Enter(General owner, float power)
     {
         base.Enter(owner, power);
 
-        unitsToRecruit = squadData.squadData.GetUnits;
-        if(unitsToRecruit.Count == 0)
+        currentSquadPresetIndex = Random.Range(0, squadPresets.Count);
+        unitsToRecruit = squadPresets[currentSquadPresetIndex].squadData.GetUnits;
+        if (unitsToRecruit.Count == 0)
         {
             owner.ActionFailed(this);
             return;
@@ -45,13 +52,13 @@ public class FormSquad : GeneralAction
 
     private void EvaluateSquadCost(General owner, float power)
     {
-        for (int i = 0; i < squadData.squadData.Lines.Count; ++i)
+        for (int i = 0; i < squadPresets[currentSquadPresetIndex].squadData.Lines.Count; ++i)
         {
-            int cost = squadData.squadData.Lines[i].unitType.Cost;
+            int cost = squadPresets[currentSquadPresetIndex].squadData.Lines[i].unitType.Cost;
             if (cost < minUnitCost)
                 minUnitCost = cost;
 
-            squadCost += cost * squadData.squadData.Lines[i].numberOfUnits;
+            squadCost += cost * squadPresets[currentSquadPresetIndex].squadData.Lines[i].numberOfUnits;
 
         }
         currentSquadBudget = Mathf.RoundToInt(Mathf.Min(squadCost, owner.GetController.TotalBuildPoints * power));
@@ -117,9 +124,9 @@ public class FormSquad : GeneralAction
             }
 
             Squad squad = new Squad();
-            squad.LinePoses = new List<Line>(squadData.squadData.Lines);
+            squad.LinePoses = new List<Line>(squadPresets[currentSquadPresetIndex].squadData.Lines);
 
-            for(int i = 0; i < squadUnits.Count; ++i)
+            for (int i = 0; i < squadUnits.Count; ++i)
             {
                 if (squadUnits[i] == null)
                 {
@@ -161,7 +168,7 @@ public class FormSquad : GeneralAction
         }
     }
 
-    public override void Complete() 
+    public override void Complete()
     {
         base.Complete();
         Reset();
@@ -180,6 +187,7 @@ public class FormSquad : GeneralAction
 
     private void Reset()
     {
+        currentSquadPresetIndex = -1;
         squadUnits.Clear();
         squadSize = 0;
         squadCost = 0;
@@ -199,7 +207,7 @@ public class FormSquad : GeneralAction
         };
     }
 
-    private void RemoveUnit(Unit unit) 
+    private void RemoveUnit(Unit unit)
     {
         squadUnits.Remove(unit);
         currentSquadBudget += unit.Cost;
