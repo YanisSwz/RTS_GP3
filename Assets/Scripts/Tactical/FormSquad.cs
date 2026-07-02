@@ -35,10 +35,12 @@ public class FormSquad : GeneralAction
 
     public override void Execute(General owner, float power)
     {
-        GetAvailableUnits(owner.GetController);
-        RecruitUnits(owner);
-        if(!waitingToRally)
+        if (!waitingToRally)
+        {
+            GetAvailableUnits(owner.GetController);
+            RecruitUnits(owner);
             CheckSquadReadiness(owner);
+        }
     }
 
     private void EvaluateSquadCost(General owner, float power)
@@ -58,13 +60,14 @@ public class FormSquad : GeneralAction
     private void GetAvailableUnits(AIController controller)
     {
         List<Unit> availableUnitsCopy = new List<Unit>(controller.availableUnits);
-        for (int i = 0; i < availableUnitsCopy.Count; ++i)
+        for (int i = 0, j = 0; i < availableUnitsCopy.Count; ++i, ++j)
         {
             int unitKey = availableUnitsCopy[i].GetTypeId;
             if (unitsToRecruit.ContainsKey(unitKey))
             {
-                squadUnits.Add(availableUnitsCopy[i]);
+                squadUnits.Add(controller.availableUnits[j]);
                 controller.availableUnits.Remove(availableUnitsCopy[i]);
+                --j;
                 currentSquadBudget -= availableUnitsCopy[i].Cost;
 
                 ++squadSize;
@@ -80,6 +83,7 @@ public class FormSquad : GeneralAction
         Dictionary<int, int> unitsCopy = new(unitsToRecruit);
         foreach (KeyValuePair<int, int> entry in unitsCopy)
         {
+            // If heavy factory not built
             if (!general.GetController.CanRecruitUnit(entry.Key))
             {
                 unitsToRecruit.Remove(entry.Key);

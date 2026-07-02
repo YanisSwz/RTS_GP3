@@ -138,8 +138,8 @@ public class General
     private void AbortSequence() 
     {
         List<SquadLeader> copy = new List<SquadLeader>(leaders);
-        foreach (SquadLeader leader in copy) 
-            leader.DestroyLeader();
+        for(int i = 0; i < copy.Count; ++i)
+            leaders[i].DestroyLeader();
 
         currentActionIndex = -1;
         currentGoal = null;

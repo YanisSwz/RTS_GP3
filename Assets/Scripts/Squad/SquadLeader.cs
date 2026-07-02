@@ -38,7 +38,9 @@ public class SquadLeader
     public void GiveGeneralOrder(LeaderAction action)
     {
         if(generalOrder != null)
+        {
             generalOrder.Exit();
+        }
 
         generalOrder = action;
 

@@ -89,7 +89,7 @@ MonoBehaviour:
   currentGoalUtility: -1
   discoveredLabs: []
   discoveredEnemyFactories: []
-  timeOutMemory: 30
+  timeOutMemory: 60
   toleranceRadiusMemory: 10
   refreshRate: 5
   availableUnits: []
