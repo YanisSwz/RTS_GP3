@@ -91,12 +91,19 @@ public sealed class AIController : UnitController
             }
         }
 
+        List<Goal> goalsToAssign = goals.OrderByDescending(x => x.Utility).ToList();
+
         foreach (General general in generals)
         {
             if (general.CurrentGoal == null)
-                general.SetGoal(currentGoal);
+            {
+                general.SetGoal(goalsToAssign.First());
+                goalsToAssign.RemoveAt(0);
+            }
             else
+            {
                 general.UpdateSequence();
+            }
         }
     }
 

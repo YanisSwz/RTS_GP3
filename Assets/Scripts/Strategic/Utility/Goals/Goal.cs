@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -102,11 +103,10 @@ public class Goal
     }
     public void Evaluate(AIController controller)
     {
-        utility = 0f;
-
-        float totalWeight = 0f;
-        foreach (UtilityEvaluator evaluator in utilityEvaluators)
-            totalWeight += evaluator.Weight;
+        if (aggregationType == AggregationType.Ponder)
+            utility = 0f;
+        else
+            utility = utilityEvaluators[0].Evaluate(GetInputValue(controller, utilityEvaluators[0].InputValue));
 
         foreach (UtilityEvaluator evaluator in utilityEvaluators)
         {
@@ -119,15 +119,22 @@ public class Goal
                     utility += evaluator.Evaluate(value) * evaluator.Weight;
                     break;
                 case AggregationType.Maximize:
-                    utility = Mathf.Max(utility, evaluator.Evaluate(value) * evaluator.Weight);
+                    utility = Mathf.Max(utility, evaluator.Evaluate(value));
                     break;
                 case AggregationType.Minimize:
-                    utility = Mathf.Min(utility, evaluator.Evaluate(value) * evaluator.Weight);
+                    utility = Mathf.Min(utility, evaluator.Evaluate(value));
                     break;
             }
         }
-        if(aggregationType == AggregationType.Ponder)
+
+        if (aggregationType == AggregationType.Ponder)
+        {
+            float totalWeight = 0f;
+            foreach (UtilityEvaluator evaluator in utilityEvaluators)
+                totalWeight += evaluator.Weight;
+
             utility /= totalWeight;
+        }
 
         utility = Mathf.Clamp(utility, minUtility, maxUtility);
         if (utility <= activationThreshold)

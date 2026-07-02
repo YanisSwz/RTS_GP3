@@ -22,8 +22,8 @@ MonoBehaviour:
       type: {class: FormSquad, ns: , asm: Assembly-CSharp}
       data:
         squadPresets:
-        - {fileID: 11400000, guid: 3178416a38fe565459394d2105c47bdc, type: 2}
-        - {fileID: 11400000, guid: 38020e5c1b4221340a4249e2949fdbce, type: 2}
+        - {fileID: 11400000, guid: 9f42024eeed95ce49a2813c3cd3d2233, type: 2}
+        - {fileID: 11400000, guid: 0adcf598f1c85dd48af6ac99fcf7cde1, type: 2}
     - rid: 6234301352255684668
       type: {class: Capture, ns: , asm: Assembly-CSharp}
       data: 

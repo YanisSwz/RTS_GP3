@@ -17,7 +17,7 @@ public class Build : GeneralAction
         bool built = false;
         foreach (KeyValuePair<int, int> factoryPrice in factoryPrices.OrderByDescending(x => x.Value))
         {
-            if (owner.GetController.TotalBuildPoints * power >= factoryPrice.Value)
+            if (owner.GetController.TotalBuildPoints >= factoryPrice.Value)
             {
                 owner.GetController.TryBuildingFactory(factoryPrice.Key);
                 built = true;

@@ -73,6 +73,15 @@ MonoBehaviour:
       sequence: {fileID: 11400000, guid: eba4a996e5ab0f343a0b3a2c95fd8c0e, type: 2}
     - goalType: 2
       sequence: {fileID: 11400000, guid: 6fb6b58f7c4eb204f9816e02662851bf, type: 2}
+  - sequences:
+    - goalType: 1
+      sequence: {fileID: 11400000, guid: 700fa75a5ef6666458118c85ca9c3f50, type: 2}
+    - goalType: 2
+      sequence: {fileID: 11400000, guid: 6fb6b58f7c4eb204f9816e02662851bf, type: 2}
+    - goalType: 3
+      sequence: {fileID: 11400000, guid: eba4a996e5ab0f343a0b3a2c95fd8c0e, type: 2}
+    - goalType: 4
+      sequence: {fileID: 11400000, guid: 482778c6d20e64b46a215855d2540a38, type: 2}
   currentGoalName: none
   currentGoalUtility: -1
   discoveredLabs: []

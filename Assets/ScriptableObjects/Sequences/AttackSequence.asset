@@ -23,6 +23,8 @@ MonoBehaviour:
       data:
         squadPresets:
         - {fileID: 11400000, guid: 0fd68c5b8533c7c49a1eba317ae947ca, type: 2}
+        - {fileID: 11400000, guid: 94f5014ea1d4cfe4186cd2e903101edf, type: 2}
+        - {fileID: 11400000, guid: 452ed5586fa44164e8f21d8b4b04daef, type: 2}
     - rid: 6234301352255684669
       type: {class: Attack, ns: , asm: Assembly-CSharp}
       data:
