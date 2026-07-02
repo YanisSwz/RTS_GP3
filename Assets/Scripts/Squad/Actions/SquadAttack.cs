@@ -69,8 +69,6 @@ public class SquadAttack : SquadAction
     public override void ExitAction()
     {
         base.ExitAction();
-        //foreach (Unit unit in squad.GetControlledUnits)
-        //    unit.SquadOrder = null;
     }
 
     void GiveTarget()

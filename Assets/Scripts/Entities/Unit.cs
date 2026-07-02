@@ -101,11 +101,6 @@ public class Unit : BaseEntity
         {
             if (EntityTarget.GetTeam() == GetTeam())
                 ComputeRepairing();
-
-            //if (EntityTarget.GetTeam() != GetTeam())
-            //    ComputeAttack();
-            //else
-            //    ComputeRepairing();
         }
 	}
     #endregion
@@ -170,6 +165,9 @@ public class Unit : BaseEntity
         if (squadOrder != null)
             squadOrder.Exit(this);
         squadOrder = null;
+
+        //reset lastDamageDealer; fsm: squad order => idle => take damage in idle => retaliate last damage dealer
+        LastDamageDealer = null;
     }
 
     public int GetNavMeshArea()
@@ -305,7 +303,7 @@ public class Unit : BaseEntity
             }
             // apply damages
             int damages = Mathf.FloorToInt(UnitData.DPS * UnitData.AttackFrequency);
-            EntityTarget.AddDamage(damages);
+            EntityTarget.AddDamage(this, damages);
         }
         return true;
     }

@@ -157,11 +157,15 @@ public class SquadLeader
     {
         //on enemies killed => resume general order
         if (generalOrder == null)
+        {
             Debug.LogError("order null");
+            ActionComplete();
+            return;
+        }
+        else
+            generalOrder.ResumeAction();
 
-        generalOrder.ResumeAction();
         actionPause = false;
         isAttacking = false;
     }
-
 }

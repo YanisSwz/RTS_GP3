@@ -1,6 +1,6 @@
 ﻿
 public interface IDamageable
 {
-    void AddDamage(int amount);
+    void AddDamage(Unit damageDealer, int amount);
     void Destroy();
 }

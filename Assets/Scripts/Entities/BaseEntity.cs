@@ -28,6 +28,8 @@ public abstract class BaseEntity : MonoBehaviour, ISelectable, IDamageable, IRep
     protected bool IsInitialized = false;
     protected UnityEngine.UI.Image MinimapImage;
 
+    public Unit LastDamageDealer = null;
+
     public Action OnDeadEvent;
     public bool IsSelected { get; protected set; }
     public bool IsAlive { get; protected set; }
@@ -72,7 +74,7 @@ public abstract class BaseEntity : MonoBehaviour, ISelectable, IDamageable, IRep
     #endregion
 
     #region IDamageable
-    public void AddDamage(int damageAmount)
+    public void AddDamage(Unit damageDealer, int damageAmount)
     {
         if (IsAlive == false)
             return;
@@ -86,11 +88,14 @@ public abstract class BaseEntity : MonoBehaviour, ISelectable, IDamageable, IRep
             IsAlive = false;
             OnDeadEvent?.Invoke();
             Debug.Log("Entity " + gameObject.name + " died");
+            return;
         }
+
+        LastDamageDealer = damageDealer;
     }
     public void Destroy()
     {
-        AddDamage(HP);
+        AddDamage(null, HP);
     }
     #endregion
 

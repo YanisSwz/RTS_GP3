@@ -227,6 +227,21 @@ public sealed class AIController : UnitController
         menacesMemory.Add(newMenace);
     }
 
+    public void RemoveMenace(Vector3 pos, float researchRadius)
+    {
+        float radius = Mathf.Max(toleranceRadiusMemory, researchRadius);
+
+        for (int i = 0; i < menacesMemory.Count; ++i)
+        {
+            if ((menacesMemory[i].enemyAveragePos - pos).magnitude <= radius)
+            {
+                menacesMemory.RemoveAt(i);
+                --i;
+                return;
+            }
+        }
+    }
+
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();

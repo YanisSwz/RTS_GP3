@@ -59,8 +59,18 @@ public class AttackLeaderAction : LeaderAction
 
     void SearchForEnemy(Squad squad)
     {
+        if (squad.GetControlledUnits.Count == 0)
+        {
+            OnCompleted.Invoke();
+            return;
+        }
+
         if(explorationTryBeforeFail <= 0)
         {
+            AIController aiController = GameServices.GetControllerByTeam(squad.GetControlledUnits[0].GetTeam()) as AIController;
+            if(aiController != null)
+                aiController.RemoveMenace(menacePos, searchEnemyRadius);
+    
             //end check around menace point
             OnCompleted.Invoke();
             return;

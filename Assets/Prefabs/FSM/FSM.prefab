@@ -31,6 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3104291900229300818}
+  - {fileID: 1569330454745558643}
   m_Father: {fileID: 9062723285820728789}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1196274794443807042
@@ -50,6 +51,10 @@ MonoBehaviour:
     - {fileID: 7540431469597968321}
     currentState: {fileID: 0}
     newState: {fileID: 1250343878632309962}
+  - conditions:
+    - {fileID: 5821838353749928327}
+    currentState: {fileID: 0}
+    newState: {fileID: 2217483479717833775}
   ChangeStateEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -102,6 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FSM_Director
   fsmEntity: {fileID: 0}
+  showDebug: 0
 --- !u!1 &3587607708264751836
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,6 +117,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3324162603762483928}
+  - component: {fileID: 2217483479717833775}
   m_Layer: 0
   m_Name: Retaliate
   m_TagString: Untagged
@@ -132,8 +139,29 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 844072311636495527}
+  - {fileID: 3741489783382980713}
   m_Father: {fileID: 9062723285820728789}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2217483479717833775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3587607708264751836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cc23403bce63494286a46091f7e006e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FSM_RetaliateState
+  transitions:
+  - conditions:
+    - {fileID: 5106277367696491526}
+    currentState: {fileID: 0}
+    newState: {fileID: 1196274794443807042}
+  ChangeStateEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4640846154205389545
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,6 +305,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FSM_IsSquadOrderComplete
   reverseCondition: 1
+--- !u!1 &6020230020785178275
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1569330454745558643}
+  - component: {fileID: 5821838353749928327}
+  m_Layer: 0
+  m_Name: IdleToRetaliate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1569330454745558643
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6020230020785178275}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2446798330380325754}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5821838353749928327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6020230020785178275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54890a020178f3240a7a6d4634142da0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FSM_IsDamageDealer
+  reverseCondition: 0
 --- !u!1 &6386817105912993179
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,6 +440,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FSM_IsSquadOrderComplete
   reverseCondition: 0
+--- !u!1 &7765010259523208473
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3741489783382980713}
+  - component: {fileID: 5106277367696491526}
+  m_Layer: 0
+  m_Name: RetaliateToIdle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3741489783382980713
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7765010259523208473}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3324162603762483928}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5106277367696491526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7765010259523208473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54890a020178f3240a7a6d4634142da0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FSM_IsDamageDealer
+  reverseCondition: 1
 --- !u!1 &8125327136542392595
 GameObject:
   m_ObjectHideFlags: 0

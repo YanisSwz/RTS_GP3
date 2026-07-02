@@ -94,7 +94,8 @@ public class General
         
         leaders.Remove(leader);
 
-        actions[currentActionIndex].Abort();
+        if(actions.Count > 0 && currentActionIndex >= 0)
+            actions[currentActionIndex].Abort();
 
         currentActionIndex = -1;
         currentGoal = null;
