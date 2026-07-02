@@ -741,6 +741,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
         type: 3}
+      propertyPath: preset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4d2e1b014f9781e4d86bc5c905bf6d07,
+        type: 2}
+    - target: {fileID: 114127896467981986, guid: dc4ee6691f59b07458286e0cfb38d82d,
+        type: 3}
       propertyPath: SceneEventSystem
       value: 
       objectReference: {fileID: 1101717270}
@@ -3302,6 +3308,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AIController
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
+        type: 3}
+      propertyPath: StartingBuildPoints
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}

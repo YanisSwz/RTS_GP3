@@ -121,8 +121,6 @@ public class ComputeSquadFormation
             lineStartPos -= direction * spaceBetweenLine;
         }
 
-        //add last line pos
-        unitsPoses.Add(lineStartPos + direction * spaceBetweenLine);
         return unitsPoses;
     }
 

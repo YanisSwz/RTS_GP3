@@ -71,12 +71,6 @@ public class Squad
 
     public void FormSquad(UnitController controller, FormationStyle formationStyle, List<Unit> unitsRecruited)
     {
-        foreach(Unit unit in unitsRecruited)
-        {
-            if (unit == null)
-                Debug.Log("");
-        }
-
         detectionMask = controller.detectionLayerForSquad;
 
         controller.AddSquad(this);

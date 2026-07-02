@@ -16,13 +16,13 @@ MonoBehaviour:
     lines:
     - unitType: {fileID: 11400000, guid: 7115db446c392de42904591ffa460879, type: 2}
       numberOfUnits: 1
-      unitSpacing: 0
+      unitSpacing: 2
       lineSpacing: 0
     - unitType: {fileID: 11400000, guid: 9753026d001f952419661b5e73d678c8, type: 2}
       numberOfUnits: 1
-      unitSpacing: 0
+      unitSpacing: 2
       lineSpacing: -2
     - unitType: {fileID: 11400000, guid: 4f2d24809fd51e4469fbbdee459ac35d, type: 2}
       numberOfUnits: 8
-      unitSpacing: 0
-      lineSpacing: 2
+      unitSpacing: 2
+      lineSpacing: -2
