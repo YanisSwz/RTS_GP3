@@ -3,6 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public abstract class GeneralAction
 {
+    public virtual GeneralAction GenerateCopy() { return null; }
     protected bool isComplete = false;
     public bool IsComplete { get { return isComplete; } }
     public virtual void Complete() {  isComplete = true; }

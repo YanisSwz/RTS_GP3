@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67b21379d4a3fce40acfcdfba3f2b885, type: 3}
+  m_Name: AttackSquad
+  m_EditorClassIdentifier: Assembly-CSharp::SquadDataPreset
+  squadData:
+    lines:
+    - unitType: {fileID: 11400000, guid: b4a2cf66d48b98043b5a7e8bfb7b27a4, type: 2}
+      numberOfUnits: 4
+      unitSpacing: 4
+      lineSpacing: 0
+    - unitType: {fileID: 11400000, guid: 02bf545fde7d7f64d86e63f93a59ee9b, type: 2}
+      numberOfUnits: 2
+      unitSpacing: 6
+      lineSpacing: -2
