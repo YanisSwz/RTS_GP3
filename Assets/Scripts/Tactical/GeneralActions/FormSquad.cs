@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.UI.GridLayoutGroup;
 
 [System.Serializable]
 public class FormSquad : GeneralAction
@@ -30,7 +32,9 @@ public class FormSquad : GeneralAction
     {
         base.Enter(owner, power);
 
-        currentSquadPresetIndex = Random.Range(0, squadPresets.Count);
+        GetPresetIndex(owner.GetController);
+
+        // We get the units to recruit from the preset
         unitsToRecruit = squadPresets[currentSquadPresetIndex].squadData.GetUnits;
         if (unitsToRecruit.Count == 0)
         {
@@ -62,6 +66,48 @@ public class FormSquad : GeneralAction
 
         }
         currentSquadBudget = Mathf.RoundToInt(Mathf.Min(squadCost, owner.GetController.TotalBuildPoints * power));
+    }
+
+    private void GetPresetIndex(AIController controller) 
+    {
+        if (controller.availableUnits.Count > 0)
+        {
+            // We check the most available unit type, to avoid creating too much new units
+            Dictionary<int, int> availableUnitsID = GetAvailableUnitsType(controller);
+            List<int> IDs = availableUnitsID.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
+
+            for (int j = 0; j < IDs.Count; ++j)
+            {
+                for (int i = 0; i < squadPresets.Count; ++i)
+                {
+                    if (squadPresets[i].squadData.GetUnits.ContainsKey(IDs[j]))
+                    {
+                        currentSquadPresetIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            if (currentSquadPresetIndex == -1)
+                currentSquadPresetIndex = Random.Range(0, squadPresets.Count);
+        }
+        else
+        {
+            currentSquadPresetIndex = Random.Range(0, squadPresets.Count);
+        }
+    }
+
+    private Dictionary<int, int> GetAvailableUnitsType(AIController controller)
+    {
+        Dictionary<int, int> availableUnitsID = new Dictionary<int, int>();
+        for (int i = 0; i < controller.availableUnits.Count; ++i)
+        {
+            if (availableUnitsID.ContainsKey(controller.availableUnits[i].GetTypeId))
+                availableUnitsID[controller.availableUnits[i].GetTypeId] += 1;
+            else
+                availableUnitsID[controller.availableUnits[i].GetTypeId] = 1;
+        }
+        return availableUnitsID;
     }
 
     private void GetAvailableUnits(AIController controller)
