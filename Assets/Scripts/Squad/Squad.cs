@@ -15,6 +15,7 @@ public class Squad
     public List<Unit> GetControlledUnits { get { return new List<Unit>(controlledUnits); } }
     List<Unit> controlledUnits = new List<Unit>();
 
+    //physic layer for sensor detection
     LayerMask detectionMask;
 
     public enum FormationStyle
@@ -22,6 +23,7 @@ public class Squad
         None,
         Line
     }
+
     public FormationStyle GetFormationStyle { get { return currentStyle; } }
     FormationStyle currentStyle = FormationStyle.None;
     
@@ -71,8 +73,10 @@ public class Squad
 
     public void FormSquad(UnitController controller, FormationStyle formationStyle, List<Unit> unitsRecruited)
     {
+        //get layer for sensor detection
         detectionMask = controller.detectionLayerForSquad;
 
+        //link squad to controller
         controller.AddSquad(this);
 
         currentStyle = formationStyle;
@@ -176,7 +180,7 @@ public class Squad
                     }
             }
            
-
+            //recompute action because nb unit changed
             if (currentAction >= 0)
                 actions[currentAction].RecomputeAction(index);
         }
@@ -186,6 +190,7 @@ public class Squad
     {
         isDestroyed = true;
 
+        //cancel current action
         List<SquadAction> nullAction = new List<SquadAction>();
         GiveActions(nullAction);
 
@@ -193,6 +198,7 @@ public class Squad
 
         AIController aiController = controller as AIController;
 
+        //release all unit
         foreach (Unit unit in controlledUnits)
         {
             unit.squadRef = null;
@@ -200,8 +206,6 @@ public class Squad
             //unit no more in a squad => available
             if (aiController)
                 aiController.availableUnits.Add(unit);
-
-            //flee to safe zone
         }
 
         controlledUnits.Clear();
@@ -269,6 +273,7 @@ public class Squad
 
     private void CalculateAABB(UnitController controller)
     {
+        //compute aabb box
         Vector3 baseUnitPos = controlledUnits[0].transform.position;
         float baseAttakDist = controlledUnits[0].GetUnitData.AttackDistanceMax * 1.5f;
         float minX = baseUnitPos.x - baseAttakDist;
@@ -305,7 +310,7 @@ public class Squad
 
         AIController aiController = controller as AIController;
 
-        
+        //clear prev sensor detections
         allyInSight.Clear();
         enemiesInSight.Clear();
 
@@ -359,6 +364,7 @@ public class Squad
             }
         }
 
+        //alert if enemy in sight
         if (enemiesInSight.Count > 0)
             OnEnemyInSight.Invoke(enemiesInSight);
     }

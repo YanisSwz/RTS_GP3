@@ -11,10 +11,14 @@ public class SquadLeader
     LeaderAction generalOrder = null;
 
     public UnityEvent<SquadLeader> OnActionComplete = new UnityEvent<SquadLeader>();
+
+    //pause if interup by decision tree
     private bool actionPause = false;
+    //is decision tree decided to attack
+    private bool isAttacking = false;
+
     public Squad Squad { get { return controlledSquad; } }
 
-    private bool isAttacking = false;
 
     public void GiveSquad(Squad _controlledSquad, General owner)
     {
@@ -22,7 +26,10 @@ public class SquadLeader
         OnActionComplete.AddListener(general.LeaderActionCompleted);
         controlledSquad = _controlledSquad;
 
+        //callback squad kill => all unity killed by enemy
         controlledSquad.OnSquadKilled.AddListener(SquadKilled);
+
+        //link to squad sensor callback
         controlledSquad.OnEnemyInSight.AddListener(EnemiesInSightCallback);
         controlledSquad.OnLabInSight.AddListener(LabInSightCallback);
         controlledSquad.OnFactoryInSight.AddListener(EnemyFactoryInSightCallback);
@@ -52,6 +59,7 @@ public class SquadLeader
     }
     public void DestroyLeader()
     {
+        //release squad for an other goal
         GiveGeneralOrder(null);
         OnActionComplete.Invoke(this);
     }
@@ -77,6 +85,7 @@ public class SquadLeader
 
     private void EnemiesInSightCallback(List<Unit> units)
     {
+        //create menace point where enemiess detected
         MenaceMemory menace = new MenaceMemory();
         menace.time = Time.time;
         menace.nbEnemiesSpotted = units.Count;
@@ -91,20 +100,23 @@ public class SquadLeader
 
         general.GetController.AddMenaceMemory(menace);
 
-
+        //run decision tree
         DecisionOnEnemySee(menace, units);
     }
 
     private void DecisionOnEnemySee(MenaceMemory menace, List<Unit> units)
     {
+        //pause current order => will resume when attack complete or if squad destroy because flee
         if (generalOrder != null && actionPause == false)
         {
             actionPause = true;
             generalOrder.PauseAction();
         }
 
+        //compute team power
         int teamPower = 0;
 
+        //if ally factory in sight, must defend
         if (Squad.allyFactoriesInSight.Count > 0)
             teamPower = int.MaxValue;
         else
@@ -144,6 +156,7 @@ public class SquadLeader
 
                 Squad.GiveActions(actions);
 
+                //resume on squad tasks completed
                 Squad.OnAllActionsCompleted.AddListener(EnemyKilledCallback);
             }
         }

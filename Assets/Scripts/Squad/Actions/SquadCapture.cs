@@ -72,7 +72,6 @@ public class SquadCapture : SquadAction
                         units[i].SetTargetPos(captureFormation[i], 0.5f);
 
                     //else stay in idle => can retaliate if enemy
-                    //maybe rotate toward the field
                 }
             }
         }

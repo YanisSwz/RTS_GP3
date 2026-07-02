@@ -38,6 +38,7 @@ public class SquadMoveTo : SquadAction
         if (IsStaticPath == false)
             staticTarget = movingTarget.transform.position;
 
+        //calculate path of virtual leader
         Vector3? pos = GameServices.GetRandomPoint(staticTarget, Vector3.right, 0.5f, 360f, 5f);
         if (pos.HasValue)
         {

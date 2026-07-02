@@ -1,6 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ Send with a move to the squad at the selected menace point
+On enemy in sight => pause action => attack => enemy kill => resume action
+On resume or move to completed => explore "explorationTryBeforeFail" times around the menace pos selected to see if enemy still here
+ */
+
 public class AttackLeaderAction : LeaderAction
 {
     public Vector3 menacePos;
