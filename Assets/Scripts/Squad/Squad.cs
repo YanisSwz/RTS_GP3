@@ -49,6 +49,7 @@ public class Squad
     public List<TargetBuilding> labsInSight = new List<TargetBuilding>();
     public UnityEvent<TargetBuilding> OnLabInSight = new UnityEvent<TargetBuilding>();
 
+    public List<Factory> allyFactoriesInSight = new List<Factory>();
     public List<Factory> factoriesInSight = new List<Factory>();
     public UnityEvent<Factory> OnFactoryInSight = new UnityEvent<Factory>();
 
@@ -304,16 +305,19 @@ public class Squad
         AABB[3] = new Vector3(minX, baseUnitPos.y, maxY);
         Vector3 AABBCenter = (AABB[0] + AABB[1] + AABB[2] + AABB[3]) / 4f;
 
-        //todo layer
         List<RaycastHit> hitObj = new List<RaycastHit>(Physics.BoxCastAll(AABBCenter
             , new Vector3((AABB[1] - AABB[0]).magnitude * 0.5f, 3f, (AABB[2] - AABB[1]).magnitude * 0.5f)
             , Vector3.up, Quaternion.identity, float.MaxValue, detectionMask));
 
         AIController aiController = controller as AIController;
 
+        
         allyInSight.Clear();
         enemiesInSight.Clear();
+
         labsInSight.Clear();
+        
+        allyFactoriesInSight.Clear();
         factoriesInSight.Clear();
 
         foreach (RaycastHit hit in hitObj)
@@ -354,6 +358,9 @@ public class Squad
                     factoriesInSight.Add(discoverFactory);
                     OnFactoryInSight.Invoke(discoverFactory);
                 }
+                else
+                    allyFactoriesInSight.Add(discoverFactory);
+             
                 continue;
             }
         }

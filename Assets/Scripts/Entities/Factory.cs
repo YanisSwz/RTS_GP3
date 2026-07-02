@@ -299,6 +299,8 @@ public sealed class Factory : BaseEntity
         newUnit.Init(GetTeam());
 
         SpawnCount++;
+        if (SpawnCount >= 20)
+            SpawnCount = 0;
 
         // disable build cancelling callback
         OnBuildCanceled = null;

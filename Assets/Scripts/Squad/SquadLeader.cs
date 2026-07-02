@@ -102,11 +102,17 @@ public class SquadLeader
         }
 
         int teamPower = 0;
-        foreach (Unit unit in Squad.allyInSight)
-            teamPower += unit.Cost;
 
-        foreach (Unit unit in Squad.GetControlledUnits)
-            teamPower += unit.Cost;
+        if (Squad.allyFactoriesInSight.Count > 0)
+            teamPower = int.MaxValue;
+        else
+        {
+            foreach (Unit unit in Squad.allyInSight)
+                teamPower += unit.Cost;
+
+            foreach (Unit unit in Squad.GetControlledUnits)
+                teamPower += unit.Cost;
+        }
 
         if (teamPower >= menace.enemyPower)
         {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 public class TargetBuilding : MonoBehaviour
 {
@@ -23,6 +24,13 @@ public class TargetBuilding : MonoBehaviour
     ETeam OwningTeam = ETeam.Neutral;
     ETeam CapturingTeam = ETeam.Neutral;
     public ETeam GetTeam() { return OwningTeam; }
+
+    [Header("Menace Point")]
+    public float menacePointRadiusDetection = 30;
+    public LayerMask menaceDetectionLayer;
+    List<Unit> unitsInSight = new List<Unit>();
+    //use for menace point generation
+    AIController AIController = null;
 
     private EntityVisibility _Visibility;
     public EntityVisibility Visibility
@@ -58,8 +66,44 @@ public class TargetBuilding : MonoBehaviour
     }
     void Update()
     {
+        //generate menace point
+        if (AIController != null)
+        {
+            List<RaycastHit> hitUnits = new List<RaycastHit>(Physics.SphereCastAll(transform.position, menacePointRadiusDetection, Vector3.up, menaceDetectionLayer));
+            unitsInSight.Clear();
+            foreach (RaycastHit hit in hitUnits)
+            {
+                Unit unitInSight = null;
+                if (hit.rigidbody && hit.rigidbody.gameObject.TryGetComponent<Unit>(out unitInSight))
+                {
+                    //get enemies in sight
+                    if (unitInSight.GetTeam() != OwningTeam)
+                    {
+                        unitsInSight.Add(unitInSight);
+                    }
+                }
+            }
+            if (unitsInSight.Count > 0)
+            {
+                MenaceMemory menace = new MenaceMemory();
+                menace.time = Time.time;
+                menace.nbEnemiesSpotted = unitsInSight.Count;
+
+                menace.enemyPower = 0;
+                foreach (Unit unit in unitsInSight)
+                    menace.enemyPower += unit.Cost;
+
+                foreach (Unit unit in unitsInSight)
+                    menace.enemyAveragePos += unit.transform.position;
+                menace.enemyAveragePos /= (float)(menace.nbEnemiesSpotted);
+
+                AIController.AddMenaceMemory(menace);
+            }
+        }
+
         if (CapturingTeam == OwningTeam || CapturingTeam == ETeam.Neutral)
             return;
+
 
         CaptureGaugeValue -= TeamScore[(int)CapturingTeam] * CaptureGaugeSpeed * Time.deltaTime;
 
@@ -124,9 +168,12 @@ public class TargetBuilding : MonoBehaviour
     void OnCaptured(ETeam newTeam)
     {
         Debug.Log("target captured by " + newTeam.ToString());
+        
+        UnitController teamController = GameServices.GetControllerByTeam(newTeam);
+        AIController = teamController as AIController;
+
         if (OwningTeam != newTeam)
         {
-            UnitController teamController = GameServices.GetControllerByTeam(newTeam);
             if (teamController != null)
                 teamController.CaptureTarget(BuildPoints, this);
 
@@ -138,6 +185,8 @@ public class TargetBuilding : MonoBehaviour
                     teamController.LoseTarget(BuildPoints, this);
             }
         }
+
+
 
         ResetCapture();
         OwningTeam = newTeam;
