@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
-using System;
 using System.Linq;
-
-// $$$ TO DO :)
 
 public sealed class AIController : UnitController
 {
@@ -15,15 +12,15 @@ public sealed class AIController : UnitController
 
     [SerializeField]
     private List<Goal> goals = new List<Goal>();
-    private Goal currentGoal = null;
     [SerializeField]
     private List<General> generals = new List<General>();
 
-    [Header("--- DEBUG ---")]
-    public string currentGoalName = "none";
-    public float currentGoalUtility = -1f;
-    public List<TargetBuilding> discoveredLabs = new List<TargetBuilding>();
-    public List<Factory> discoveredEnemyFactories = new List<Factory>();
+    private List<TargetBuilding> discoveredLabs = new List<TargetBuilding>();
+    private List<Factory> discoveredEnemyFactories = new List<Factory>();
+
+    public List<TargetBuilding> DiscoveredLabs {  get { return discoveredLabs; } }
+    public List<Factory> DiscoveredEnemyFactories {  get { return discoveredEnemyFactories; } }
+
     public int ArmyPower
     {
         get
@@ -87,30 +84,23 @@ public sealed class AIController : UnitController
         else
             currentRefreshTime += Time.deltaTime;
 
-        float bestUtility = 0f;
         foreach (Goal goal in goals)
         {
             goal.Evaluate(this);
-            if (goal.Utility > bestUtility)
-            {
-                bestUtility = goal.Utility;
-                currentGoal = goal;
-                //Debug
-                currentGoalName = goal.Name;
-                currentGoalUtility = goal.Utility;
-            }
         }
 
         List<Goal> goalsToAssign = goals.OrderByDescending(x => x.Utility).ToList();
 
         foreach (General general in generals)
         {
+            // If absolute emergency, override all other goals
             if (goalsToAssign[0].Utility == 1f && general.CurrentGoal != goalsToAssign[0])
             {
                 if(general.CurrentGoal != null)
                     general.AbortSequence();
                 general.SetGoal(goalsToAssign[0]);
             }
+            // else if no goal, pick the current best
             else if (general.CurrentGoal == null)
             {
                 general.SetGoal(goalsToAssign.First());
@@ -143,7 +133,7 @@ public sealed class AIController : UnitController
         if (availableBuildPositions.Count == 0)
             return false;
 
-        int buildIndex = UnityEngine.Random.Range(0, availableBuildPositions.Count);
+        int buildIndex = Random.Range(0, availableBuildPositions.Count);
         Vector3 spawn = availableBuildPositions[index].position;
         if (BuildFactory(index, spawn))
         {

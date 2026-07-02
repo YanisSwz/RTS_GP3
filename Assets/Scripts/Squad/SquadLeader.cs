@@ -64,15 +64,15 @@ public class SquadLeader
     private void EnemyFactoryInSightCallback(Factory factory)
     {
         AIController controller = general.GetController;
-        if(!controller.discoveredEnemyFactories.Contains(factory))
-            controller.discoveredEnemyFactories.Add(factory);
+        if(!controller.DiscoveredEnemyFactories.Contains(factory))
+            controller.DiscoveredEnemyFactories.Add(factory);
     }
 
     private void LabInSightCallback(TargetBuilding lab)
     {
         AIController controller = general.GetController;
-        if (!controller.discoveredLabs.Contains(lab))
-            controller.discoveredLabs.Add(lab);
+        if (!controller.DiscoveredLabs.Contains(lab))
+            controller.DiscoveredLabs.Add(lab);
     }
 
     private void EnemiesInSightCallback(List<Unit> units)

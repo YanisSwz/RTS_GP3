@@ -1,4 +1,3 @@
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,7 +48,6 @@ public class Goal
     [SerializeField]
     private ScriptableGoal goalData;
 
-    // TODO: Remove debug
     [SerializeField]
     private float utility = 0f;
     private GoalType type = GoalType.None;
@@ -64,6 +62,12 @@ public class Goal
     public float Utility { get { return utility; } }
     public void SetUtility(float newUtility) { utility = newUtility; }
 
+    /// <summary>
+    /// Translate input value into concrete data
+    /// </summary>
+    /// <param name="controller"></param>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public float GetInputValue(AIController controller, InputValue input) 
     {
         float value = 0f;
@@ -90,17 +94,19 @@ public class Goal
                 value = controller.AvailableBuildPositions.Count;
                 break;
             case InputValue.DiscoveredLabs:
-                value = controller.discoveredLabs.Count;
+                value = controller.DiscoveredLabs.Count;
                 break;
             case InputValue.MenacesCount:
                 value = controller.menacesMemory.Count;
                 break;
             case InputValue.DiscoveredEnemyFactories:
-                value = controller.discoveredEnemyFactories.Count;
+                value = controller.DiscoveredEnemyFactories.Count;
                 break;
         }
         return value;
     }
+
+    
     public void Evaluate(AIController controller)
     {
         if (aggregationType == AggregationType.Ponder)

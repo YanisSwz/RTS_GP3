@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -13,13 +12,14 @@ public class Capture : Dispatch
     {
         base.Enter(owner, power);
 
+        // Pick nearest discovered lab, and go capture it
         foreach (SquadLeader leader in owner.Leaders)
         {
             TargetBuilding targetLab = null;
 
             float bestDistance = Mathf.Infinity;
             Vector3 basePos = leader.Squad.GetSquadAveragePos();
-            foreach (TargetBuilding lab in owner.GetController.discoveredLabs)
+            foreach (TargetBuilding lab in owner.GetController.DiscoveredLabs)
             {
                 float dist = Vector3.Distance(basePos, lab.transform.position);
                 if (dist < bestDistance)

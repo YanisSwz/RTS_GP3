@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -20,20 +19,22 @@ public class Attack : Dispatch
     {
         base.Enter(owner, power);
 
-        //select factory
-        if (owner.GetController.discoveredEnemyFactories.Count > 0)
+        // If we found an enemy factory, attack it
+        if (owner.GetController.DiscoveredEnemyFactories.Count > 0)
         {
-            if (owner.GetController.discoveredEnemyFactories.Count == 1)
+            // Only one factory = enemy base
+            if (owner.GetController.DiscoveredEnemyFactories.Count == 1)
             {
-                targetPosition = owner.GetController.discoveredEnemyFactories[0].transform.position;
+                targetPosition = owner.GetController.DiscoveredEnemyFactories[0].transform.position;
             }
+            // Pick nearest factory
             else
             {
                 foreach (SquadLeader leader in owner.Leaders)
                 {
                     float bestDistance = Mathf.Infinity;
                     Vector3 basePos = leader.Squad.GetSquadAveragePos();
-                    foreach (Factory factory in owner.GetController.discoveredEnemyFactories)
+                    foreach (Factory factory in owner.GetController.DiscoveredEnemyFactories)
                     {
                         float dist = Vector3.Distance(basePos, factory.transform.position);
                         if (dist < bestDistance)
@@ -47,7 +48,7 @@ public class Attack : Dispatch
         }
         else 
         {
-            //select menace pos
+            // Select the closest menace position
             foreach (SquadLeader leader in owner.Leaders)
             {
                 float bestDistance = Mathf.Infinity;
@@ -64,6 +65,7 @@ public class Attack : Dispatch
             }
         }
 
+        // Dispatch squads to attack
         foreach (SquadLeader leader in owner.Leaders)
         {
             AttackLeaderAction attackAction = new AttackLeaderAction();
