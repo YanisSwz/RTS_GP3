@@ -45,8 +45,11 @@ public sealed class AIController : UnitController
         foreach (Goal goal in goals) 
             goal.LoadData();
 
-        foreach(General general in generals)
+        foreach (General general in generals)
+        {
             general.SetOwner(this);
+            general.LoadData();
+        }
 
         if(buildPositions.Count > 0)
             availableBuildPositions = new (buildPositions);

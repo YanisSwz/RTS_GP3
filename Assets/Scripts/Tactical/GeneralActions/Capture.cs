@@ -4,6 +4,11 @@ using UnityEngine;
 [System.Serializable]
 public class Capture : Dispatch
 {
+    public override GeneralAction GenerateCopy()
+    {
+        return new Capture();
+    }
+
     public override void Enter(General owner, float power)
     {
         base.Enter(owner, power);

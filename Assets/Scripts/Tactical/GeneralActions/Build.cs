@@ -5,6 +5,11 @@ using UnityEngine;
 [System.Serializable]
 public class Build : GeneralAction
 {
+    public override GeneralAction GenerateCopy()
+    {
+        return new Build();
+    }
+
     public override void Execute(General owner, float power)
     {
         Dictionary<int, int> factoryPrices = GameServices.GetGameServices().GetFactoryPrices();

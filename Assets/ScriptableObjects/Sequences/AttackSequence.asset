@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca1b85e61ac4de944abd8c3342b94e4e, type: 3}
+  m_Name: AttackSequence
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableSequence
+  actions:
+  - rid: 6234301352255684665
+  - rid: 6234301352255684669
+  references:
+    version: 2
+    RefIds:
+    - rid: 6234301352255684665
+      type: {class: FormSquad, ns: , asm: Assembly-CSharp}
+      data:
+        squadPresets:
+        - {fileID: 11400000, guid: 0fd68c5b8533c7c49a1eba317ae947ca, type: 2}
+    - rid: 6234301352255684669
+      type: {class: Attack, ns: , asm: Assembly-CSharp}
+      data:
+        nbTrySearchEnemy: 5
+        searchEnemyRadius: 50
