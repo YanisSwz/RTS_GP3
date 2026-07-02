@@ -103,7 +103,7 @@ public class General
         {
             List<SquadAction> squadActions = new List<SquadAction>();
             SquadMoveTo moveTo = new SquadMoveTo();
-            moveTo.Init(squad, GameServices.GetRandomPoint(owner.GetFactoryList[0].transform.position, Vector3.forward, 30f, 360f, 50f).Value, 1f);
+            moveTo.Init(squad, GameServices.GetRandomPoint(owner.GetFactoryList[0].transform.position, Vector3.back, 30f, 180f, 50f).Value, 1f);
             squadActions.Add(moveTo);
             squad.GiveActions(squadActions);
         }

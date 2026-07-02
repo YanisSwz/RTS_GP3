@@ -164,22 +164,19 @@ public sealed class AIController : UnitController
 
     public bool CanRecruitUnit(int unitType)
     {
-        bool can = false;
-
         foreach (Factory factory in FactoryList)
         {
             for (int i = 0; i < factory.AvailableUnitsCount; ++i)
             {
                 if (factory.GetBuildableUnitData(i).TypeId == unitType)
                 {
-                    can = true;
-                    break;
+                    return true;
                 }
             }
         }
-
-        return can;
+        return false;
     }
+
 
     public UnityEvent<Unit> RecruitUnit(int unitType)
     {

@@ -85,7 +85,7 @@ public class FormSquad : GeneralAction
                     if (squadPresets[i].squadData.GetUnits.ContainsKey(IDs[j]))
                     {
                         currentSquadPresetIndex = i;
-                        break;
+                        return;
                     }
                 }
             }
@@ -141,6 +141,14 @@ public class FormSquad : GeneralAction
             // If heavy factory not built
             if (!general.GetController.CanRecruitUnit(entry.Key))
             {
+                for (int i = 0; i < squadPresets[currentSquadPresetIndex].squadData.Lines.Count; ++i)
+                {
+                    if (squadPresets[currentSquadPresetIndex].squadData.Lines[i].unitType.TypeId == entry.Key) 
+                    {
+                        currentSquadBudget -= squadPresets[currentSquadPresetIndex].squadData.Lines[i].unitType.Cost * entry.Value;
+                        break;
+                    }
+                }
                 unitsToRecruit.Remove(entry.Key);
                 continue;
             }

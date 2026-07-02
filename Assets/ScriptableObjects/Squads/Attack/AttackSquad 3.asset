@@ -24,5 +24,5 @@ MonoBehaviour:
       lineSpacing: -2
     - unitType: {fileID: 11400000, guid: 4f2d24809fd51e4469fbbdee459ac35d, type: 2}
       numberOfUnits: 2
-      unitSpacing: 0
+      unitSpacing: 2
       lineSpacing: 2

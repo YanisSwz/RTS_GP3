@@ -16,7 +16,7 @@ MonoBehaviour:
     lines:
     - unitType: {fileID: 11400000, guid: 9753026d001f952419661b5e73d678c8, type: 2}
       numberOfUnits: 2
-      unitSpacing: 0
+      unitSpacing: 4
       lineSpacing: 0
     - unitType: {fileID: 11400000, guid: 4f2d24809fd51e4469fbbdee459ac35d, type: 2}
       numberOfUnits: 2
