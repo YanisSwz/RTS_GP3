@@ -38,10 +38,12 @@ public class FormSquad : GeneralAction
         unitsToRecruit = squadPresets[currentSquadPresetIndex].squadData.GetUnits;
         if (unitsToRecruit.Count == 0)
         {
-            owner.ActionFailed(this);
+            owner.AbortSequence();
             return;
         }
         EvaluateSquadCost(owner, power);
+
+        GetAvailableUnits(owner.GetController);
     }
 
     public override void Execute(General owner, float power)
@@ -83,7 +85,7 @@ public class FormSquad : GeneralAction
                     if (squadPresets[i].squadData.GetUnits.ContainsKey(IDs[j]))
                     {
                         currentSquadPresetIndex = i;
-                        break;
+                        return;
                     }
                 }
             }
@@ -139,6 +141,14 @@ public class FormSquad : GeneralAction
             // If heavy factory not built
             if (!general.GetController.CanRecruitUnit(entry.Key))
             {
+                for (int i = 0; i < squadPresets[currentSquadPresetIndex].squadData.Lines.Count; ++i)
+                {
+                    if (squadPresets[currentSquadPresetIndex].squadData.Lines[i].unitType.TypeId == entry.Key) 
+                    {
+                        currentSquadBudget -= squadPresets[currentSquadPresetIndex].squadData.Lines[i].unitType.Cost * entry.Value;
+                        break;
+                    }
+                }
                 unitsToRecruit.Remove(entry.Key);
                 continue;
             }
@@ -161,11 +171,11 @@ public class FormSquad : GeneralAction
 
     private void CheckSquadReadiness(General owner)
     {
-        if (squadUnits.Count == squadSize && (currentSquadBudget < minUnitCost || owner.GetController.TotalBuildPoints == 0))
+        if (squadUnits.Count == squadSize && (currentSquadBudget < minUnitCost || owner.GetController.TotalBuildPoints < minUnitCost))
         {
             if (squadSize == 0)
             {
-                owner.ActionFailed(this);
+                owner.AbortSequence();
                 return;
             }
 
@@ -183,7 +193,7 @@ public class FormSquad : GeneralAction
 
             if (squadUnits.Count == 0)
             {
-                owner.ActionFailed(this);
+                owner.AbortSequence();
                 return;
             }
 

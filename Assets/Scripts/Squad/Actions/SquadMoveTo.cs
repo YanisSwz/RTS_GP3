@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -48,6 +47,7 @@ public class SquadMoveTo : SquadAction
         {
             Debug.Log("path failed to compute");
             OnAbort.Invoke();
+            return;
         }
 
         if (CalculatePath(squad.GetControlledUnits[0].transform.position, staticTarget) == false)

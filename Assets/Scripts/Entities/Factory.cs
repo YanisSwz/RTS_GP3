@@ -191,6 +191,9 @@ public sealed class Factory : BaseEntity
             fx.transform.parent = null;
         }
 
+        if (AIController != null)
+            AIController.discoveredEnemyFactories.Remove(this);
+
         GameServices.GetGameState().DecreaseTeamScore(Team);
         Destroy(gameObject);
     }
