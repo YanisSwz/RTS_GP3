@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Attack
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableGoal
   type: 2
-  activationThreshold: 0.5
+  activationThreshold: 0.2
   minUtility: 0
   maxUtility: 1
+  aggregationType: 3
   utilityEvaluators:
   - weight: 1
     inputValue: 8
@@ -25,23 +26,14 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
-        outSlope: 0
+        inSlope: 2.6566145
+        outSlope: 2.6566145
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.039525695
+        outWeight: 0.06543968
       - serializedVersion: 3
         time: 1
-        value: 0.8
-        inSlope: 0.73959124
-        outSlope: 0.73959124
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.058300257
-      - serializedVersion: 3
-        time: 2
         value: 1
         inSlope: 0
         outSlope: 0

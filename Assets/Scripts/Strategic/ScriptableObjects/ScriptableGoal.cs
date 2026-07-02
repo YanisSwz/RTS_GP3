@@ -9,5 +9,6 @@ public class ScriptableGoal : ScriptableObject
     public float activationThreshold = 0f;
     public float minUtility = 0f;
     public float maxUtility = 1f;
+    public AggregationType aggregationType = AggregationType.None;
     public List<UtilityEvaluator> utilityEvaluators = new List<UtilityEvaluator>();
 }

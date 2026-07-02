@@ -16,6 +16,7 @@ MonoBehaviour:
   activationThreshold: 0.5
   minUtility: 0
   maxUtility: 1
+  aggregationType: 1
   utilityEvaluators:
   - weight: 1
     inputValue: 1

@@ -22,7 +22,3 @@ MonoBehaviour:
       numberOfUnits: 2
       unitSpacing: 6
       lineSpacing: -3
-    - unitType: {fileID: 11400000, guid: bf00dbe58a21fca46b8e307a06af5050, type: 2}
-      numberOfUnits: 1
-      unitSpacing: 0
-      lineSpacing: -5

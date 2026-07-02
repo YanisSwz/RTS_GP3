@@ -1,6 +1,5 @@
-using UnityEngine;
 using System.Collections.Generic;
-using System;
+using UnityEngine;
 
 public enum InputValue
 {
@@ -14,6 +13,14 @@ public enum InputValue
     DiscoveredLabs = 7,
     MenacesCount = 8,
     DiscoveredEnemyFactories = 9
+}
+
+public enum AggregationType 
+{
+    None = 0,
+    Ponder = 1,
+    Minimize = 2,
+    Maximize = 3
 }
 
 [System.Serializable]
@@ -30,6 +37,7 @@ public class Goal
             return;
 
         type = goalData.type;
+        aggregationType = goalData.aggregationType;
         activationThreshold = goalData.activationThreshold;
         minUtility = goalData.minUtility;
         maxUtility = goalData.maxUtility;
@@ -44,6 +52,7 @@ public class Goal
     [SerializeField]
     private float utility = 0f;
     private GoalType type = GoalType.None;
+    private AggregationType aggregationType = AggregationType.None;
     private float activationThreshold = 0f;
     private float minUtility = 0f;
     private float maxUtility = 1f;
@@ -54,6 +63,43 @@ public class Goal
     public float Utility { get { return utility; } }
     public void SetUtility(float newUtility) { utility = newUtility; }
 
+    public float GetInputValue(AIController controller, InputValue input) 
+    {
+        float value = 0f;
+        switch (input)
+        {
+            case InputValue.None:
+                break;
+            case InputValue.BuildPoints:
+                value = controller.TotalBuildPoints;
+                break;
+            case InputValue.ArmyPower:
+                value = controller.UnitList.Count;
+                break;
+            case InputValue.CapturedLabs:
+                value = controller.CapturedTargets;
+                break;
+            case InputValue.BuiltFactories:
+                value = controller.GetFactoryList.Count;
+                break;
+            case InputValue.AvailableUnits:
+                value = controller.availableUnits.Count;
+                break;
+            case InputValue.AvailableBuildPos:
+                value = controller.AvailableBuildPositions.Count;
+                break;
+            case InputValue.DiscoveredLabs:
+                value = controller.discoveredLabs.Count;
+                break;
+            case InputValue.MenacesCount:
+                value = controller.menacesMemory.Count;
+                break;
+            case InputValue.DiscoveredEnemyFactories:
+                value = controller.discoveredEnemyFactories.Count;
+                break;
+        }
+        return value;
+    }
     public void Evaluate(AIController controller)
     {
         utility = 0f;
@@ -64,46 +110,26 @@ public class Goal
 
         foreach (UtilityEvaluator evaluator in utilityEvaluators)
         {
-            float value = 0f;
-            switch (evaluator.InputValue)
+            float value = GetInputValue(controller, evaluator.InputValue);
+            switch (aggregationType) 
             {
-                case InputValue.None:
+                case AggregationType.None:
                     break;
-                case InputValue.BuildPoints:
-                    value = controller.TotalBuildPoints;
+                case AggregationType.Ponder:
+                    utility += evaluator.Evaluate(value) * evaluator.Weight;
                     break;
-                case InputValue.ArmyPower:
-                    value = controller.UnitList.Count;
+                case AggregationType.Maximize:
+                    utility = Mathf.Max(utility, evaluator.Evaluate(value) * evaluator.Weight);
                     break;
-                case InputValue.CapturedLabs:
-                    value = controller.CapturedTargets;
-                    break;
-                case InputValue.BuiltFactories:
-                    value = controller.GetFactoryList.Count;
-                    break;
-                case InputValue.AvailableUnits:
-                    value = controller.availableUnits.Count;
-                    break;
-                case InputValue.AvailableBuildPos:
-                    value = controller.AvailableBuildPositions.Count;
-                    break;
-                case InputValue.DiscoveredLabs:
-                    value = controller.discoveredLabs.Count;
-                    break;
-                case InputValue.MenacesCount:
-                    value = controller.menacesMemory.Count;
-                    break;
-                case InputValue.DiscoveredEnemyFactories:
-                    value = controller.discoveredEnemyFactories.Count;
+                case AggregationType.Minimize:
+                    utility = Mathf.Min(utility, evaluator.Evaluate(value) * evaluator.Weight);
                     break;
             }
-
-            utility += evaluator.Evaluate(value) * evaluator.Weight;
         }
+        if(aggregationType == AggregationType.Ponder)
+            utility /= totalWeight;
 
-        utility /= totalWeight;
         utility = Mathf.Clamp(utility, minUtility, maxUtility);
-
         if (utility <= activationThreshold)
             utility = 0f;
     }

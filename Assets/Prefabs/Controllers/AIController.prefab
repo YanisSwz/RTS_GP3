@@ -61,6 +61,8 @@ MonoBehaviour:
     utility: 0
   - goalData: {fileID: 11400000, guid: c58af77a69bd70d4b8f2beeeebfcc5ec, type: 2}
     utility: 0
+  - goalData: {fileID: 11400000, guid: 1b5eee88f277c0b42b741efe219fe574, type: 2}
+    utility: 0
   generals:
   - sequences:
     - goalType: 1
@@ -86,6 +88,7 @@ MonoBehaviour:
   currentGoalName: none
   currentGoalUtility: -1
   discoveredLabs: []
+  discoveredEnemyFactories: []
   timeOutMemory: 30
   toleranceRadiusMemory: 10
   refreshRate: 5
