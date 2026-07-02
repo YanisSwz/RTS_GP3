@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,10 +7,7 @@ using UnityEngine.Events;
 // max points can be increased by capturing TargetBuilding entities
 public class UnitController : MonoBehaviour
 {
-    [Header("--- DEBUG ---")]
-    [SerializeField]
     protected int _TotalBuildPoints = 0;
-
     public int TotalBuildPoints
     {
         get { return _TotalBuildPoints; }
@@ -22,7 +18,6 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    [Header("------------------------")]
     [SerializeField]
     protected ETeam Team;
     public ETeam GetTeam() { return Team; }

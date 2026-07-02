@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEngine.UI.GridLayoutGroup;
 
 [System.Serializable]
 public class FormSquad : GeneralAction
@@ -32,6 +31,7 @@ public class FormSquad : GeneralAction
     {
         base.Enter(owner, power);
 
+        // Instead of getting a random preset, we see if there are available units that would fit one of our presets
         GetPresetIndex(owner.GetController);
 
         // We get the units to recruit from the preset
@@ -70,6 +70,10 @@ public class FormSquad : GeneralAction
         currentSquadBudget = Mathf.RoundToInt(Mathf.Min(squadCost, owner.GetController.TotalBuildPoints * power));
     }
 
+    /// <summary>
+    /// Get a squad preset that uses available units, or choose a random one if none is found
+    /// </summary>
+    /// <param name="controller"></param>
     private void GetPresetIndex(AIController controller) 
     {
         if (controller.availableUnits.Count > 0)
@@ -138,7 +142,7 @@ public class FormSquad : GeneralAction
         Dictionary<int, int> unitsCopy = new(unitsToRecruit);
         foreach (KeyValuePair<int, int> entry in unitsCopy)
         {
-            // If heavy factory not built
+            // If heavy factory not built, remove units to recruit from squad
             if (!general.GetController.CanRecruitUnit(entry.Key))
             {
                 for (int i = 0; i < squadPresets[currentSquadPresetIndex].squadData.Lines.Count; ++i)
@@ -171,6 +175,7 @@ public class FormSquad : GeneralAction
 
     private void CheckSquadReadiness(General owner)
     {
+        // If we have everybody, and have no more budget, the squad is ready
         if (squadUnits.Count == squadSize && (currentSquadBudget < minUnitCost || owner.GetController.TotalBuildPoints < minUnitCost))
         {
             if (squadSize == 0)
@@ -182,6 +187,7 @@ public class FormSquad : GeneralAction
             Squad squad = new Squad();
             squad.LinePoses = new List<Line>(squadPresets[currentSquadPresetIndex].squadData.Lines);
 
+            // Sanity check to avoid null units
             for (int i = 0; i < squadUnits.Count; ++i)
             {
                 if (squadUnits[i] == null)
@@ -203,6 +209,7 @@ public class FormSquad : GeneralAction
             leader.GiveSquad(squad, owner);
             owner.AddLeader(leader);
 
+            // If we recruited at least one unit, rally to a rally point (base position)
             if (recruited)
             {
                 Vector3? rallyPoint = GameServices.GetRandomPoint(owner.GetController.GetFactoryList[0].transform.position, Vector3.right + Vector3.back, 60f, 45f, 35f);
@@ -263,6 +270,7 @@ public class FormSquad : GeneralAction
         };
     }
 
+    // If unit is killed, remove it from squad queue
     private void RemoveUnit(Unit unit)
     {
         squadUnits.Remove(unit);

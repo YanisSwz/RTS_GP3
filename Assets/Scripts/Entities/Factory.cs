@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using System.Linq;
 
 public sealed class Factory : BaseEntity
 {
@@ -192,7 +191,7 @@ public sealed class Factory : BaseEntity
         }
 
         if (AIController != null)
-            AIController.discoveredEnemyFactories.Remove(this);
+            AIController.DiscoveredEnemyFactories.Remove(this);
 
         GameServices.GetGameState().DecreaseTeamScore(Team);
         Destroy(gameObject);

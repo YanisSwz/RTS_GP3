@@ -19,6 +19,7 @@ public class Explore : Dispatch
         return explore;
     }
 
+    // Send squad to explore a point near base, and from there explore randomly until finding a lab or another goal interrupts
     public override void Enter(General owner, float power)
     {
         base.Enter(owner, power);

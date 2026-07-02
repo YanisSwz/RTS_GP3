@@ -98,7 +98,7 @@ public class General
 
     private void GetRetreatPos(Squad squad)
     {
-        //todo evaluate retreat target (base/lab)
+        //Pick a point near base
         if (squad.GetControlledUnits.Count > 0)
         {
             List<SquadAction> squadActions = new List<SquadAction>();
