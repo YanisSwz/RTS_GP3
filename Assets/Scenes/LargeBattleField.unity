@@ -3289,11 +3289,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
-      propertyPath: goals.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
       propertyPath: generals.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -3317,12 +3312,6 @@ PrefabInstance:
       propertyPath: 'buildPositions.Array.data[2]'
       value: 
       objectReference: {fileID: 1380018923}
-    - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
-        type: 3}
-      propertyPath: goals.Array.data[3].goalData
-      value: 
-      objectReference: {fileID: 11400000, guid: 1b5eee88f277c0b42b741efe219fe574,
-        type: 2}
     - target: {fileID: 7859672622032877473, guid: fee74b0095774cf4f9701d9fab58813d,
         type: 3}
       propertyPath: 'managedReferences[600400456886255673]'
