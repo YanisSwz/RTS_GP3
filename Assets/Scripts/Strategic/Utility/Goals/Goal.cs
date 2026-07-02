@@ -75,7 +75,7 @@ public class Goal
                 value = controller.TotalBuildPoints;
                 break;
             case InputValue.ArmyPower:
-                value = controller.UnitList.Count;
+                value = controller.ArmyPower;
                 break;
             case InputValue.CapturedLabs:
                 value = controller.CapturedTargets;

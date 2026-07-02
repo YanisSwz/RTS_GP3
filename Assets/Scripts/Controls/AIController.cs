@@ -24,7 +24,17 @@ public sealed class AIController : UnitController
     public float currentGoalUtility = -1f;
     public List<TargetBuilding> discoveredLabs = new List<TargetBuilding>();
     public List<Factory> discoveredEnemyFactories = new List<Factory>();
+    public int ArmyPower 
+    { 
+        get
+        {
+            int value = 0;
+            for (int i = 0; i < UnitList.Count; ++i)
+                value += UnitList[i].Cost;
 
+            return value;
+        } 
+    }
 
     [Header("--- Menace Memory ---")]
     public float timeOutMemory = 30f;
