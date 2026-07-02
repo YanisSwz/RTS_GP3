@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using UnityEngine;
+using UnityEngine.Android;
 
 public class SquadAttack : SquadAction
 {
@@ -21,6 +22,16 @@ public class SquadAttack : SquadAction
     {
         base.StartAction();
         Debug.Log("Squad Start Attacking");
+
+        if (enemyBaseTarget == null)
+            enemyBaseTarget = GetNearestEntityFromPos(squad.GetSquadAveragePos());
+
+
+        if(enemyBaseTarget == null)
+        {
+            OnComplete.Invoke();
+            return;
+        }
 
         //form attack formation
         AttackFormation(enemyBaseTarget.transform.position);
@@ -102,8 +113,13 @@ public class SquadAttack : SquadAction
 
     private BaseEntity PickNearestEnemy(Unit unitAskTarget)
     {
-        BaseEntity result = null;
         Vector3 pos = unitAskTarget.transform.position;
+        return GetNearestEntityFromPos(pos);
+    }
+
+    BaseEntity GetNearestEntityFromPos(Vector3 pos)
+    {
+        BaseEntity result = null;
 
         float nearestDist = float.MaxValue;
         List<Unit> enemiesInSight = squad.enemiesInSight;
@@ -122,7 +138,7 @@ public class SquadAttack : SquadAction
         }
 
         List<Factory> factoriesInSight = squad.factoriesInSight;
-        for(int i = 0; i < factoriesInSight.Count; ++i)
+        for (int i = 0; i < factoriesInSight.Count; ++i)
         {
             float dist = (factoriesInSight[i].transform.position - pos).magnitude;
             if (dist < nearestDist)
