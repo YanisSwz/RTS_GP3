@@ -154,14 +154,9 @@ public class General
         actions[currentActionIndex].Execute(this, currentPower);
     }
 
-    public void ActionFailed(GeneralAction action) 
+    public void AbortSequence() 
     {
-        action.Abort();
-        AbortSequence();
-    }
-
-    private void AbortSequence() 
-    {
+        actions[currentActionIndex].Abort();
         List<SquadLeader> copy = new List<SquadLeader>(leaders);
         for(int i = 0; i < copy.Count; ++i)
             leaders[i].DestroyLeader();

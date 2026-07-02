@@ -23,6 +23,6 @@ MonoBehaviour:
       unitSpacing: 0
       lineSpacing: -2
     - unitType: {fileID: 11400000, guid: 4f2d24809fd51e4469fbbdee459ac35d, type: 2}
-      numberOfUnits: 8
+      numberOfUnits: 2
       unitSpacing: 0
       lineSpacing: 2

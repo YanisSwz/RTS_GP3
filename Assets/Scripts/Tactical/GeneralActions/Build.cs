@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 [System.Serializable]
 public class Build : GeneralAction
 {
+
     public override GeneralAction GenerateCopy()
     {
         return new Build();
@@ -28,6 +28,6 @@ public class Build : GeneralAction
         if (built)
             isComplete = true;
         else
-            owner.ActionFailed(this);
+            owner.AbortSequence();
     }
 }
