@@ -4,11 +4,10 @@ public class FSM_RetaliateState : FSM_State
 {
     public float chaseRadius = 10f;
     Vector3 basePos = Vector3.zero;
-    Unit retaliateTarget = null;
     public override void EnterState()
     {
         base.EnterState();
-        retaliateTarget = fsmEntity.LastDamageDealer;
+        fsmEntity.EntityTarget = fsmEntity.LastDamageDealer;
         basePos = fsmEntity.transform.position;
     }
 
@@ -37,7 +36,6 @@ public class FSM_RetaliateState : FSM_State
             //check attack dist
             if (CanAttackTarget())
             {
-                fsmEntity.EntityTarget = retaliateTarget;
                 fsmEntity.ComputeAttack();
             }
             else
@@ -56,16 +54,16 @@ public class FSM_RetaliateState : FSM_State
     private bool CheckGiveUpRetaliateTarget()
     {
         //switch target
-        if (retaliateTarget == null)
+        if (fsmEntity.EntityTarget == null)
         {
-            retaliateTarget = fsmEntity.LastDamageDealer;
+            fsmEntity.EntityTarget = fsmEntity.LastDamageDealer;
 
-            if (retaliateTarget == null)
+            if (fsmEntity.EntityTarget == null)
                 return false;
         }
 
         //check if target is too far
-        if ((fsmEntity.transform.position - retaliateTarget.transform.position).magnitude >= chaseRadius + fsmEntity.GetUnitData.AttackDistanceMax)
+        if ((fsmEntity.transform.position - fsmEntity.EntityTarget.transform.position).magnitude >= chaseRadius + fsmEntity.GetUnitData.AttackDistanceMax)
             return false;
 
         return true;
@@ -73,10 +71,10 @@ public class FSM_RetaliateState : FSM_State
 
     private bool CanAttackTarget()
     {
-        if(retaliateTarget == null)
+        if(fsmEntity.EntityTarget == null)
             return false;
 
-        return fsmEntity.CanAttack(retaliateTarget);
+        return fsmEntity.CanAttack(fsmEntity.EntityTarget);
     }
 
     private bool CheckDistToBasePos()
@@ -86,7 +84,7 @@ public class FSM_RetaliateState : FSM_State
 
     private void CancelRetaliate()
     {
-        retaliateTarget = null;
+        fsmEntity.EntityTarget = null;
         fsmEntity.LastDamageDealer = null;
         fsmEntity.MoveTo(basePos);
     }

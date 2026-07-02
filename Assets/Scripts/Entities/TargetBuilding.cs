@@ -28,11 +28,12 @@ public class TargetBuilding : MonoBehaviour
     [Header("Menace Point")]
     public float menacePointRadiusDetection = 30;
     public LayerMask menaceDetectionLayer;
+    [HideInInspector]
+    public List<Unit> allyNearLab = new List<Unit>();
     List<Unit> unitsInSight = new List<Unit>();
     //use for menace point generation
     AIController AIController = null;
 
-    public List<Unit> allyNearLab = new List<Unit>();
 
     private EntityVisibility _Visibility;
     public EntityVisibility Visibility

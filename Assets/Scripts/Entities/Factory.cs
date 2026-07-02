@@ -23,6 +23,17 @@ public sealed class Factory : BaseEntity
 
     UnitController Controller = null;
 
+    [Header("Menace Point")]
+    public float menacePointRadiusDetection = 30;
+    public LayerMask menaceDetectionLayer;
+
+    List<Unit> unitsInSight = new List<Unit>();
+    [HideInInspector]
+    public List<Unit> allyInSight = new List<Unit>();
+    //use for menace point generation
+    AIController AIController = null;
+
+
     [SerializeField]
     int MaxBuildingQueueSize = 5;
     Queue<int> BuildingQueue = new Queue<int>();
@@ -90,9 +101,47 @@ public sealed class Factory : BaseEntity
         base.Start();
         GameServices.GetGameState().IncreaseTeamScore(Team);
         Controller = GameServices.GetControllerByTeam(Team);
+
+        AIController = Controller as AIController;
     }
     override protected void Update()
     {
+        if(AIController)
+        {
+            List<RaycastHit> allyUnits = new List<RaycastHit>(Physics.SphereCastAll(transform.position, menacePointRadiusDetection, Vector3.up, menaceDetectionLayer));
+            allyInSight.Clear();
+            unitsInSight.Clear();
+
+            foreach (RaycastHit hit in allyUnits)
+            {
+                Unit entity = null;
+                if (hit.collider != null && hit.collider.gameObject.TryGetComponent<Unit>(out entity))
+                {
+                    if (entity.GetTeam() == GetTeam())
+                        allyInSight.Add(entity);
+                    else
+                        unitsInSight.Add(entity);
+                }
+            }
+
+            if (unitsInSight.Count > 0)
+            {
+                MenaceMemory menace = new MenaceMemory();
+                menace.time = Time.time;
+                menace.nbEnemiesSpotted = unitsInSight.Count;
+
+                menace.enemyPower = 0;
+                foreach (Unit unit in unitsInSight)
+                    menace.enemyPower += unit.Cost;
+
+                foreach (Unit unit in unitsInSight)
+                    menace.enemyAveragePos += unit.transform.position;
+                menace.enemyAveragePos /= (float)(menace.nbEnemiesSpotted);
+
+                AIController.AddMenaceMemory(menace);
+            }
+        }
+
         switch (CurrentState)
         {
             case State.Available:
