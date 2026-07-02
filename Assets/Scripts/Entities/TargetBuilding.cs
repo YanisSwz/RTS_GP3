@@ -32,6 +32,8 @@ public class TargetBuilding : MonoBehaviour
     //use for menace point generation
     AIController AIController = null;
 
+    public List<Unit> allyNearLab = new List<Unit>();
+
     private EntityVisibility _Visibility;
     public EntityVisibility Visibility
     {
@@ -69,8 +71,10 @@ public class TargetBuilding : MonoBehaviour
         //generate menace point
         if (AIController != null)
         {
-            List<RaycastHit> hitUnits = new List<RaycastHit>(Physics.SphereCastAll(transform.position, menacePointRadiusDetection, Vector3.up, menaceDetectionLayer));
             unitsInSight.Clear();
+            allyNearLab.Clear();
+
+            List<RaycastHit> hitUnits = new List<RaycastHit>(Physics.SphereCastAll(transform.position, menacePointRadiusDetection, Vector3.up, menaceDetectionLayer));
             foreach (RaycastHit hit in hitUnits)
             {
                 Unit unitInSight = null;
@@ -78,9 +82,9 @@ public class TargetBuilding : MonoBehaviour
                 {
                     //get enemies in sight
                     if (unitInSight.GetTeam() != OwningTeam)
-                    {
                         unitsInSight.Add(unitInSight);
-                    }
+                    else
+                        allyNearLab.Add(unitInSight);
                 }
             }
             if (unitsInSight.Count > 0)
