@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SquadDataPreset
   squadData:
     lines:
-    - unitType: {fileID: 11400000, guid: bf00dbe58a21fca46b8e307a06af5050, type: 2}
+    - unitType: {fileID: 11400000, guid: 4f2d24809fd51e4469fbbdee459ac35d, type: 2}
       numberOfUnits: 2
       unitSpacing: 2
       lineSpacing: 0
+    - unitType: {fileID: 11400000, guid: b4a2cf66d48b98043b5a7e8bfb7b27a4, type: 2}
+      numberOfUnits: 1
+      unitSpacing: 0
+      lineSpacing: -2

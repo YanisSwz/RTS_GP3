@@ -38,10 +38,12 @@ public class FormSquad : GeneralAction
         unitsToRecruit = squadPresets[currentSquadPresetIndex].squadData.GetUnits;
         if (unitsToRecruit.Count == 0)
         {
-            owner.ActionFailed(this);
+            owner.AbortSequence();
             return;
         }
         EvaluateSquadCost(owner, power);
+
+        GetAvailableUnits(owner.GetController);
     }
 
     public override void Execute(General owner, float power)
@@ -161,11 +163,11 @@ public class FormSquad : GeneralAction
 
     private void CheckSquadReadiness(General owner)
     {
-        if (squadUnits.Count == squadSize && (currentSquadBudget < minUnitCost || owner.GetController.TotalBuildPoints == 0))
+        if (squadUnits.Count == squadSize && (currentSquadBudget < minUnitCost || owner.GetController.TotalBuildPoints < minUnitCost))
         {
             if (squadSize == 0)
             {
-                owner.ActionFailed(this);
+                owner.AbortSequence();
                 return;
             }
 
@@ -183,7 +185,7 @@ public class FormSquad : GeneralAction
 
             if (squadUnits.Count == 0)
             {
-                owner.ActionFailed(this);
+                owner.AbortSequence();
                 return;
             }
 

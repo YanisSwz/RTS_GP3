@@ -12,7 +12,7 @@ public sealed class AIController : UnitController
     private List<Transform> buildPositions = null;
     private List<Transform> availableBuildPositions = new List<Transform>();
     public List<Transform> AvailableBuildPositions { get { return availableBuildPositions; } }
-    
+
     [SerializeField]
     private List<Goal> goals = new List<Goal>();
     private Goal currentGoal = null;
@@ -24,8 +24,8 @@ public sealed class AIController : UnitController
     public float currentGoalUtility = -1f;
     public List<TargetBuilding> discoveredLabs = new List<TargetBuilding>();
     public List<Factory> discoveredEnemyFactories = new List<Factory>();
-    public int ArmyPower 
-    { 
+    public int ArmyPower
+    {
         get
         {
             int value = 0;
@@ -33,7 +33,7 @@ public sealed class AIController : UnitController
                 value += UnitList[i].Cost;
 
             return value;
-        } 
+        }
     }
 
     [Header("--- Menace Memory ---")]
@@ -52,7 +52,7 @@ public sealed class AIController : UnitController
     protected override void Awake()
     {
         base.Awake();
-        foreach (Goal goal in goals) 
+        foreach (Goal goal in goals)
             goal.LoadData();
 
         foreach (General general in generals)
@@ -61,8 +61,8 @@ public sealed class AIController : UnitController
             general.LoadData();
         }
 
-        if(buildPositions.Count > 0)
-            availableBuildPositions = new (buildPositions);
+        if (buildPositions.Count > 0)
+            availableBuildPositions = new(buildPositions);
     }
 
     protected override void Start()
@@ -72,14 +72,14 @@ public sealed class AIController : UnitController
         SelectedFactory = FactoryList[0];
     }
 
- 
+
 
     protected override void Update()
     {
         base.Update();
 
         //check menace memory
-        if(currentRefreshTime >= refreshRate)
+        if (currentRefreshTime >= refreshRate)
         {
             currentRefreshTime = 0f;
             TimeOutMenaceMemoryClean();
@@ -91,7 +91,7 @@ public sealed class AIController : UnitController
         foreach (Goal goal in goals)
         {
             goal.Evaluate(this);
-            if(goal.Utility > bestUtility) 
+            if (goal.Utility > bestUtility)
             {
                 bestUtility = goal.Utility;
                 currentGoal = goal;
@@ -105,15 +105,18 @@ public sealed class AIController : UnitController
 
         foreach (General general in generals)
         {
-            if (general.CurrentGoal == null)
+            if (goalsToAssign[0].Utility == 1f && general.CurrentGoal != goalsToAssign[0])
+            {
+                if(general.CurrentGoal != null)
+                    general.AbortSequence();
+                general.SetGoal(goalsToAssign[0]);
+            }
+            else if (general.CurrentGoal == null)
             {
                 general.SetGoal(goalsToAssign.First());
                 goalsToAssign.RemoveAt(0);
             }
-            else
-            {
-                general.UpdateSequence();
-            }
+            general.UpdateSequence();
         }
     }
 
@@ -135,9 +138,9 @@ public sealed class AIController : UnitController
         discoveredLabs.Add(lab);
     }
 
-    public bool TryBuildingFactory(int index) 
+    public bool TryBuildingFactory(int index)
     {
-        if(availableBuildPositions.Count == 0)
+        if (availableBuildPositions.Count == 0)
             return false;
 
         int buildIndex = UnityEngine.Random.Range(0, availableBuildPositions.Count);
@@ -147,19 +150,19 @@ public sealed class AIController : UnitController
             availableBuildPositions.RemoveAt(index);
             return true;
         }
-        else 
+        else
         {
             return false;
         }
     }
 
-    private bool BuildFactory(int index, Vector3 position) 
+    private bool BuildFactory(int index, Vector3 position)
     {
         SelectedFactory = FactoryList[0];
         return RequestFactoryBuild(index, position);
     }
 
-    public bool CanRecruitUnit(int unitType) 
+    public bool CanRecruitUnit(int unitType)
     {
         bool can = false;
 
@@ -178,7 +181,7 @@ public sealed class AIController : UnitController
         return can;
     }
 
-    public UnityEvent<Unit> RecruitUnit(int unitType) 
+    public UnityEvent<Unit> RecruitUnit(int unitType)
     {
         SelectBestFactory(unitType);
         return RequestUnitBuild(GetUnitFactoryIndex(unitType));
@@ -196,7 +199,7 @@ public sealed class AIController : UnitController
         return -1;
     }
 
-    private void SelectBestFactory(int unitType) 
+    private void SelectBestFactory(int unitType)
     {
         Factory bestFactory = FactoryList[0];
         int bestQueueSize = int.MaxValue;
@@ -206,7 +209,7 @@ public sealed class AIController : UnitController
             {
                 if (factory.GetBuildableUnitData(i).TypeId == unitType)
                 {
-                    if(factory.BuildingQueueSize < bestQueueSize)
+                    if (factory.BuildingQueueSize < bestQueueSize)
                     {
                         bestFactory = factory;
                         bestQueueSize = factory.BuildingQueueSize;
@@ -235,7 +238,7 @@ public sealed class AIController : UnitController
 
     public void AddMenaceMemory(MenaceMemory newMenace)
     {
-        for(int i = 0; i < menacesMemory.Count;++i)
+        for (int i = 0; i < menacesMemory.Count; ++i)
         {
             if ((menacesMemory[i].enemyAveragePos - newMenace.enemyAveragePos).magnitude <= toleranceRadiusMemory)
             {

@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _TotalBuildPoints: 0
   Team: 0
-  StartingBuildPoints: 40
+  StartingBuildPoints: 15
   detectionLayerForSquad:
     serializedVersion: 2
     m_Bits: 1024
