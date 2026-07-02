@@ -21,8 +21,8 @@ MonoBehaviour:
     - unitType: {fileID: 11400000, guid: 9753026d001f952419661b5e73d678c8, type: 2}
       numberOfUnits: 1
       unitSpacing: 2
-      lineSpacing: -2
+      lineSpacing: -3
     - unitType: {fileID: 11400000, guid: 4f2d24809fd51e4469fbbdee459ac35d, type: 2}
       numberOfUnits: 8
       unitSpacing: 2
-      lineSpacing: -2
+      lineSpacing: -3

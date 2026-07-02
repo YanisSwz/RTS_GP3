@@ -16,9 +16,6 @@ public class SquadMoveTo : SquadAction
     List<Vector3> arrivedPos = new List<Vector3>();
 
 
-    Vector3 debugTarget;
-    Vector3 debugFirstUnit;
-
     public override void Init(Squad _squad, Vector3 _staticTarget, float _distanceToTarget)
     {
         base.Init(_squad, _staticTarget, _distanceToTarget);
@@ -40,9 +37,6 @@ public class SquadMoveTo : SquadAction
 
         if (IsStaticPath == false)
             staticTarget = movingTarget.transform.position;
-
-        debugTarget = staticTarget;
-        debugFirstUnit = squad.GetControlledUnits[0].transform.position;
 
         Vector3? pos = GameServices.GetRandomPoint(staticTarget, Vector3.right, 0.5f, 360f, 5f);
         if (pos.HasValue)
