@@ -595,48 +595,43 @@ public sealed class PlayerController : UnitController
             BaseEntity other = raycastInfo.transform.GetComponent<BaseEntity>();
             if (other != null)
             {
-                if (other.GetTeam() != GetTeam())
+                bool sameTeam = other.GetTeam() == GetTeam();
+
+                //create action sequence
+                List<SquadAction> actions = new List<SquadAction>();
+
+                //compute move to stopping distance
+                float maxAttackRadius = 0f;
+                foreach (Unit unit in currentSquad.GetControlledUnits)
                 {
-                    //create action sequence
-                    List<SquadAction> actions = new List<SquadAction>();
+                    float atkDist = unit.GetUnitData.AttackDistanceMax;
+                    if (atkDist > maxAttackRadius)
+                        maxAttackRadius = atkDist;
+                }
 
-                    //compute move to stopping distance
-                    float maxAttackRadius = 0f;
-                    foreach (Unit unit in currentSquad.GetControlledUnits)
-                    {
-                        float atkDist = unit.GetUnitData.AttackDistanceMax;
-                        if (atkDist > maxAttackRadius)
-                            maxAttackRadius = atkDist;
-                    }
+                //add move to action
+                SquadMoveTo moveToAction = new SquadMoveTo();
+                if (other as Unit)
+                    moveToAction.Init(currentSquad, other.gameObject, 1f);
+                //if factory => static target
+                else
+                    moveToAction.Init(currentSquad, other.transform.position + ((currentSquad.GetSquadAveragePos() - other.transform.position).normalized * 10f), 1f);
 
-                    //add move to action
-                    SquadMoveTo moveToAction = new SquadMoveTo();
-                    if (other as Unit)
-                        moveToAction.Init(currentSquad, other.gameObject, 1f);
-                    //if factory => static target
-                    else
-                        moveToAction.Init(currentSquad, other.transform.position + ((currentSquad.GetSquadAveragePos() - other.transform.position).normalized * 10f), 1f);
+                moveToAction.distanceToFinalTarget = sameTeam ? 0f : maxAttackRadius;
 
-                    moveToAction.distanceToFinalTarget = maxAttackRadius;
+                actions.Add(moveToAction);
 
-                    actions.Add(moveToAction);
-
+                if (sameTeam == false)
+                {
                     //add attk action
 
                     SquadAttack squadAttack = new SquadAttack();
                     squadAttack.Init(currentSquad, other.gameObject, maxAttackRadius);
-                    //squadAttack.enemyBaseTarget = other;
                     actions.Add(squadAttack);
+                }
 
-                    //send action
-                    currentSquad.GiveActions(actions);
-                }
-                else if (other.NeedsRepairing())
-                {
-                    // Direct call to reparing task $$$ to be improved by AI behaviour
-                    foreach (Unit unit in SelectedUnitList)
-                        unit.SetRepairTarget(other);
-                }
+                //send action
+                currentSquad.GiveActions(actions);
             }
         }
         // Set capturing target

@@ -104,14 +104,15 @@ public class SquadMoveTo : SquadAction
         }
 
         base.UpdateAction();
+
+        if (IsSquadArrived())
+            OnComplete.Invoke();
+       
         if (IsStaticPath == false && movingTarget != null)
         {
             staticTarget = movingTarget.transform.position;
             CalculatePath(squad.GetControlledUnits[0].transform.position, staticTarget);
         }
-
-        if (IsSquadArrived())
-            OnComplete.Invoke();
     }
 
     private bool IsSquadArrived()

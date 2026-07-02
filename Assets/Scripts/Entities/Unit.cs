@@ -99,12 +99,6 @@ public class Unit : BaseEntity
     }
     override protected void Update()
     {
-        // Attack / repair task debug test $$$ to be removed for AI implementation
-        if (EntityTarget != null)
-        {
-            if (EntityTarget.GetTeam() == GetTeam())
-                ComputeRepairing();
-        }
 	}
     #endregion
 
@@ -271,18 +265,6 @@ public class Unit : BaseEntity
         return true;
     }
 
-    // Targetting Task - repairing
-    public void SetRepairTarget(BaseEntity entity)
-    {
-        if (CanRepair(entity) == false)
-            return;
-
-        if (CaptureTarget != null)
-            StopCapture();
-
-        if (entity.GetTeam() == GetTeam())
-            StartRepairing(entity);
-    }
     public bool CanAttack(BaseEntity target)
     {
         if (target == null)
