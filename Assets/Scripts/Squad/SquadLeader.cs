@@ -116,7 +116,8 @@ public class SquadLeader
                 teamPower += unit.Cost;
         }
 
-        if (teamPower >= menace.enemyPower)
+
+        if (teamPower >= menace.enemyPower || generalOrder as AttackLeaderAction != null)
         {
             //attack target
             if (isAttacking == false)
