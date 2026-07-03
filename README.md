@@ -17,10 +17,9 @@ Launch LargeBattlefield in the editor.
 
 ## ⚙️ Techniques
 
-We used Utility for goals, Desicion trees for squads and FSMs for individual units.
-
-Documentation incoming...
-
+We used Utility for goals, Desicion trees for squads and FSMs for individual units. 
+</br>
+For more information, please refer to [the technical readme](./TechnicalReadme.md)
 
 ## 💻 Contributors
 
